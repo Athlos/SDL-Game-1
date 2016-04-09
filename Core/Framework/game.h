@@ -3,13 +3,14 @@
 #define __GAME_H__
 
 #include "SDL.h"
+#include <vector>
 
 // Forward Declarations
 class BackBuffer;
 class InputHandler;
 class Sprite;
 class AnimatedSprite;
-
+class Player;
 
 
 class Game
@@ -22,6 +23,9 @@ public:
 	bool Initialise();
 	bool DoGameLoop();
 	void Quit();
+
+	void UpdatePlayerHealth(int amount);
+
 protected:
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backBuffer);
@@ -53,7 +57,12 @@ protected:
 	int m_width;
 	int m_height;
 
+	//Sprites
 	AnimatedSprite* m_playerSprite;
+	Sprite* m_HealthSprite;
+
+	//Player
+	Player* m_Player;
 
 private:
 

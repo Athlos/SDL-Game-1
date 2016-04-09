@@ -78,6 +78,16 @@ InputHandler::ProcessInput(Game& game)
 			SDL_Log("lower right");
 			//game.UpdatePlayerSprite(LOWERRIGHT);
 		}
+		else if (state[SDL_SCANCODE_0])
+		{
+			//Damage Player by 1 point
+			game.UpdatePlayerHealth(-1);
+		}
+		else if (state[SDL_SCANCODE_1])
+		{
+			//Heal Player by 1 point
+			game.UpdatePlayerHealth(1);
+		}
 		else if (state[SDL_SCANCODE_ESCAPE])
 		{
 			game.Quit();

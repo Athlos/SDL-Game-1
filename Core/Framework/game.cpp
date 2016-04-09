@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "texture.h"
 #include "animatedsprite.h"
+#include "player.h"
 
 // Library includes:
 #include <cassert>
@@ -81,6 +82,13 @@ Game::Initialise()
 		return (false);
 	}
 
+	m_HealthSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart.png");
+
+	//Set up player
+	m_Player = new Player();
+	m_Player->SetCurrentHealth(5);
+	m_Player->SetMaxHealth(5);
+
 
 
 	m_lastTime = SDL_GetTicks();
@@ -146,6 +154,15 @@ Game::Draw(BackBuffer& backBuffer)
 
 	backBuffer.Clear();
 
+	int x = 1780;
+	for (int i = 0; i < m_Player->GetCurrentHealth(); i++)
+	{
+		m_HealthSprite->SetX(x);
+		m_HealthSprite->SetY(0);
+		m_HealthSprite->Draw(backBuffer);
+		x -= 150;
+	}
+
 	backBuffer.Present();
 }
 
@@ -153,4 +170,10 @@ void
 Game::Quit()
 {
 	m_looping = false;
+}
+
+void Game::UpdatePlayerHealth(int amount)
+{
+	m_Player->UpdatePlayerHealth(amount);
+
 }
