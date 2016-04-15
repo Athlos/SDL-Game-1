@@ -14,6 +14,8 @@
 #include <cassert>
 #include <SDL.h>
 #include <iostream>
+//Box2D includes:
+#include <Box2D\box2d.h>
 
 // Static Members:
 Game* Game::sm_pInstance = 0;
@@ -88,8 +90,11 @@ Game::Initialise()
 	m_Player = new Player();
 	m_Player->SetCurrentHealth(5);
 	m_Player->SetMaxHealth(5);
-
-
+	//Box2D world setup
+	//gravity
+	b2Vec2 gravity(0.0f, -10.0f);
+	//world object
+	b2World world(gravity);
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;

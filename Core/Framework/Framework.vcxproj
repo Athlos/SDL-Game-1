@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SDL\SDL2-2.0.4\include;$(SolutionDir)\SDL\SDL2_image-2.0.1\include;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\;$(SolutionDir)\SDL\SDL2-2.0.4\include;$(SolutionDir)\SDL\SDL2_image-2.0.1\include;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -72,7 +72,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\SDL\SDL2-2.0.4\include;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\include;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)\SDL\SDL2_image-2.0.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\Box2D.h;$(SolutionDir)SDL\SDL2-2.0.4\include;$(SolutionDir)SDL\SDL2_ttf-2.0.13\include;$(SolutionDir)SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)SDL\SDL2_image-2.0.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\lib\x86;$(SolutionDir)\SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)\SDL\SDL2_image-2.0.1\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Box2D\;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\lib\x86;$(SolutionDir)\SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)\SDL\SDL2_image-2.0.1\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

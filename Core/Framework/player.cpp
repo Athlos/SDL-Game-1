@@ -33,8 +33,8 @@ void Player::Process(float deltaTime)
 	m_animSprite->SetX(static_cast<int>(m_x));
 	m_animSprite->SetY(static_cast<int>(m_y));
 
-	m_x += deltaTime * m_velocityX;
-	m_y += deltaTime * m_velocityY;
+	m_x += (static_cast<int>(deltaTime * m_velocityX));
+	m_y += (static_cast<int>(deltaTime * m_velocityY));
 	m_animSprite->SetFrameSpeed(0.08f);
 	m_animSprite->Process(deltaTime);
 }
@@ -48,14 +48,14 @@ void Player::Draw(BackBuffer& backBuffer)
 void
 Player::SetPositionX(float x)
 {
-	m_x = x;
+	m_x = (static_cast<int>(x));
 	m_animSprite->SetX(static_cast<int>(m_x));
 
 }
 void
 Player::SetPositionY(float y)
 {
-	m_y = y;
+	m_y = (static_cast<int>(y));
 	m_animSprite->SetY(static_cast<int>(m_y));
 }
 
