@@ -53,8 +53,12 @@ Game::Game()
 , m_lag(0)
 , m_width(0)
 , m_height(0)
+, velocityIterations(0)
+, positionIterations(0)
+, timeStep(0.0f)
+//, world(b2Vec2_zero)
+//, gravity()
 {
-	
 }
 
 Game::~Game()
@@ -90,11 +94,15 @@ Game::Initialise()
 	m_Player = new Player();
 	m_Player->SetCurrentHealth(5);
 	m_Player->SetMaxHealth(5);
+
 	//Box2D world setup
-	//gravity
-	b2Vec2 gravity(0.0f, -10.0f);
-	//world object
-	b2World world(gravity);
+	//velocityIterations 
+	velocityIterations = 10;
+	positionIterations = 10;
+	//timeStep = 1.0f / 60.0f;
+
+	//b2Vec2 gravity(0.0f, -10.0f);
+	//world.SetGravity(gravity);
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
@@ -149,6 +157,8 @@ Game::Process(float deltaTime)
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
+		//Box2D simulation loop
+		//world.Step(timeStep, velocityIterations, positionIterations);
 	}
 }
 

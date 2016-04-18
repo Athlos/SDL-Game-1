@@ -4,6 +4,7 @@
 
 #include "SDL.h"
 #include <vector>
+#include <Box2D\box2d.h>
 
 // Forward Declarations
 class BackBuffer;
@@ -63,6 +64,13 @@ protected:
 
 	//Player
 	Player* m_Player;
+
+	//Box2D Data
+	b2Vec2 gravity;
+	//b2World world;
+	int32 velocityIterations;
+	int32 positionIterations;
+	float32 timeStep;
 
 private:
 
