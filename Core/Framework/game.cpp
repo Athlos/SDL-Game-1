@@ -9,6 +9,8 @@
 #include "texture.h"
 #include "animatedsprite.h"
 #include "player.h"
+#include "physics.h"
+#include "entity.h"
 
 // Library includes:
 #include <cassert>
@@ -53,12 +55,14 @@ Game::Game()
 , m_lag(0)
 , m_width(0)
 , m_height(0)
-, velocityIterations(0)
-, positionIterations(0)
-, timeStep(0.0f)
-//, world(b2Vec2_zero)
-//, gravity()
+, m_velocityIterations(0)
+, m_positionIterations(0)
+, m_timeStep(0.0f)
+, m_gravity()
+, m_toggleDebug(false)
+//, m_world(m_gravity)
 {
+	//m_world = b2World(m_gravity);
 }
 
 Game::~Game()
@@ -91,14 +95,16 @@ Game::Initialise()
 	m_HealthSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart.png");
 
 	//Set up player
+	PlayerSpriteInit();
 	m_Player = new Player();
+	m_Player->Initialise(m_playerAnim);
 	m_Player->SetCurrentHealth(5);
 	m_Player->SetMaxHealth(5);
 
 	//Box2D world setup
 	//velocityIterations 
-	velocityIterations = 10;
-	positionIterations = 10;
+	m_velocityIterations = 10;
+	m_positionIterations = 10;
 	//timeStep = 1.0f / 60.0f;
 
 	//b2Vec2 gravity(0.0f, -10.0f);
@@ -160,6 +166,7 @@ Game::Process(float deltaTime)
 		//Box2D simulation loop
 		//world.Step(timeStep, velocityIterations, positionIterations);
 	}
+	m_Player->Process(deltaTime);
 }
 
 void 
@@ -177,7 +184,7 @@ Game::Draw(BackBuffer& backBuffer)
 		m_HealthSprite->Draw(backBuffer);
 		x -= 150;
 	}
-
+	m_Player->Draw(backBuffer);
 	backBuffer.Present();
 }
 
@@ -191,4 +198,62 @@ void Game::UpdatePlayerHealth(int amount)
 {
 	m_Player->UpdatePlayerHealth(amount);
 
+}
+
+void
+Game::PlayerSpriteInit()
+{
+	//will add in more sprites later
+	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//defaultSprite.png");
+	m_playerAnim->AddFrame(0, 0);
+	m_playerAnim->SetWidth(16);
+	m_playerAnim->SetHeight(16);
+	m_playerAnim->SetLooping(false);
+	m_playerAnim->SetCenter(16, 16);
+}
+
+void
+Game::UpdatePlayer(Direction direction)
+{
+	//for multiple sprites, sprites will change
+	//move the player sprite on screen
+	switch (direction)
+	{
+	case UP:
+		m_Player->SetVerticalVelocity(-100.0f);
+		break;
+	case DOWN:
+		m_Player->SetVerticalVelocity(100.0f);
+		break;
+	case LEFT:
+		m_Player->SetHorizontalVelocity(-100.0f);
+		break;
+	case RIGHT:
+		m_Player->SetHorizontalVelocity(100.0f);
+		break;
+	case STOP:
+		m_Player->SetVerticalVelocity(0.0f);
+		m_Player->SetHorizontalVelocity(0.0f);
+		break;
+	case RESET://Debug, reset position to middle of screen
+		m_Player->SetVerticalVelocity(0.0f);
+		m_Player->SetHorizontalVelocity(0.0f);
+		m_Player->SetPositionX(m_width/2);
+		m_Player->SetPositionY(m_height /2);
+		break;
+	}
+}
+
+void
+Game::ToggleDebug()
+{
+	m_toggleDebug = !m_toggleDebug;
+	if (m_toggleDebug)
+	{
+		SDL_Log("Debug on");
+	}
+	else
+	{
+		SDL_Log("Debug off");
+	}
 }

@@ -6,7 +6,7 @@
 #include "animatedsprite.h"
 #include "backbuffer.h"
 
-class Player : Entity
+class Player : public Entity
 {
 public:
 	Player();

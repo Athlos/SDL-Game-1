@@ -131,15 +131,15 @@ BackBuffer::DrawAnimatedSprite(AnimatedSprite& sprite, int frameX, int frameY)
 
 	dest.x = sprite.GetX();
 	dest.y = sprite.GetY();
-	dest.w = 60;
-	dest.h = 118;
+	dest.w = 32;
+	dest.h = 32;
 
 	SDL_Rect* r = new SDL_Rect;
 
 	r->x = frameX;
 	r->y = frameY;
-	r->w = 60;
-	r->h = 118;
+	r->w = 32;
+	r->h = 32;
 
 	SDL_RenderCopy(m_pRenderer, sprite.GetTexture()->GetTexture(), r, &dest);
 }

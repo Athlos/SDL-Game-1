@@ -44,53 +44,71 @@ InputHandler::ProcessInput(Game& game)
 	SDL_Event e;
 	SDL_PumpEvents();
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	std::string mousePosition = "";
 	while (SDL_PollEvent(&e) != 0)
 	{
-		if (e.type == SDL_QUIT)
+		switch (e.type)
 		{
-			game.Quit();
-		}
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
-		{
+		case SDL_MOUSEBUTTONDOWN:
 			//print the position to command line
 			int x, y;
 			SDL_GetMouseState(&x, &y);
-			std::string mousePosition = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
+			mousePosition = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
 			SDL_Log(mousePosition.c_str());
-		}
-		else if (state[SDL_SCANCODE_W])
-		{
-			SDL_Log("upper left");
-			//game.UpdatePlayerSprite(UPPERLEFT);
-		}
-		else if (state[SDL_SCANCODE_D])
-		{
-			SDL_Log("upper right");
-			//game.UpdatePlayerSprite(UPPERRIGHT);
-		}
-		else if (state[SDL_SCANCODE_A])
-		{
-			SDL_Log("lower left");
-			//game.UpdatePlayerSprite(LOWERLEFT);
-		}
-		else if (state[SDL_SCANCODE_S])
-		{
-			SDL_Log("lower right");
-			//game.UpdatePlayerSprite(LOWERRIGHT);
-		}
-		else if (state[SDL_SCANCODE_0])
-		{
-			//Damage Player by 1 point
-			game.UpdatePlayerHealth(-1);
-		}
-		else if (state[SDL_SCANCODE_1])
-		{
-			//Heal Player by 1 point
-			game.UpdatePlayerHealth(1);
-		}
-		else if (state[SDL_SCANCODE_ESCAPE])
-		{
-			game.Quit();
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_0:
+				//Damage Player by 1 point
+				game.UpdatePlayerHealth(-1);
+				break;
+			case SDLK_1:
+				//Heal Player by 1 point
+				game.UpdatePlayerHealth(1);
+				break;
+			case SDLK_w:
+				SDL_Log("up");
+				game.UpdatePlayer(UP);
+				break;
+			case SDLK_s:
+				SDL_Log("down");
+				game.UpdatePlayer(DOWN);
+				break;
+			case SDLK_a:
+				SDL_Log("left");
+				game.UpdatePlayer(LEFT);
+				break;
+			case SDLK_d:
+				SDL_Log("right");
+				game.UpdatePlayer(RIGHT);
+				break;
+			case SDLK_ESCAPE:
+				game.Quit();
+				break;
+			case SDLK_HOME:
+				game.UpdatePlayer(RESET);
+				break;
+			case SDLK_INSERT:
+				game.ToggleDebug();
+				break;
+			}
+			break;
+		case SDL_KEYUP:
+			switch (e.key.keysym.sym)
+			{
+			case SDLK_w:
+			case SDLK_a:
+			case SDLK_d:
+			case SDLK_s:
+				game.UpdatePlayer(STOP);
+				break;
+			default:
+				break;
+			}
+		
+		default:
+			break;
 		}
 	}
 }
