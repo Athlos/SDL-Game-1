@@ -5,6 +5,7 @@
 
 // Local includes:
 #include "game.h"
+#include "direction.h"
 
 // Library includes:
 #include <cassert>
@@ -77,25 +78,25 @@ InputHandler::ProcessInput(Game& game)
 				break;
 			case SDLK_w:
 				SDL_Log("up");
-				game.UpdatePlayer(UP);
+				game.UpdatePlayer(Direction::UP);
 				break;
 			case SDLK_s:
 				SDL_Log("down");
-				game.UpdatePlayer(DOWN);
+				game.UpdatePlayer(Direction::DOWN);
 				break;
 			case SDLK_a:
 				SDL_Log("left");
-				game.UpdatePlayer(LEFT);
+				game.UpdatePlayer(Direction::LEFT);
 				break;
 			case SDLK_d:
 				SDL_Log("right");
-				game.UpdatePlayer(RIGHT);
+				game.UpdatePlayer(Direction::RIGHT);
 				break;
 			case SDLK_ESCAPE:
 				game.Quit();
 				break;
 			case SDLK_HOME:
-				game.UpdatePlayer(RESET);
+				game.UpdatePlayer(Direction::RESET);
 				break;
 			case SDLK_INSERT:
 				game.ToggleDebug();
@@ -109,7 +110,7 @@ InputHandler::ProcessInput(Game& game)
 			case SDLK_a:
 			case SDLK_d:
 			case SDLK_s:
-				game.UpdatePlayer(STOP);
+				game.UpdatePlayer(Direction::STOP);
 				break;
 			default:
 				break;

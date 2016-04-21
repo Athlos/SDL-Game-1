@@ -3,6 +3,7 @@
 #define __GAME_H__
 
 #include "SDL.h"
+#include "direction.h"
 #include <vector>
 #include <Box2D\box2d.h>
 
@@ -15,16 +16,6 @@ class Player;
 class Physics;
 class Entity;
 class Label;
-
-enum Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	STOP,
-	RESET
-};
 
 class Game
 {

@@ -249,23 +249,23 @@ Game::UpdatePlayer(Direction direction)
 	//move the player sprite on screen
 	switch (direction)
 	{
-	case UP:
+	case Direction::UP:
 		m_Player->SetVerticalVelocity(-100.0f);
 		break;
-	case DOWN:
+	case Direction::DOWN:
 		m_Player->SetVerticalVelocity(100.0f);
 		break;
-	case LEFT:
+	case Direction::LEFT:
 		m_Player->SetHorizontalVelocity(-100.0f);
 		break;
-	case RIGHT:
+	case Direction::RIGHT:
 		m_Player->SetHorizontalVelocity(100.0f);
 		break;
-	case STOP:
+	case Direction::STOP:
 		m_Player->SetVerticalVelocity(0.0f);
 		m_Player->SetHorizontalVelocity(0.0f);
 		break;
-	case RESET://Debug, reset position to middle of screen
+	case Direction::RESET://Debug, reset position to middle of screen
 		m_Player->SetVerticalVelocity(0.0f);
 		m_Player->SetHorizontalVelocity(0.0f);
 		m_Player->SetPositionX(m_width/2);

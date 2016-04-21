@@ -4,6 +4,7 @@
 // Local includes:
 #include "texture.h"
 #include "backbuffer.h"
+#include "direction.h"
 #include <cassert>
 
 AnimatedSprite::AnimatedSprite()
@@ -15,7 +16,8 @@ AnimatedSprite::AnimatedSprite()
 	, m_loop(false)
 	, m_animating(false)
 {
-	
+	//enum works yay
+	Direction dr = Direction::DOWN;
 }
 
 AnimatedSprite::~AnimatedSprite()
