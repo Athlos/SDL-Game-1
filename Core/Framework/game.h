@@ -75,6 +75,7 @@ protected:
 
 	//Sprites
 	Sprite* m_HealthSprite;
+	Sprite* m_HealthLostSprite;
 
 	//Player Sprites
 	AnimatedSprite* m_playerAnim;

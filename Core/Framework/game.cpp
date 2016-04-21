@@ -93,7 +93,13 @@ Game::Initialise()
 		return (false);
 	}
 
+	//Health Sprites
 	m_HealthSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart.png");
+	m_HealthLostSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart_Depleted.png");
+	m_HealthSprite->SetWidth(64);
+	m_HealthSprite->SetHeight(64);
+	m_HealthLostSprite->SetWidth(64);
+	m_HealthLostSprite->SetHeight(64);
 
 	//Set up player
 	PlayerSpriteInit();
@@ -180,13 +186,24 @@ Game::Draw(BackBuffer& backBuffer)
 
 	backBuffer.Clear();
 
-	int x = 1780;
-	for (int i = 0; i < m_Player->GetCurrentHealth(); i++)
+	int x = 1850;
+	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
 	{
-		m_HealthSprite->SetX(x);
-		m_HealthSprite->SetY(0);
-		m_HealthSprite->Draw(backBuffer);
-		x -= 150;
+		
+		if (i < m_Player->GetCurrentHealth()) 
+		{
+			m_HealthSprite->SetX(x);
+			m_HealthSprite->SetY(0);
+			m_HealthSprite->Draw(backBuffer);
+		}
+		else
+		{
+			m_HealthLostSprite->SetX(x);
+			m_HealthLostSprite->SetY(0);
+			m_HealthLostSprite->Draw(backBuffer);
+		}
+		
+		x -= 70;
 	}
 	m_Player->Draw(backBuffer);
 
@@ -212,12 +229,11 @@ void
 Game::PlayerSpriteInit()
 {
 	//will add in more sprites later
-	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//defaultSprite.png");
-	m_playerAnim->AddFrame(0, 0);
-	m_playerAnim->SetWidth(16);
-	m_playerAnim->SetHeight(16);
-	m_playerAnim->SetLooping(false);
-	m_playerAnim->SetCenter(16, 16);
+	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//character.png");
+
+	//Default load of sprite sheet
+	m_playerAnim->LoadFrames(64);
+	m_playerAnim->StartAnimating();
 }
 
 void

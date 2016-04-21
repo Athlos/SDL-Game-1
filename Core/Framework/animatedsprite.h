@@ -2,6 +2,7 @@
 #define __ANIMATEDSPRITE_H__
 
 #include "sprite.h"
+#include "SDL.h"
 #include <vector>
 
 class BackBuffer;
@@ -32,6 +33,8 @@ public:
 	bool IsLooping();
 	void SetLooping(bool b);
 
+	void LoadFrames(int width);
+
 protected:
 
 private:
@@ -40,8 +43,9 @@ private:
 public:
 
 protected:
-	// Ex007.1: Add a field, the container for frame coordinates.
-	std::vector<int> frames;
+
+
+	std::vector<SDL_Point*> m_frames;
 
 	float m_frameSpeed;
 	int m_frameWidth;

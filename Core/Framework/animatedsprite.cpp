@@ -7,7 +7,7 @@
 #include <cassert>
 
 AnimatedSprite::AnimatedSprite()
-	: m_frameSpeed(0.0f)
+	: m_frameSpeed(0.1f)
 	, m_frameWidth(0)
 	, m_timeElapsed(0.0f)
 	, m_currentFrame(0)
@@ -15,7 +15,7 @@ AnimatedSprite::AnimatedSprite()
 	, m_loop(false)
 	, m_animating(false)
 {
-
+	
 }
 
 AnimatedSprite::~AnimatedSprite()
@@ -43,38 +43,37 @@ AnimatedSprite::Initialise(Texture& texture)
 void
 AnimatedSprite::AddFrame(int x, int y)
 {
-	// Ex007.1: Add the x and y coordinate to the frame coordinate container.
-	frames.push_back(x);
-	frames.push_back(y);
+	SDL_Point* newPoint = new SDL_Point();
+	newPoint->x = x;
+	newPoint->y = y;
+	m_frames.push_back(newPoint);
+
 }
 
 void
 AnimatedSprite::Process(float deltaTime)
 {
-	// Ex007.1: If not paused...
+
 	if (m_paused)
 		return;
-	// Ex007.1: Count the time elapsed.
+
 	m_timeElapsed += deltaTime;
-	// Ex007.1: If the time elapsed is greater than the frame speed.
-	// Ex007.1: Reset the time elapsed counter.
-	// Ex007.1: If the current frame is greater than the number 
-	//          of frames in this animation...
-	if (m_timeElapsed > m_frameSpeed)
+
+	if (m_timeElapsed >= m_frameSpeed)
 	{
-		if (m_currentFrame >= frames.size() - 2 && m_loop)
+		if (m_currentFrame >= m_frames.size() - 1 && m_loop)
 		{
 			m_currentFrame = 0;
 		}
-		else if (m_currentFrame < frames.size() - 2)
+		else if (m_currentFrame < m_frames.size() - 1)
 		{
-			m_currentFrame += 2;
+			m_currentFrame++;
 		}
 		else
 		{
 			m_animating = false;
 		}
-		m_timeElapsed = 0;
+		m_timeElapsed = 0.0f;
 	}
 	if (!m_loop)
 		return;
@@ -83,7 +82,7 @@ AnimatedSprite::Process(float deltaTime)
 void
 AnimatedSprite::Draw(BackBuffer& backbuffer)
 {
-	backbuffer.DrawAnimatedSprite(*this, frames[m_currentFrame], frames[m_currentFrame + 1]);
+	backbuffer.DrawAnimatedSprite(*this, m_frames[m_currentFrame]->x, m_frames[m_currentFrame]->y);
 }
 
 void
@@ -135,4 +134,28 @@ void
 AnimatedSprite::SetLooping(bool b)
 {
 	m_loop = b;
+}
+
+void AnimatedSprite::LoadFrames(int width)
+{
+	//Set the center to half the width and height
+	SetCenter(width/2, width/2);
+
+	//Set width and height to the same value, assuming your sprite is a square
+	m_width = width;
+	m_height = width;
+	
+	//loops by default
+	m_loop = true;
+
+
+	//Grab the texture, and grab frames the size of the width for 1 row
+	for (int i = 0; i < m_pTexture->GetWidth(); i += width)
+	{
+		//Store frame coordinates in m_frames to render later
+		SDL_Point* newFrame = new SDL_Point();
+		newFrame->x = i;
+		newFrame->y = 0;
+		m_frames.push_back(newFrame);
+	}
 }
