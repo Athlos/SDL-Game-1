@@ -17,6 +17,8 @@
 #include <cassert>
 #include <SDL.h>
 #include <iostream>
+#include <sstream>
+#include <fstream>
 //Box2D includes:
 #include <Box2D\box2d.h>
 
@@ -61,6 +63,7 @@ Game::Game()
 , m_timeStep(0.0f)
 , m_gravity()
 , m_toggleDebug(false)
+, m_gold(0)
 //, m_world(m_gravity)
 {
 	//m_world = b2World(m_gravity);
@@ -117,8 +120,11 @@ Game::Initialise()
 	//b2Vec2 gravity(0.0f, -10.0f);
 	//world.SetGravity(gravity);
 
-	//TESTING LABELS
-	testLabel = new Label("test label");
+	//Gold label - using a stringstream to concat strings
+	std::ostringstream goldStream;
+	goldStream << "Gold: " << m_gold;
+	m_goldLabel = new Label(goldStream.str());
+	m_goldLabel->SetColour(218, 165, 32, 0);
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
@@ -208,7 +214,7 @@ Game::Draw(BackBuffer& backBuffer)
 	m_Player->Draw(backBuffer);
 
 	//Draw test label
-	testLabel->Draw(backBuffer);
+	m_goldLabel->Draw(backBuffer);
 
 	backBuffer.Present();
 }
@@ -279,5 +285,25 @@ Game::ToggleDebug()
 	else
 	{
 		SDL_Log("Debug off");
+	}
+}
+
+void Game::UpdateGold(int amount)
+{
+	m_gold += amount;
+	if (m_gold < 0)
+	{
+		m_gold = 0;
+	}
+	std::ostringstream goldStream;
+	goldStream << "Gold: " << m_gold;
+	m_goldLabel->SetText(goldStream.str());
+
+	//Adjust label size with gold counter
+	int lengthen = 10;
+	for (int i = 10; i <= m_gold; i *= 10)
+	{
+		m_goldLabel->SetBounds(0, 0, 100 + lengthen, 30);
+		lengthen += 10;
 	}
 }

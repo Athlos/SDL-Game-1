@@ -59,13 +59,21 @@ InputHandler::ProcessInput(Game& game)
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
 			{
-			case SDLK_0:
+			case SDLK_1:
 				//Damage Player by 1 point
 				game.UpdatePlayerHealth(-1);
 				break;
-			case SDLK_1:
+			case SDLK_2:
 				//Heal Player by 1 point
 				game.UpdatePlayerHealth(1);
+				break;
+			case SDLK_3:
+				//Add 10 Gold
+				game.UpdateGold(-10);
+				break;
+			case SDLK_4:
+				//Remove 10 Gold
+				game.UpdateGold(10);
 				break;
 			case SDLK_w:
 				SDL_Log("up");

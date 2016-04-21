@@ -37,8 +37,11 @@ public:
 	bool DoGameLoop();
 	void Quit();
 
+	//Player update methods, for input mainly
 	void UpdatePlayerHealth(int amount);
 	void UpdatePlayer(Direction direction);
+	void UpdateGold(int amount);
+
 	void ToggleDebug();
 protected:
 	void Process(float deltaTime);
@@ -91,7 +94,9 @@ protected:
 	float32 m_timeStep;
 	//Physics* m_physics();
 
-	Label* testLabel;
+	//Player Gold
+	Label* m_goldLabel;
+	int m_gold;
 
 private:
 
