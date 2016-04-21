@@ -150,6 +150,7 @@ BackBuffer::DrawAnimatedSprite(AnimatedSprite& sprite, int frameX, int frameY)
 	r->h = 64;
 
 	SDL_RenderCopy(m_pRenderer, sprite.GetTexture()->GetTexture(), r, &dest);
+	delete r;
 }
 
 void 
