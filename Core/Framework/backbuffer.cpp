@@ -96,6 +96,14 @@ BackBuffer::Initialise(int width, int height)
 	m_pTextureManager = new TextureManager();
 	assert(m_pTextureManager);
 	m_pTextureManager->Initialise(m_pRenderer);
+
+	//Grab a surface for labels
+	m_surface = SDL_GetWindowSurface(m_pWindow);
+
+	//Initialise true type font, and load up a default font
+	TTF_Init();
+	m_font = TTF_OpenFont("assets/currentfont.TTF", 48);
+
 	return (true);
 }
 
@@ -232,4 +240,27 @@ BackBuffer::CreateAnimatedSprite(const char* pcFilename)
 	}
 
 	return (pAnimSprite);
+}
+
+
+void BackBuffer::DrawText(SDL_Texture* textOnScreen, SDL_Rect bounds) 
+{
+	//Basic render of the texture of the label
+	SDL_RenderCopy(m_pRenderer, textOnScreen, 0, &bounds);
+
+}
+
+SDL_Texture* BackBuffer::CreateText(std::string text, SDL_Color colour) 
+{
+	//Grab a surface
+	m_surface = SDL_GetWindowSurface(m_pWindow);
+
+	//create text and save into surface, then use surface to create a texture we can render
+	m_surface = TTF_RenderText_Solid(m_font, text.c_str(), colour);
+	SDL_Texture* tTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_surface);
+	//Clean up surface, we grab a new one each time - need to look into why I do that
+	SDL_FreeSurface(m_surface);
+
+	return tTexture;
+
 }

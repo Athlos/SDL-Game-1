@@ -41,6 +41,13 @@ public:
 
 	Sprite* CreateSprite(const char* pcFilename);
 	void RenderTexture(SDL_Texture* texture, int xPosition, int yPosition, int width, int height);
+
+	//Create text textures for labels
+	SDL_Texture* CreateText(std::string text, SDL_Color colour);
+	//Draw text for labels
+	void DrawText(SDL_Texture* textOnScreen, SDL_Rect bounds);
+	
+
 protected:
 	void LogSDLError();
 
@@ -56,6 +63,8 @@ protected:
 
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
+	SDL_Surface* m_surface;
+	TTF_Font* m_font;
 
 	int m_width;
 	int m_height;

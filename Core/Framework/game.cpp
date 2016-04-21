@@ -11,6 +11,7 @@
 #include "player.h"
 #include "physics.h"
 #include "entity.h"
+#include "label.h"
 
 // Library includes:
 #include <cassert>
@@ -110,6 +111,9 @@ Game::Initialise()
 	//b2Vec2 gravity(0.0f, -10.0f);
 	//world.SetGravity(gravity);
 
+	//TESTING LABELS
+	testLabel = new Label("test label");
+
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
 
@@ -185,6 +189,10 @@ Game::Draw(BackBuffer& backBuffer)
 		x -= 150;
 	}
 	m_Player->Draw(backBuffer);
+
+	//Draw test label
+	testLabel->Draw(backBuffer);
+
 	backBuffer.Present();
 }
 

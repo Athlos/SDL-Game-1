@@ -14,6 +14,7 @@ class AnimatedSprite;
 class Player;
 class Physics;
 class Entity;
+class Label;
 
 enum Direction
 {
@@ -88,6 +89,9 @@ protected:
 	int32 m_positionIterations;
 	float32 m_timeStep;
 	//Physics* m_physics();
+
+	Label* testLabel;
+
 private:
 
 };

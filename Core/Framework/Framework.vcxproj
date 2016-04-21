@@ -89,6 +89,7 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="inputhandler.h" />
+    <ClInclude Include="label.h" />
     <ClInclude Include="logmanager.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="player.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="inputhandler.cpp" />
+    <ClCompile Include="label.cpp" />
     <ClCompile Include="logmanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
