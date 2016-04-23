@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "animatedsprite.h"
 #include "backbuffer.h"
+#include "direction.h"
 
 class Player : public Entity
 {
@@ -24,7 +25,7 @@ public:
 	void SetMaxHealth(int MaxHealth);
 
 	void UpdatePlayerHealth(int Damage);
-
+	void UpdatePlayerDirection(Direction dir);
 
 protected:
 private:

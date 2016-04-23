@@ -245,12 +245,15 @@ Game::PlayerSpriteInit()
 void
 Game::UpdatePlayer(Direction direction)
 {
+
+	m_Player->UpdatePlayerDirection(direction);
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
 	switch (direction)
 	{
 	case Direction::UP:
 		m_Player->SetVerticalVelocity(-100.0f);
+		
 		break;
 	case Direction::DOWN:
 		m_Player->SetVerticalVelocity(100.0f);

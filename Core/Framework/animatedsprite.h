@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #include "SDL.h"
+#include "direction.h"
 #include <vector>
 
 class BackBuffer;
@@ -35,6 +36,8 @@ public:
 
 	void LoadFrames(int width);
 
+	void UpdateDirection(Direction dir);
+
 protected:
 
 private:
@@ -45,7 +48,16 @@ public:
 protected:
 
 
-	std::vector<SDL_Point*> m_frames;
+	//std::vector<SDL_Point*> m_frames;
+
+	//Store arrays for all directions - not a great solution sadly
+	std::vector<SDL_Point*> m_upFrames;
+	std::vector<SDL_Point*> m_downFrames;
+	std::vector<SDL_Point*> m_leftFrames;
+	std::vector<SDL_Point*> m_rightFrames;
+
+	Direction m_currentDirection;
+
 
 	float m_frameSpeed;
 	int m_frameWidth;

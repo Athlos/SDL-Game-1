@@ -96,3 +96,8 @@ void Player::UpdatePlayerHealth(int HealthChange)
 		m_CurrentHealth = m_MaxHealth;
 	}
 }
+
+void Player::UpdatePlayerDirection(Direction dir)
+{
+	m_animSprite->UpdateDirection(dir);
+}

@@ -15,6 +15,7 @@ AnimatedSprite::AnimatedSprite()
 	, m_paused(false)
 	, m_loop(false)
 	, m_animating(false)
+	, m_currentDirection(Direction::UP)
 {
 	//enum works yay
 	Direction dr = Direction::DOWN;
@@ -63,11 +64,11 @@ AnimatedSprite::Process(float deltaTime)
 
 	if (m_timeElapsed >= m_frameSpeed)
 	{
-		if (m_currentFrame >= m_frames.size() - 1 && m_loop)
+		if (m_currentFrame >= m_upFrames.size() - 1 && m_loop)
 		{
 			m_currentFrame = 0;
 		}
-		else if (m_currentFrame < m_frames.size() - 1)
+		else if (m_currentFrame < m_upFrames.size() - 1)
 		{
 			m_currentFrame++;
 		}
@@ -84,7 +85,23 @@ AnimatedSprite::Process(float deltaTime)
 void
 AnimatedSprite::Draw(BackBuffer& backbuffer)
 {
-	backbuffer.DrawAnimatedSprite(*this, m_frames[m_currentFrame]->x, m_frames[m_currentFrame]->y);
+	//Use correct directional sprite
+	if (m_currentDirection == Direction::UP)
+	{
+		backbuffer.DrawAnimatedSprite(*this, m_upFrames[m_currentFrame]->x, m_upFrames[m_currentFrame]->y);
+	}
+	else if (m_currentDirection == Direction::DOWN)
+	{
+		backbuffer.DrawAnimatedSprite(*this, m_downFrames[m_currentFrame]->x, m_downFrames[m_currentFrame]->y);
+	}
+	else if (m_currentDirection == Direction::LEFT)
+	{
+		backbuffer.DrawAnimatedSprite(*this, m_leftFrames[m_currentFrame]->x, m_leftFrames[m_currentFrame]->y);
+	}
+	else if (m_currentDirection == Direction::RIGHT)
+	{
+		backbuffer.DrawAnimatedSprite(*this, m_rightFrames[m_currentFrame]->x, m_rightFrames[m_currentFrame]->y);
+	}
 }
 
 void
@@ -149,15 +166,65 @@ void AnimatedSprite::LoadFrames(int width)
 	
 	//loops by default
 	m_loop = true;
-
-
-	//Grab the texture, and grab frames the size of the width for 1 row
-	for (int i = 0; i < m_pTexture->GetWidth(); i += width)
+	for (int a = 0; a < m_pTexture->GetHeight(); a += width)
 	{
-		//Store frame coordinates in m_frames to render later
-		SDL_Point* newFrame = new SDL_Point();
-		newFrame->x = i;
-		newFrame->y = 0;
-		m_frames.push_back(newFrame);
+		//Grab the texture, and grab frames the size of the width for 1 row
+		for (int i = 0; i < m_pTexture->GetWidth(); i += width)
+		{
+			//Store frame coordinates to render later
+			SDL_Point* newFrame = new SDL_Point();
+			newFrame->x = i;
+			newFrame->y = a;
+
+			//Choose correct array to store frames in, this is kinda messy for now
+			if (a == 0)
+			{
+				m_downFrames.push_back(newFrame);
+			}
+			else if (a == width)
+			{
+				m_leftFrames.push_back(newFrame);
+			}
+			else if (a == width * 2) 
+			{
+				m_rightFrames.push_back(newFrame);
+			}
+			else if (a == width * 3)
+			{
+				m_upFrames.push_back(newFrame);
+			}
+
+		}
 	}
+
+	
+}
+
+void AnimatedSprite::UpdateDirection(Direction dir)
+{
+	//If stop, pause animation, else make sure its not paused
+	if (dir == Direction::STOP)
+	{
+		m_paused = true;
+		return;
+	}
+	m_paused = false;
+
+	//Reset animation frames
+	if (m_currentDirection == Direction::RESET)
+	{
+		StartAnimating();
+		return;
+	}
+
+	//no update if the direction is the same
+	if (m_currentDirection == dir)
+	{
+		return;
+	}
+		
+
+	//Set the new direction, reset the animation frame and durations
+	m_currentDirection = dir;
+	StartAnimating();
 }
