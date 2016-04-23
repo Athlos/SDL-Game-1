@@ -133,21 +133,21 @@ BackBuffer::SetDrawColour(unsigned char r, unsigned char g, unsigned char b, uns
 }
 
 void
-BackBuffer::DrawAnimatedSprite(AnimatedSprite& sprite, int frameX, int frameY)
+BackBuffer::DrawAnimatedSprite(AnimatedSprite& sprite, SDL_Rect bounds)
 {
 	SDL_Rect dest;
-
+	//This is the size rendered of whatever is put in the other rect
 	dest.x = sprite.GetX();
 	dest.y = sprite.GetY();
-	dest.w = 64;
-	dest.h = 64;
+	dest.w = bounds.w;
+	dest.h = bounds.h;
 
+	//This is the compression of the image into rect dest. put the full image bounds in here
 	SDL_Rect* r = new SDL_Rect;
-
-	r->x = frameX;
-	r->y = frameY;
-	r->w = 64;
-	r->h = 64;
+	r->x = bounds.x;
+	r->y = bounds.y;
+	r->w = bounds.w;
+	r->h = bounds.h;
 
 	SDL_RenderCopy(m_pRenderer, sprite.GetTexture()->GetTexture(), r, &dest);
 	delete r;

@@ -38,7 +38,7 @@ public:
 	this method assumes that the frames are square, you plan on looping, and you have the directions in order
 	of down, left, right, up in the animation sprite sheet going down
 	@param width is how wide a single frame of the animation is*/
-	void LoadFrames(int width);
+	void LoadFrames(int width, int height);
 
 	/*Updates the direction the animation is using. Includes stopping animation and reseting the animation frames
 	@param dir is the new direction to change to*/

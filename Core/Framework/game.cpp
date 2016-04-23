@@ -235,10 +235,10 @@ void
 Game::PlayerSpriteInit()
 {
 	//will add in more sprites later
-	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//character.png");
+	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Test_8Directional_Anim.png");
 
 	//Default load of sprite sheet
-	m_playerAnim->LoadFrames(64);
+	m_playerAnim->LoadFrames(60, 118);
 	m_playerAnim->StartAnimating();
 }
 

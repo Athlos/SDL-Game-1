@@ -15,7 +15,7 @@ AnimatedSprite::AnimatedSprite()
 	, m_paused(false)
 	, m_loop(false)
 	, m_animating(false)
-	, m_currentDirection(Direction::UP)
+	, m_currentDirection(Direction::DOWN)
 {
 	//enum works yay
 	Direction dr = Direction::DOWN;
@@ -65,11 +65,11 @@ AnimatedSprite::Process(float deltaTime)
 
 	if (m_timeElapsed >= m_frameSpeed)
 	{
-		if (m_currentFrame >= m_upFrames.size() - 1 && m_loop)
+		if (m_currentFrame >= m_downFrames.size() - 1 && m_loop)
 		{
 			m_currentFrame = 0;
 		}
-		else if (m_currentFrame < m_upFrames.size() - 1)
+		else if (m_currentFrame < m_downFrames.size() - 1)
 		{
 			m_currentFrame++;
 		}
@@ -89,19 +89,23 @@ AnimatedSprite::Draw(BackBuffer& backbuffer)
 	//Use correct directional sprite
 	if (m_currentDirection == Direction::UP)
 	{
-		backbuffer.DrawAnimatedSprite(*this, m_upFrames[m_currentFrame]->x, m_upFrames[m_currentFrame]->y);
+		SDL_Rect bounds{ m_upFrames[m_currentFrame]->x, m_upFrames[m_currentFrame]->y, m_width, m_height };
+		backbuffer.DrawAnimatedSprite(*this, bounds);
 	}
 	else if (m_currentDirection == Direction::DOWN)
 	{
-		backbuffer.DrawAnimatedSprite(*this, m_downFrames[m_currentFrame]->x, m_downFrames[m_currentFrame]->y);
+		SDL_Rect bounds{ m_downFrames[m_currentFrame]->x, m_downFrames[m_currentFrame]->y, m_width, m_height };
+		backbuffer.DrawAnimatedSprite(*this, bounds);
 	}
 	else if (m_currentDirection == Direction::LEFT)
 	{
-		backbuffer.DrawAnimatedSprite(*this, m_leftFrames[m_currentFrame]->x, m_leftFrames[m_currentFrame]->y);
+		SDL_Rect bounds{ m_leftFrames[m_currentFrame]->x, m_leftFrames[m_currentFrame]->y, m_width, m_height };
+		backbuffer.DrawAnimatedSprite(*this, bounds);
 	}
 	else if (m_currentDirection == Direction::RIGHT)
 	{
-		backbuffer.DrawAnimatedSprite(*this, m_rightFrames[m_currentFrame]->x, m_rightFrames[m_currentFrame]->y);
+		SDL_Rect bounds{ m_rightFrames[m_currentFrame]->x, m_rightFrames[m_currentFrame]->y, m_width, m_height };
+		backbuffer.DrawAnimatedSprite(*this, bounds);
 	}
 }
 
@@ -156,18 +160,18 @@ AnimatedSprite::SetLooping(bool b)
 	m_loop = b;
 }
 
-void AnimatedSprite::LoadFrames(int width)
+void AnimatedSprite::LoadFrames(int width, int height)
 {
 	//Set the center to half the width and height
-	SetCenter(width/2, width/2);
+	SetCenter(width/2, height/2);
 
 	//Set width and height to the same value, assuming your sprite is a square
 	m_width = width;
-	m_height = width;
+	m_height = height;
 	
 	//loops by default
 	m_loop = true;
-	for (int a = 0; a < m_pTexture->GetHeight(); a += width)
+	for (int a = 0; a < m_pTexture->GetHeight(); a += height)
 	{
 		//Grab the texture, and grab frames the size of the width for 1 row
 		for (int i = 0; i < m_pTexture->GetWidth(); i += width)
@@ -185,15 +189,15 @@ void AnimatedSprite::LoadFrames(int width)
 			{
 				m_downFrames.push_back(newFrame);
 			}
-			else if (a == width)
+			else if (a == height)
 			{
 				m_leftFrames.push_back(newFrame);
 			}
-			else if (a == width * 2) 
+			else if (a == height * 2)
 			{
 				m_rightFrames.push_back(newFrame);
 			}
-			else if (a == width * 3)
+			else if (a == height * 3)
 			{
 				m_upFrames.push_back(newFrame);
 			}

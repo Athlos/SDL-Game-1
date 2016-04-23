@@ -32,7 +32,7 @@ public:
 	void SetDrawColour(unsigned char r, unsigned char g, unsigned char b);
 	void SetDrawColour(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
-	void DrawAnimatedSprite(AnimatedSprite& animSprite, int frameX, int frameY);
+	void DrawAnimatedSprite(AnimatedSprite& animSprite, SDL_Rect bounds);
 	void DrawSprite(Sprite& sprite);
 	void DrawRectangle(int x1, int y1, int x2, int y2);
 	void DrawLine(int x1, int y1, int x2, int y2);
