@@ -1,8 +1,19 @@
 #pragma once
-class enemy
+
+#include "entity.h"
+
+
+class enemy : public Entity
 {
 public:
 	enemy();
 	~enemy();
+
+	//Member Data:
+public:
+
+protected:
+
+private:
 };
 

@@ -46,10 +46,11 @@ AnimatedSprite::Initialise(Texture& texture)
 void
 AnimatedSprite::AddFrame(int x, int y)
 {
+	//currently not used
 	SDL_Point* newPoint = new SDL_Point();
 	newPoint->x = x;
 	newPoint->y = y;
-	m_frames.push_back(newPoint);
+	//m_frames.push_back(newPoint);
 
 }
 
@@ -177,6 +178,9 @@ void AnimatedSprite::LoadFrames(int width)
 			newFrame->y = a;
 
 			//Choose correct array to store frames in, this is kinda messy for now
+			//The array is chosen by row, and are as follows going down. down, left, right, up
+			//This is because the default character we are using has that order, to change the order update here
+			//The program should take care of the rest automatically
 			if (a == 0)
 			{
 				m_downFrames.push_back(newFrame);
@@ -193,11 +197,8 @@ void AnimatedSprite::LoadFrames(int width)
 			{
 				m_upFrames.push_back(newFrame);
 			}
-
 		}
 	}
-
-	
 }
 
 void AnimatedSprite::UpdateDirection(Direction dir)
@@ -222,7 +223,14 @@ void AnimatedSprite::UpdateDirection(Direction dir)
 	{
 		return;
 	}
-		
+	
+	//Safeguards if you attempt to make it use a direction there is no animation for, will keep using the old animation direction
+	if ((dir == Direction::UP && m_upFrames.size() == 0) || (dir == Direction::DOWN && m_downFrames.size() == 0)
+		|| (dir == Direction::LEFT && m_leftFrames.size() == 0) || (dir == Direction::RIGHT && m_rightFrames.size() == 0))
+	{
+		return;
+	}
+
 
 	//Set the new direction, reset the animation frame and durations
 	m_currentDirection = dir;
