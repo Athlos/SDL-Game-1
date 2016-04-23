@@ -246,7 +246,7 @@ void
 Game::UpdatePlayer(Direction direction)
 {
 
-	m_Player->UpdatePlayerDirection(direction);
+	
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
 	switch (direction)
@@ -275,6 +275,8 @@ Game::UpdatePlayer(Direction direction)
 		m_Player->SetPositionY(m_height /2);
 		break;
 	}
+
+	m_Player->UpdatePlayerDirection(direction);
 }
 
 void

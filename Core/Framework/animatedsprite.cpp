@@ -212,9 +212,10 @@ void AnimatedSprite::UpdateDirection(Direction dir)
 	m_paused = false;
 
 	//Reset animation frames
-	if (m_currentDirection == Direction::RESET)
+	if (dir == Direction::RESET)
 	{
 		StartAnimating();
+		m_paused = true;
 		return;
 	}
 
