@@ -76,6 +76,17 @@ InputHandler::ProcessInput(Game& game)
 				//Remove 10 Gold
 				game.UpdateGold(10);
 				break;
+			case SDLK_5:
+				//Spawn random pickups
+				for (int i = 0; i < rand() % 30; i++)
+				{
+					game.SpawnPickup(rand() % 1800, rand() % 1000, GOLD);
+				}
+				for (int i = 0; i < rand() % 10; i++)
+				{
+					game.SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
+				}
+				break;
 			case SDLK_w:
 				SDL_Log("up");
 				game.UpdatePlayer(Direction::UP);

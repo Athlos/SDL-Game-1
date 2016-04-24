@@ -131,18 +131,6 @@ Game::Initialise()
 	m_goldLabel = new Label(goldStream.str());
 	m_goldLabel->SetColour(218, 165, 32, 0);
 
-	//Testing Pickups
-	for (int i = 0; i < rand() % 30; i++)
-	{
-		SpawnPickup(rand() % 1800, rand() % 1000, GOLD);
-	}
-	for (int i = 0; i < rand() % 10; i++)
-	{
-		SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
-	}
-
-
-
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
 
