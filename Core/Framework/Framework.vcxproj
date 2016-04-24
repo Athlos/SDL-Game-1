@@ -94,6 +94,7 @@
     <ClInclude Include="label.h" />
     <ClInclude Include="logmanager.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="texture.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="logmanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
+    <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />

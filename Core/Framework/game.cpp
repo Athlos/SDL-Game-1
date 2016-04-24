@@ -12,10 +12,14 @@
 #include "physics.h"
 #include "entity.h"
 #include "label.h"
+#include "pickup.h"
 
 // Library includes:
 #include <cassert>
+#include <cmath>
+#include <ctime>
 #include <SDL.h>
+#include <math.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -67,6 +71,7 @@ Game::Game()
 //, m_world(m_gravity)
 {
 	//m_world = b2World(m_gravity);
+	srand(time(0));
 }
 
 Game::~Game()
@@ -126,6 +131,18 @@ Game::Initialise()
 	m_goldLabel = new Label(goldStream.str());
 	m_goldLabel->SetColour(218, 165, 32, 0);
 
+	//Testing Pickups
+	for (int i = 0; i < rand() % 30; i++)
+	{
+		SpawnPickup(rand() % 1800, rand() % 1000, GOLD);
+	}
+	for (int i = 0; i < rand() % 10; i++)
+	{
+		SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
+	}
+
+
+
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
 
@@ -183,6 +200,42 @@ Game::Process(float deltaTime)
 		//world.Step(timeStep, velocityIterations, positionIterations);
 	}
 	m_Player->Process(deltaTime);
+
+	//Process Pickups
+	//Create iterator to loop through and delete pickups that have been picked up
+	std::vector<Pickup*>::iterator pickupI = m_pickups.begin();
+
+	//Loop through all pickups
+	while (pickupI != m_pickups.end()) {
+		Pickup* current = *pickupI;
+
+		//If pickup has been used, delete
+		if (current->IsPickedUp())
+		{
+			pickupI = m_pickups.erase(pickupI);
+			delete current;
+		}
+		else 
+		{
+			//Check if player can pickup, and apply rewards if they do
+			if (m_Player->CheckPickup(*current))
+			{
+				//Sort out reward
+				if (current->GetPickupType() == HEALTH)
+				{
+					UpdatePlayerHealth(1);
+				}
+				else if (current->GetPickupType() == GOLD)
+				{
+					UpdateGold(10);
+				}
+			}
+			current->Process(deltaTime);
+			pickupI++;
+		}
+	}
+
+
 }
 
 void 
@@ -216,6 +269,12 @@ Game::Draw(BackBuffer& backBuffer)
 	//Draw test label
 	m_goldLabel->Draw(backBuffer);
 
+	//Draw Pickups
+	for each (Pickup* p in m_pickups) 
+	{
+		p->Draw(backBuffer);
+	}
+
 	backBuffer.Present();
 }
 
@@ -235,10 +294,10 @@ void
 Game::PlayerSpriteInit()
 {
 	//will add in more sprites later
-	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Test_8Directional_Anim.png");
+	m_playerAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//character.png");
 
 	//Default load of sprite sheet
-	m_playerAnim->LoadFrames(60, 118);
+	m_playerAnim->LoadFrames(64, 64);
 	m_playerAnim->StartAnimating();
 }
 
@@ -252,17 +311,17 @@ Game::UpdatePlayer(Direction direction)
 	switch (direction)
 	{
 	case Direction::UP:
-		m_Player->SetVerticalVelocity(-100.0f);
+		m_Player->SetVerticalVelocity(-200.0f);
 		
 		break;
 	case Direction::DOWN:
-		m_Player->SetVerticalVelocity(100.0f);
+		m_Player->SetVerticalVelocity(200.0f);
 		break;
 	case Direction::LEFT:
-		m_Player->SetHorizontalVelocity(-100.0f);
+		m_Player->SetHorizontalVelocity(-200.0f);
 		break;
 	case Direction::RIGHT:
-		m_Player->SetHorizontalVelocity(100.0f);
+		m_Player->SetHorizontalVelocity(200.0f);
 		break;
 	case Direction::STOP:
 		m_Player->SetVerticalVelocity(0.0f);
@@ -310,5 +369,30 @@ void Game::UpdateGold(int amount)
 	{
 		m_goldLabel->SetBounds(0, 0, 100 + lengthen, 30);
 		lengthen += 10;
+	}
+}
+
+void Game::SpawnPickup(int x, int y, PickupType type)
+{
+	if (type == GOLD)
+	{
+		AnimatedSprite* goldAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Gold_Spin.png");
+		Pickup* goldPickup = new Pickup();
+		goldAnim->LoadFrames(64, 64);
+		goldAnim->SetFrameSpeed(0.12f);
+		goldPickup->Initialise(goldAnim);
+		goldPickup->SetPickupType(GOLD);
+		goldPickup->SetPosition(x, y);
+		m_pickups.push_back(goldPickup);
+	}
+	else if (type == HEALTH)
+	{
+		AnimatedSprite* heartAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Health_Heart_Pickup.png");
+		Pickup* heartPickup = new Pickup();
+		heartAnim->LoadFrames(64, 64);
+		heartAnim->SetFrameSpeed(0.12f);
+		heartPickup->Initialise(heartAnim);
+		heartPickup->SetPosition(x, y);
+		m_pickups.push_back(heartPickup);
 	}
 }

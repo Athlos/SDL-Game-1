@@ -10,6 +10,11 @@ Player::Player()
 	Entity::Entity();
 	m_x = 400;
 	m_y = 560;
+
+	//Pickup range defaults
+	m_pickupRangeX = 50;
+	m_pickupRangeY = 50;
+
 }
 
 Player::~Player()
@@ -35,7 +40,7 @@ void Player::Process(float deltaTime)
 
 	m_x += (static_cast<int>(deltaTime * m_velocityX));
 	m_y += (static_cast<int>(deltaTime * m_velocityY));
-	m_animSprite->SetFrameSpeed(0.08f);
+	//m_animSprite->SetFrameSpeed(0.08f);
 	m_animSprite->Process(deltaTime);
 }
 
@@ -100,4 +105,22 @@ void Player::UpdatePlayerHealth(int HealthChange)
 void Player::UpdatePlayerDirection(Direction dir)
 {
 	m_animSprite->UpdateDirection(dir);
+}
+
+bool Player::CheckPickup(Pickup & pickup)
+{
+	//check X range
+	if (pickup.GetPositionX() <= m_x + m_pickupRangeX && pickup.GetPositionX() >= m_x - m_pickupRangeX)
+	{
+		//Check Y range
+		if (pickup.GetPositionY() <= m_y + m_pickupRangeY && pickup.GetPositionY() >= m_y - m_pickupRangeY)
+		{
+			if (pickup.IsPickedUp())
+				return false;
+			//Pickup is now in range
+			pickup.SetPickedUp(true);
+			return true;
+		}
+	}
+	return false;
 }

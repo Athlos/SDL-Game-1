@@ -33,6 +33,8 @@ public:
 	float GetVerticalVelocity();
 	void SetVerticalVelocity(float y);
 
+	void SetPosition(int x, int y);
+
 protected:
 
 private:

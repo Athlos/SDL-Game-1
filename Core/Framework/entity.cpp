@@ -109,6 +109,12 @@ Entity::SetVerticalVelocity(float y)
 	m_velocityY = y;
 }
 
+void Entity::SetPosition(int x, int y)
+{
+	m_x = x;
+	m_y = y;
+}
+
 bool
 Entity::IsDead()
 {

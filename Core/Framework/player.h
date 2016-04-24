@@ -6,6 +6,7 @@
 #include "animatedsprite.h"
 #include "backbuffer.h"
 #include "direction.h"
+#include "pickup.h"
 
 class Player : public Entity
 {
@@ -27,6 +28,8 @@ public:
 	void UpdatePlayerHealth(int Damage);
 	void UpdatePlayerDirection(Direction dir);
 
+	bool CheckPickup(Pickup& pickup);
+
 protected:
 private:
 
@@ -41,6 +44,10 @@ private:
 	//Health 
 	int m_MaxHealth;
 	int m_CurrentHealth;
+
+	//Pickup range
+	int m_pickupRangeX;
+	int m_pickupRangeY;
 
 };
 

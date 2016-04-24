@@ -4,6 +4,7 @@
 
 #include "SDL.h"
 #include "direction.h"
+#include "pickup.h"
 #include <vector>
 #include <Box2D\box2d.h>
 
@@ -16,6 +17,7 @@ class Player;
 class Physics;
 class Entity;
 class Label;
+
 
 class Game
 {
@@ -32,6 +34,8 @@ public:
 	void UpdatePlayerHealth(int amount);
 	void UpdatePlayer(Direction direction);
 	void UpdateGold(int amount);
+
+	void SpawnPickup(int x, int y, PickupType type);
 
 	void ToggleDebug();
 protected:
@@ -88,6 +92,8 @@ protected:
 	//Player Gold
 	Label* m_goldLabel;
 	int m_gold;
+
+	std::vector<Pickup*> m_pickups;
 
 private:
 

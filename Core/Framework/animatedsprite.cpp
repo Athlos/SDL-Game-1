@@ -8,7 +8,7 @@
 #include <cassert>
 
 AnimatedSprite::AnimatedSprite()
-	: m_frameSpeed(0.1f)
+	: m_frameSpeed(0.9f)
 	, m_frameWidth(0)
 	, m_timeElapsed(0.0f)
 	, m_currentFrame(0)
@@ -169,6 +169,9 @@ void AnimatedSprite::LoadFrames(int width, int height)
 	m_width = width;
 	m_height = height;
 	
+	//default frame speed
+	m_frameSpeed = 0.1f;
+
 	//loops by default
 	m_loop = true;
 	for (int a = 0; a < m_pTexture->GetHeight(); a += height)
