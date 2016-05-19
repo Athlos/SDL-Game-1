@@ -17,7 +17,7 @@ class Player;
 class Physics;
 class Entity;
 class Label;
-
+class GameMap;
 
 class Game
 {
@@ -94,6 +94,9 @@ protected:
 	int m_gold;
 
 	std::vector<Pickup*> m_pickups;
+
+	//Game Map
+	GameMap* m_gameMap;
 
 private:
 

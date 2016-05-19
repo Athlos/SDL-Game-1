@@ -13,6 +13,7 @@
 #include "entity.h"
 #include "label.h"
 #include "pickup.h"
+#include "gamemap.h"
 
 // Library includes:
 #include <cassert>
@@ -68,6 +69,7 @@ Game::Game()
 , m_gravity()
 , m_toggleDebug(false)
 , m_gold(0)
+, m_gameMap()
 //, m_world(m_gravity)
 {
 	//m_world = b2World(m_gravity);
@@ -140,7 +142,8 @@ Game::Initialise()
 	{
 		SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
 	}
-
+	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
+	m_gameMap->GenerateMap(*m_pBackBuffer);
 
 
 	m_lastTime = SDL_GetTicks();
@@ -235,7 +238,7 @@ Game::Process(float deltaTime)
 		}
 	}
 
-
+	//m_gameMap->Process(deltaTime);
 }
 
 void 
@@ -274,6 +277,7 @@ Game::Draw(BackBuffer& backBuffer)
 	{
 		p->Draw(backBuffer);
 	}
+	//m_gameMap->Draw(backBuffer);
 
 	backBuffer.Present();
 }

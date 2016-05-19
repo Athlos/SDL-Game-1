@@ -1,7 +1,55 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
-  game.cpp
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(74): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(333): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(334): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Framework.vcxproj -> C:\Users\Pascal\Desktop\SDL Game One\SDL-Game-1\Core\Debug\Core.exe
+  gamemap.cpp
+i:\visual studio\vc\include\xmemory0(655): error C2280: 'MapTile::MapTile(const MapTile &)': attempting to reference a deleted function
+  d:\users\f03n1x\documents\sdl-game-1\core\framework\maptile.h(32): note: compiler has generated 'MapTile::MapTile' here
+  i:\visual studio\vc\include\xmemory0(773): note: see reference to function template instantiation 'void std::allocator<_Ty>::construct<_Objty,MapTile&>(_Objty *,MapTile &)' being compiled
+          with
+          [
+              _Ty=MapTile,
+              _Objty=MapTile
+          ]
+  i:\visual studio\vc\include\xmemory0(773): note: see reference to function template instantiation 'void std::allocator<_Ty>::construct<_Objty,MapTile&>(_Objty *,MapTile &)' being compiled
+          with
+          [
+              _Ty=MapTile,
+              _Objty=MapTile
+          ]
+  i:\visual studio\vc\include\xmemory0(918): note: see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,MapTile&>(std::allocator<_Ty> &,_Objty *,MapTile &)' being compiled
+          with
+          [
+              _Alloc=std::allocator<MapTile>,
+              _Ty=MapTile,
+              _Objty=MapTile
+          ]
+  i:\visual studio\vc\include\xmemory0(917): note: see reference to function template instantiation 'void std::allocator_traits<_Alloc>::construct<_Ty,MapTile&>(std::allocator<_Ty> &,_Objty *,MapTile &)' being compiled
+          with
+          [
+              _Alloc=std::allocator<MapTile>,
+              _Ty=MapTile,
+              _Objty=MapTile
+          ]
+  i:\visual studio\vc\include\vector(1282): note: see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Ty>>::construct<MapTile,MapTile&>(_Ty *,MapTile &)' being compiled
+          with
+          [
+              _Ty=MapTile
+          ]
+  i:\visual studio\vc\include\vector(1281): note: see reference to function template instantiation 'void std::_Wrap_alloc<std::allocator<_Ty>>::construct<MapTile,MapTile&>(_Ty *,MapTile &)' being compiled
+          with
+          [
+              _Ty=MapTile
+          ]
+  i:\visual studio\vc\include\vector(1274): note: while compiling class template member function 'void std::vector<MapTile,std::allocator<_Ty>>::push_back(const MapTile &)'
+          with
+          [
+              _Ty=MapTile
+          ]
+  d:\users\f03n1x\documents\sdl-game-1\core\framework\gamemap.cpp(56): note: see reference to function template instantiation 'void std::vector<MapTile,std::allocator<_Ty>>::push_back(const MapTile &)' being compiled
+          with
+          [
+              _Ty=MapTile
+          ]
+  d:\users\f03n1x\documents\sdl-game-1\core\framework\gamemap.cpp(53): note: see reference to class template instantiation 'std::vector<MapTile,std::allocator<_Ty>>' being compiled
+          with
+          [
+              _Ty=MapTile
+          ]

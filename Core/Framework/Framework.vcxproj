@@ -90,9 +90,12 @@
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gamemap.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="label.h" />
     <ClInclude Include="logmanager.h" />
+    <ClInclude Include="mapobject.h" />
+    <ClInclude Include="maptile.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
@@ -106,10 +109,13 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gamemap.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="logmanager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapobject.cpp" />
+    <ClCompile Include="maptile.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
