@@ -1,3 +1,4 @@
-C,C,C,C,c,C,C,C
 E,E,E,E,E,E,E,E
-B,B,B,B,B,B,B,B/
+B,B,B,B,B,B,B,B
+C,C,C,C,C,C,C,C
+E,B,C,E,B,C,E,B

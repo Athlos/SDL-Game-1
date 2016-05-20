@@ -13,7 +13,7 @@ enum TileType
 	BLANK
 };
 
-class MapTile : public Sprite
+class MapTile
 {
 	//Member Functions
 public:

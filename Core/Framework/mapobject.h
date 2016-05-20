@@ -10,7 +10,7 @@ enum ObjectType
 	EMPTY
 };
 
-class MapObject : public Sprite
+class MapObject
 {
 	//Member Functions
 public:
@@ -19,9 +19,12 @@ public:
 	bool Initialise(BackBuffer &backBuffer, char TileRepresentation);
 	void Draw(BackBuffer &backBuffer);
 	void Process(float deltaTime);
+	
 	//getters
 	bool GetIfCollidable();
 	bool GetIfBreakable();
+	Sprite* GetSprite();
+	char GetTileReprensentation();
 	//setters
 	void SetIfCollidable(bool isCollidable);
 	void SetIfBreakable(bool isBreakable);

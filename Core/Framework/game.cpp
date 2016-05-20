@@ -142,6 +142,7 @@ Game::Initialise()
 	{
 		SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
 	}
+	m_gameMap = new GameMap();
 	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
 	m_gameMap->GenerateMap(*m_pBackBuffer);
 
@@ -249,6 +250,7 @@ Game::Draw(BackBuffer& backBuffer)
 	backBuffer.Clear();
 
 	int x = 1850;
+	m_gameMap->Draw(backBuffer);
 	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
 	{
 		
@@ -277,7 +279,7 @@ Game::Draw(BackBuffer& backBuffer)
 	{
 		p->Draw(backBuffer);
 	}
-	//m_gameMap->Draw(backBuffer);
+	
 
 	backBuffer.Present();
 }

@@ -16,7 +16,7 @@ class GameMap
 public:
 	GameMap();
 	~GameMap();
-	void Initialise(const char* m_mapFileLocation, const char* objectFileLocation);
+	void Initialise(const char* mapFileLocation, const char* objectFileLocation);
 	void GenerateMap(BackBuffer& backBuffer);
 	void Draw(BackBuffer &backBuffer);
 	void Process(float deltaTime);
@@ -32,6 +32,5 @@ private:
 	std::vector<std::vector<MapObject>*> m_objectContainer;
 	int m_mapHeight;
 	int m_mapWidth;
-	MapTile* m_mapTile;
 };
 #endif // !__GAMEMAP_H__

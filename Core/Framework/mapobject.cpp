@@ -80,3 +80,15 @@ MapObject::SetIfBreakable(bool isBreakable)
 {
 	m_isBreakable = isBreakable;
 }
+
+Sprite*
+MapObject::GetSprite()
+{
+	return m_ObjectSprite;
+}
+
+char
+MapObject::GetTileReprensentation()
+{
+	return m_tileRepresentation;
+}
