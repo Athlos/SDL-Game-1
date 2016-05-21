@@ -6,7 +6,7 @@
 #include "direction.h"
 #include "pickup.h"
 #include <vector>
-#include <Box2D\box2d.h>
+#include <box2d.h>
 
 // Forward Declarations
 class BackBuffer;
@@ -83,11 +83,11 @@ protected:
 
 	//Box2D Data
 	b2Vec2 m_gravity;
-	//b2World m_world;
+	b2World m_world;
 	int32 m_velocityIterations;
 	int32 m_positionIterations;
 	float32 m_timeStep;
-	//Physics* m_physics();
+	Physics* m_physics();
 
 	//Player Gold
 	Label* m_goldLabel;

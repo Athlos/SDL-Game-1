@@ -53,14 +53,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\;$(SolutionDir)\SDL\SDL2-2.0.4\include;$(SolutionDir)\SDL\SDL2_image-2.0.1\include;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\include;$(SolutionDir)SDL\SDL2-2.0.4\include;$(SolutionDir)SDL\SDL2_image-2.0.1\include;$(SolutionDir)SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)SDL\SDL2_ttf-2.0.13\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)\SDL\SDL2_image-2.0.1\lib\x86;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)SDL\SDL2_image-2.0.1\lib\x86;$(SolutionDir)SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)Box2D\lib\x86;$(SolutionDir)SDL\SDL2_mixer-2.0.1\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;Box2D.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

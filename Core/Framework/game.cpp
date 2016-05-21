@@ -25,7 +25,7 @@
 #include <sstream>
 #include <fstream>
 //Box2D includes:
-#include <Box2D\box2d.h>
+#include <box2d.h>
 
 // Static Members:
 Game* Game::sm_pInstance = 0;
@@ -70,7 +70,7 @@ Game::Game()
 , m_toggleDebug(false)
 , m_gold(0)
 , m_gameMap()
-//, m_world(m_gravity)
+, m_world(m_gravity)
 {
 	//m_world = b2World(m_gravity);
 	srand(time(0));
@@ -86,8 +86,8 @@ Game::~Game()
 bool 
 Game::Initialise()
 {
-	m_width = 1920;
-	m_height = 1080;
+	m_width = 1366;
+	m_height = 768;
 
 	m_pBackBuffer = new BackBuffer();
 	if (!m_pBackBuffer->Initialise(m_width, m_height))
@@ -122,10 +122,10 @@ Game::Initialise()
 	//velocityIterations 
 	m_velocityIterations = 10;
 	m_positionIterations = 10;
-	//timeStep = 1.0f / 60.0f;
+	m_timeStep = 1.0f / 60.0f;
 
-	//b2Vec2 gravity(0.0f, -10.0f);
-	//world.SetGravity(gravity);
+	b2Vec2 gravity(0.0f, -10.0f);
+	m_world.SetGravity(gravity);
 
 	//Gold label - using a stringstream to concat strings
 	std::ostringstream goldStream;
@@ -201,7 +201,7 @@ Game::Process(float deltaTime)
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
 		//Box2D simulation loop
-		//world.Step(timeStep, velocityIterations, positionIterations);
+		m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
 	}
 	m_Player->Process(deltaTime);
 

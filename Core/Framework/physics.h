@@ -1,9 +1,9 @@
 #ifndef __PHYSICS_H__
 #define __PHYSICS_H__
 
-#include <Box2D\box2d.h>
-#include "Box2D\Common\b2math.h"
-#include "Box2D\Dynamics\b2World.h"
+#include <box2d.h>
+#include "Common\b2math.h"
+#include "Dynamics\b2World.h"
 
 class b2World;
 struct b2Vec2;
