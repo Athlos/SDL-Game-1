@@ -49,6 +49,8 @@ private:
 	int m_pickupRangeX;
 	int m_pickupRangeY;
 
+	//Testing the box2d Rectangle body, will be removed later
+	b2BodyDef m_testBodyDef;
 };
 
 #endif //__PLAYER_H__

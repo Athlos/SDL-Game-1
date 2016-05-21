@@ -14,7 +14,6 @@ class InputHandler;
 class Sprite;
 class AnimatedSprite;
 class Player;
-class Physics;
 class Entity;
 class Label;
 class GameMap;
@@ -87,7 +86,17 @@ protected:
 	int32 m_velocityIterations;
 	int32 m_positionIterations;
 	float32 m_timeStep;
-	Physics* m_physics();
+	//box2d test code
+	b2BodyDef m_testBodyDef;
+	b2Body* m_testBody;
+	b2PolygonShape m_textShape;
+	b2FixtureDef m_testFixtureDef;
+	Sprite* m_testSprite;
+	//testing bottom screen collider
+	b2BodyDef m_bottomWorldDef;
+	b2Body* m_bottomWorldColliderBody;
+	b2PolygonShape m_bottomWorldShape;
+	b2FixtureDef m_bottomWorldFixtureDef;
 
 	//Player Gold
 	Label* m_goldLabel;

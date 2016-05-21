@@ -122,9 +122,27 @@ Game::Initialise()
 	m_velocityIterations = 10;
 	m_positionIterations = 10;
 	m_timeStep = 1.0f / 60.0f;
-
-	b2Vec2 gravity(0.0f, -10.0f);
+	b2Vec2 gravity(0.0f, 0.0f);
 	m_world.SetGravity(gravity);
+	//Box2D TESTING PURPOSES ONLY
+	m_testBodyDef.type = b2_dynamicBody;
+	m_testBodyDef.position.Set(0, 20);
+	m_testBodyDef.angle = 0;
+	m_testBody = m_world.CreateBody(&m_testBodyDef);
+	m_textShape.SetAsBox(1, 1);
+	m_testFixtureDef.shape = &m_textShape;
+	m_testFixtureDef.density = 1;
+	m_testBody->CreateFixture(&m_testFixtureDef);
+	m_testSprite = m_pBackBuffer->CreateSprite("Assets\\pot.png");
+	//Bottom screen collider test
+	m_bottomWorldDef.type = b2_staticBody;
+	m_bottomWorldDef.position.Set(-5.0f, static_cast<float>(m_height) - 20.0f);//32 is the half size of the pot, should be changed to the size of the player
+	m_bottomWorldDef.angle = 0;
+	m_bottomWorldColliderBody = m_world.CreateBody(&m_bottomWorldDef);
+	m_bottomWorldShape.SetAsBox(static_cast<float>(m_width), 2);
+	m_bottomWorldFixtureDef.shape = &m_bottomWorldShape;
+	m_bottomWorldFixtureDef.density = 1;
+	m_bottomWorldColliderBody->CreateFixture(&m_bottomWorldFixtureDef);
 
 	//Gold label - using a stringstream to concat strings
 	std::ostringstream goldStream;
@@ -199,11 +217,18 @@ Game::Process(float deltaTime)
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
-		//Box2D simulation loop
-		m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+		
 	}
+	//Box2D simulation loop
+	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+	b2Vec2 testObjPosition = m_testBody->GetPosition();	std::string debug = "Dynamic Body::Position X: " + (std::to_string(testObjPosition.x)) + ", Position Y: " + (std::to_string(testObjPosition.y));
+	SDL_Log(debug.c_str());
 	m_Player->Process(deltaTime);
+	m_testSprite->Process(deltaTime);
 
+	b2Vec2 worldColliderPosition = m_bottomWorldColliderBody->GetPosition();
+	std::string debugWorld = "World bottom Collider Pos X: " + (std::to_string(worldColliderPosition.x) + ", Pos Y: " + (std::to_string(worldColliderPosition.y)));
+	SDL_Log(debugWorld.c_str());
 	//Process Pickups
 	//Create iterator to loop through and delete pickups that have been picked up
 	std::vector<Pickup*>::iterator pickupI = m_pickups.begin();
@@ -248,11 +273,17 @@ Game::Draw(BackBuffer& backBuffer)
 
 	backBuffer.Clear();
 
-	int x = 1850;
+	int x = m_width - 130;
 	m_gameMap->Draw(backBuffer);
+	//TESTING PURPOSES
+	//test drawing a box2d box body on screen with a pot as the sprite representation
+	b2Vec2 position = m_testBody->GetPosition();
+	m_testSprite->SetX(position.x);
+	m_testSprite->SetY(position.y);
+	m_testSprite->Draw(backBuffer);
+
 	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
 	{
-		
 		if (i < m_Player->GetCurrentHealth()) 
 		{
 			m_HealthSprite->SetX(x);
@@ -265,7 +296,6 @@ Game::Draw(BackBuffer& backBuffer)
 			m_HealthLostSprite->SetY(0);
 			m_HealthLostSprite->Draw(backBuffer);
 		}
-		
 		x -= 70;
 	}
 	m_Player->Draw(backBuffer);
@@ -278,8 +308,6 @@ Game::Draw(BackBuffer& backBuffer)
 	{
 		p->Draw(backBuffer);
 	}
-	
-
 	backBuffer.Present();
 }
 
@@ -292,7 +320,6 @@ Game::Quit()
 void Game::UpdatePlayerHealth(int amount)
 {
 	m_Player->UpdatePlayerHealth(amount);
-
 }
 
 void
@@ -309,28 +336,42 @@ Game::PlayerSpriteInit()
 void
 Game::UpdatePlayer(Direction direction)
 {
-
-	
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
+	b2Vec2 velocity;
 	switch (direction)
 	{
 	case Direction::UP:
 		m_Player->SetVerticalVelocity(-200.0f);
 		
+		velocity.x = 0.0f;
+		velocity.y = -200.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::DOWN:
 		m_Player->SetVerticalVelocity(200.0f);
+		velocity.x = 0.0f;
+		velocity.y = 200.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::LEFT:
 		m_Player->SetHorizontalVelocity(-200.0f);
+		velocity.x = -200.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::RIGHT:
 		m_Player->SetHorizontalVelocity(200.0f);
+		velocity.x = 200.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::STOP:
 		m_Player->SetVerticalVelocity(0.0f);
 		m_Player->SetHorizontalVelocity(0.0f);
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::RESET://Debug, reset position to middle of screen
 		m_Player->SetVerticalVelocity(0.0f);

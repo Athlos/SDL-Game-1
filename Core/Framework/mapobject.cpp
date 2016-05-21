@@ -23,12 +23,16 @@ MapObject::Initialise(BackBuffer & backBuffer, char TileRepresentation)
 		m_isCollidable = true;
 		m_isBreakable = false;
 		m_tileRepresentation = TileRepresentation;
+		m_ObjectSprite->SetHeight(64.0f);
+		m_ObjectSprite->SetWidth(64.0f);
 		return true;
 	case 'B':
 		m_ObjectSprite = backBuffer.CreateSprite("Assets\\pot.png");
 		m_isCollidable = false;
 		m_isBreakable = true;
 		m_tileRepresentation = TileRepresentation;
+		m_ObjectSprite->SetHeight(64.0f);
+		m_ObjectSprite->SetWidth(64.0f);
 		return true;
 	case 'E':
 		m_isCollidable = false;
@@ -38,6 +42,7 @@ MapObject::Initialise(BackBuffer & backBuffer, char TileRepresentation)
 	default:
 		return false;
 	}
+	
 }
 
 void
