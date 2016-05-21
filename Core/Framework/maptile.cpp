@@ -2,6 +2,8 @@
 #include <cassert>
 
 MapTile::MapTile()
+: m_x(0)
+, m_y(0)
 {
 }
 
@@ -50,4 +52,18 @@ Sprite*
 MapTile::GetSprite()
 {
 	return m_tileSprite;
+}
+
+void
+MapTile::SetPositionX(int x)
+{
+	m_x = x;
+	m_tileSprite->SetX(static_cast<float>(m_x));
+}
+
+void
+MapTile::SetPositionY(int y)
+{
+	m_y = y;
+	m_tileSprite->SetY(static_cast<float>(m_y));
 }

@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="backbuffer.h" />
+    <ClInclude Include="conversion.h" />
     <ClInclude Include="direction.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />

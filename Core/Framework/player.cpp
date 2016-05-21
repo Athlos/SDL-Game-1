@@ -64,6 +64,18 @@ Player::SetPositionY(float y)
 	m_animSprite->SetY(static_cast<int>(m_y));
 }
 
+float
+Player::GetPositionX()
+{
+	return m_x;
+}
+
+float
+Player::GetPositionY()
+{
+	return m_y;
+}
+
 int Player::GetCurrentHealth()
 {
 	return m_CurrentHealth;

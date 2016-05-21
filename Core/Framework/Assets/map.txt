@@ -1,4 +1,12 @@
-O,O,O,O,O,O,O,O
-F,F,F,F,F,F,F,F
-U,U,U,U,U,U,U,U
-C,C,C,C,C,C,C,C/
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F
+F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F/

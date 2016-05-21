@@ -22,6 +22,13 @@ public:
 	bool Initialise(BackBuffer& backBuffer, char tileRepresentation);
 	void Draw(BackBuffer &backBuffer);
 	Sprite* GetSprite();
+
+	void SetPositionX(int x);
+	void SetPositionY(int y);
+
+	int GetPositionX();
+	int GetPositionY();
+
 protected:
 private:
 	//Member Data
@@ -29,6 +36,8 @@ public:
 protected:
 private:
 	Sprite* m_tileSprite;
+	int m_x;
+	int m_y;
 };
 
 #endif // !__MAPTILE_H__

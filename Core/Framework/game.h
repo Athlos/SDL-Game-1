@@ -5,8 +5,11 @@
 #include "SDL.h"
 #include "direction.h"
 #include "pickup.h"
+#include "conversion.h"
 #include <vector>
 #include <box2d.h>
+#define M_PIXELTOMETERS = 0.156f;
+#define M_METERSTOPIXELS = 64.0f;
 
 // Forward Declarations
 class BackBuffer;
@@ -80,7 +83,7 @@ protected:
 	//Player
 	Player* m_Player;
 
-	//Box2D Data
+	//Box2D Data world setup
 	b2Vec2 m_gravity;
 	b2World m_world;
 	int32 m_velocityIterations;
@@ -89,7 +92,7 @@ protected:
 	//box2d test code
 	b2BodyDef m_testBodyDef;
 	b2Body* m_testBody;
-	b2PolygonShape m_textShape;
+	b2PolygonShape m_testShape;
 	b2FixtureDef m_testFixtureDef;
 	Sprite* m_testSprite;
 	//testing bottom screen collider

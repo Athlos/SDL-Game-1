@@ -61,7 +61,7 @@ GameMap::Initialise(const char* mapFileLocation, const char* objectFileLocation)
 }
 
 void
-GameMap::GenerateMap(BackBuffer& backBuffer)
+GameMap::GenerateMap(BackBuffer& backBuffer, b2World& m_world)
 {	 
 	std::ifstream mapFile(m_mapFileLocation, std::ifstream::in);
 	char tile = mapFile.get();
@@ -86,6 +86,8 @@ GameMap::GenerateMap(BackBuffer& backBuffer)
 				}
 				else
 				{
+					mapTile->SetPositionX(j * mapTile->GetSprite()->GetWidth());
+					mapTile->SetPositionY(i * mapTile->GetSprite()->GetHeight());
 					m_tileContainer.at(i)->push_back(*mapTile);
 				}
 			}
@@ -117,6 +119,12 @@ GameMap::GenerateMap(BackBuffer& backBuffer)
 				}
 				else
 				{
+					if (object != 'E')
+					{
+						mapObject->SetPositionX(j * mapObject->GetSprite()->GetWidth());
+						mapObject->SetPositionY(i * mapObject->GetSprite()->GetHeight());
+						mapObject->SetupCollision(m_world);
+					}
 					m_objectContainer.at(i)->push_back(*mapObject);
 				}
 			}
@@ -133,14 +141,16 @@ GameMap::Draw(BackBuffer &backBuffer)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			m_tileContainer.at(i)->at(j).GetSprite()->SetX((j * m_tileContainer.at(i)->at(j).GetSprite()->GetWidth()));
-			m_tileContainer.at(i)->at(j).GetSprite()->SetY((i * m_tileContainer.at(i)->at(j).GetSprite()->GetHeight()));
 			m_tileContainer.at(i)->at(j).Draw(backBuffer);
 			if (m_objectContainer.at(i)->at(j).GetTileReprensentation() != 'E')
 			{
-				m_objectContainer.at(i)->at(j).GetSprite()->SetX((j * m_objectContainer.at(i)->at(j).GetSprite()->GetWidth()));
-				m_objectContainer.at(i)->at(j).GetSprite()->SetY((i * m_objectContainer.at(i)->at(j).GetSprite()->GetHeight()));
 				m_objectContainer.at(i)->at(j).Draw(backBuffer);
+			}
+			if (m_objectContainer.at(i)->at(j).GetTileReprensentation() == 'B')
+			{
+				std::string objectPosition = "Pos X: " + std::to_string(m_objectContainer.at(i)->at(j).GetObjectBodyDef().position.x) +
+					"Pos Y: " + std::to_string(m_objectContainer.at(i)->at(j).GetObjectBodyDef().position.y);
+				SDL_Log(objectPosition.c_str());
 			}
 		}
 	}
@@ -153,7 +163,7 @@ GameMap::Process(float deltaTime)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			//m_objectContainer.at(i)->at(j).Process(deltaTime);;
+			m_objectContainer.at(i)->at(j).Process(deltaTime);
 		}
 	}
 }

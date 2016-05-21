@@ -126,17 +126,17 @@ Game::Initialise()
 	m_world.SetGravity(gravity);
 	//Box2D TESTING PURPOSES ONLY
 	m_testBodyDef.type = b2_dynamicBody;
-	m_testBodyDef.position.Set(0, 20);
+	m_testBodyDef.position.Set(m_Player->GetPositionX(), m_Player->GetPositionY());
 	m_testBodyDef.angle = 0;
 	m_testBody = m_world.CreateBody(&m_testBodyDef);
-	m_textShape.SetAsBox(1, 1);
-	m_testFixtureDef.shape = &m_textShape;
+	m_testShape.SetAsBox(1, 1);
+	m_testFixtureDef.shape = &m_testShape;
 	m_testFixtureDef.density = 1;
 	m_testBody->CreateFixture(&m_testFixtureDef);
 	m_testSprite = m_pBackBuffer->CreateSprite("Assets\\pot.png");
 	//Bottom screen collider test
 	m_bottomWorldDef.type = b2_staticBody;
-	m_bottomWorldDef.position.Set(-5.0f, static_cast<float>(m_height) - 20.0f);//32 is the half size of the pot, should be changed to the size of the player
+	m_bottomWorldDef.position.Set(-5.0f, static_cast<float>(m_height) - 40.0f);//32 is the half size of the pot, should be changed to the size of the player
 	m_bottomWorldDef.angle = 0;
 	m_bottomWorldColliderBody = m_world.CreateBody(&m_bottomWorldDef);
 	m_bottomWorldShape.SetAsBox(static_cast<float>(m_width), 2);
@@ -161,7 +161,7 @@ Game::Initialise()
 	}
 	m_gameMap = new GameMap();
 	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
-	m_gameMap->GenerateMap(*m_pBackBuffer);
+	m_gameMap->GenerateMap(*m_pBackBuffer, m_world);
 
 
 	m_lastTime = SDL_GetTicks();
@@ -216,19 +216,24 @@ Game::Process(float deltaTime)
 	{
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
-		m_frameCount = 0;
-		
+		m_frameCount = 0;		
 	}
 	//Box2D simulation loop
 	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
-	b2Vec2 testObjPosition = m_testBody->GetPosition();	std::string debug = "Dynamic Body::Position X: " + (std::to_string(testObjPosition.x)) + ", Position Y: " + (std::to_string(testObjPosition.y));
+	b2Vec2 testObjPosition = m_testBody->GetPosition();
+	std::string debug = "Dynamic Body::Position X: " + (std::to_string(testObjPosition.x)) + ", Position Y: " + (std::to_string(testObjPosition.y));
 	SDL_Log(debug.c_str());
+	m_Player->SetPositionX(testObjPosition.x);
+	m_Player->SetPositionY(testObjPosition.y);
 	m_Player->Process(deltaTime);
-	m_testSprite->Process(deltaTime);
+	
+	//m_testSprite->Process(deltaTime);
 
 	b2Vec2 worldColliderPosition = m_bottomWorldColliderBody->GetPosition();
 	std::string debugWorld = "World bottom Collider Pos X: " + (std::to_string(worldColliderPosition.x) + ", Pos Y: " + (std::to_string(worldColliderPosition.y)));
 	SDL_Log(debugWorld.c_str());
+	std::string playerPosition = "Player Pos X: " + (std::to_string(m_Player->GetPositionX())) + "Pos Y: " + (std::to_string(m_Player->GetPositionY()));
+	SDL_Log(playerPosition.c_str());
 	//Process Pickups
 	//Create iterator to loop through and delete pickups that have been picked up
 	std::vector<Pickup*>::iterator pickupI = m_pickups.begin();
@@ -263,7 +268,7 @@ Game::Process(float deltaTime)
 		}
 	}
 
-	//m_gameMap->Process(deltaTime);
+	m_gameMap->Process(deltaTime);
 }
 
 void 
@@ -278,9 +283,8 @@ Game::Draw(BackBuffer& backBuffer)
 	//TESTING PURPOSES
 	//test drawing a box2d box body on screen with a pot as the sprite representation
 	b2Vec2 position = m_testBody->GetPosition();
-	m_testSprite->SetX(position.x);
-	m_testSprite->SetY(position.y);
-	m_testSprite->Draw(backBuffer);
+	
+	//m_testSprite->Draw(backBuffer);
 
 	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
 	{
@@ -343,7 +347,6 @@ Game::UpdatePlayer(Direction direction)
 	{
 	case Direction::UP:
 		m_Player->SetVerticalVelocity(-200.0f);
-		
 		velocity.x = 0.0f;
 		velocity.y = -200.0f;
 		m_testBody->SetLinearVelocity(velocity);

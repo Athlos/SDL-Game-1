@@ -2,6 +2,7 @@
 #define __GAMEMAP_H__
 
 #include <vector>
+#include <box2d.h>
 
 //forward declarations
 class BackBuffer;
@@ -17,7 +18,7 @@ public:
 	GameMap();
 	~GameMap();
 	void Initialise(const char* mapFileLocation, const char* objectFileLocation);
-	void GenerateMap(BackBuffer& backBuffer);
+	void GenerateMap(BackBuffer& backBuffer, b2World& m_world);
 	void Draw(BackBuffer &backBuffer);
 	void Process(float deltaTime);
 protected:
