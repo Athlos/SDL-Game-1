@@ -72,7 +72,6 @@ Game::Game()
 , m_gameMap()
 , m_world(m_gravity)
 {
-	//m_world = b2World(m_gravity);
 	srand(time(0));
 }
 
