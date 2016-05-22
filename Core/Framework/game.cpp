@@ -24,7 +24,7 @@
 #include <sstream>
 #include <fstream>
 //Box2D includes:
-#include <Box2D\box2d.h>
+#include <box2d.h>
 
 // Static Members:
 Game* Game::sm_pInstance = 0;
@@ -68,9 +68,9 @@ Game::Game()
 , m_gravity()
 , m_toggleDebug(false)
 , m_gold(0)
-//, m_world(m_gravity)
+, m_world(m_gravity)
 {
-	//m_world = b2World(m_gravity);
+	m_world = b2World(m_gravity);
 	srand(time(0));
 }
 
