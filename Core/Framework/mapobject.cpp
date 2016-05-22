@@ -1,6 +1,7 @@
 #include "mapobject.h"
 #include "backbuffer.h"
 #include <cassert>
+#include <Box2D.h>
 
 MapObject::MapObject()
 :m_isCollidable(false)
@@ -66,7 +67,6 @@ MapObject::SetupCollision(b2World& m_world)
 	m_objectFixtureDef.shape = &m_objectShape;
 	m_objectFixtureDef.density = 1;
 	m_objectBody->CreateFixture(&m_objectFixtureDef);
-	m_objectBody->SetGravityScale(0);
 }
 void
 MapObject::Draw(BackBuffer &backBuffer)

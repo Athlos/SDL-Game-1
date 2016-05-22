@@ -13,6 +13,7 @@
 #include "entity.h"
 #include "label.h"
 #include "pickup.h"
+#include "gamemap.h"
 
 // Library includes:
 #include <cassert>
@@ -70,7 +71,6 @@ Game::Game()
 , m_gold(0)
 , m_world(m_gravity)
 {
-	m_world = b2World(m_gravity);
 	srand(time(0));
 }
 
@@ -84,8 +84,8 @@ Game::~Game()
 bool 
 Game::Initialise()
 {
-	m_width = 1920;
-	m_height = 1080;
+	m_width = 1366;
+	m_height = 768;
 
 	m_pBackBuffer = new BackBuffer();
 	if (!m_pBackBuffer->Initialise(m_width, m_height))
@@ -93,7 +93,6 @@ Game::Initialise()
 		LogManager::GetInstance().Log("BackBuffer Init Fail!");
 		return (false);
 	}
-
 	m_pInputHandler = new InputHandler();
 	if (!m_pInputHandler->Initialise())
 	{
@@ -116,14 +115,26 @@ Game::Initialise()
 	m_Player->SetCurrentHealth(5);
 	m_Player->SetMaxHealth(5);
 
+	//Game map setup
+	m_gameMap = new GameMap();
+	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
+	m_gameMap->GenerateMap(*m_pBackBuffer, m_world);
 	//Box2D world setup
 	//velocityIterations 
 	m_velocityIterations = 10;
 	m_positionIterations = 10;
-	//timeStep = 1.0f / 60.0f;
-
-	//b2Vec2 gravity(0.0f, -10.0f);
-	//world.SetGravity(gravity);
+	m_timeStep = 1.0f / 60.0f;
+	b2Vec2 gravity(0.0f, 0.0f);
+	m_world.SetGravity(gravity);
+	//Box2D TESTING PURPOSES ONLY
+	m_testBodyDef.type = b2_dynamicBody;
+	m_testBodyDef.position.Set(m_Player->GetPositionX(), m_Player->GetPositionY());
+	m_testBodyDef.angle = 0;
+	m_testBody = m_world.CreateBody(&m_testBodyDef);
+	m_testShape.SetAsBox(1, 1);
+	m_testFixtureDef.shape = &m_testShape;
+	m_testFixtureDef.density = 1;
+	m_testBody->CreateFixture(&m_testFixtureDef);
 
 	//Gold label - using a stringstream to concat strings
 	std::ostringstream goldStream;
@@ -185,8 +196,13 @@ Game::Process(float deltaTime)
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
 		//Box2D simulation loop
-		//world.Step(timeStep, velocityIterations, positionIterations);
 	}
+	//Box2D simulation loop
+	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
+	b2Vec2 testObjPosition = m_testBody->GetPosition();
+	//Player process
+	m_Player->SetPositionX(testObjPosition.x);
+	m_Player->SetPositionY(testObjPosition.y);
 	m_Player->Process(deltaTime);
 
 	//Process Pickups
@@ -223,7 +239,7 @@ Game::Process(float deltaTime)
 		}
 	}
 
-
+	m_gameMap->Process(deltaTime);
 }
 
 void 
@@ -233,7 +249,8 @@ Game::Draw(BackBuffer& backBuffer)
 
 	backBuffer.Clear();
 
-	int x = 1850;
+	int x = m_width - 130;
+	m_gameMap->Draw(backBuffer);
 	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
 	{
 		
@@ -296,24 +313,39 @@ Game::UpdatePlayer(Direction direction)
 	
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
+	b2Vec2 velocity;
 	switch (direction)
 	{
 	case Direction::UP:
 		m_Player->SetVerticalVelocity(-200.0f);
-		
+		velocity.x = 0.0f;
+		velocity.y = -200.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::DOWN:
 		m_Player->SetVerticalVelocity(200.0f);
+		velocity.x = 0.0f;
+		velocity.y = 200.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::LEFT:
 		m_Player->SetHorizontalVelocity(-200.0f);
+		velocity.x = -200.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::RIGHT:
 		m_Player->SetHorizontalVelocity(200.0f);
+		velocity.x = 200.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::STOP:
 		m_Player->SetVerticalVelocity(0.0f);
 		m_Player->SetHorizontalVelocity(0.0f);
+		velocity.x = 0.0f;
+		velocity.y = 0.0f;
+		m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::RESET://Debug, reset position to middle of screen
 		m_Player->SetVerticalVelocity(0.0f);
