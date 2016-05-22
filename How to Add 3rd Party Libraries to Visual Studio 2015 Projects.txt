@@ -1,0 +1,36 @@
+How to add 3rd party libraries in Visual Studio 2015
+
+first off it is useful to set up the file structure like so
+/3rdPartyLibrary
+	""/include
+	""/lib
+		""/""/86 or /64(optional inside lib)
+
+
+
+which for include contains library code and lib includes the .lib and .dll(dll is not always needed)
+
+If the .lib or .dll files are not included you may have to compile them from their respective projects
+
+Inside Project Properties
+
+-> C/C++ -> General -> Additional Include Directories
+Add 
+
+$(SolutionDir)3rdPartyLibrary\include
+
+-> Linker -> General -> Addtional Library Directories ->  
+
+Add
+
+$(SolutionDir)3rdPartyLibrary\lib\(with x86 or x64 if needed)
+
+-> Linker -> Input -> Additional Dependencies -> 
+
+Add
+
+3rdParty.lib
+
+Finally,
+
+add the specified #include <> within the .cpp and .h files following the setup folder structure and everything should compile successfully.

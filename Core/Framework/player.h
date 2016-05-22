@@ -7,6 +7,7 @@
 #include "backbuffer.h"
 #include "direction.h"
 #include "pickup.h"
+#include "Box2D.h"
 
 class Player : public Entity
 {
@@ -18,6 +19,8 @@ public:
 	void Draw(BackBuffer& backbuffer);
 	void SetPositionX(float x);
 	void SetPositionY(float y);
+	float GetPositionX();
+	float GetPositionY();
 
 	int GetCurrentHealth();
 	void SetCurrentHealth(int CurrentHealth);
@@ -49,6 +52,8 @@ private:
 	int m_pickupRangeX;
 	int m_pickupRangeY;
 
+	//Testing the box2d Rectangle body, will be removed later
+	b2BodyDef m_testBodyDef;
 };
 
 #endif //__PLAYER_H__

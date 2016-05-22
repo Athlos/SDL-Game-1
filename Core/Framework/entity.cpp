@@ -1,5 +1,3 @@
-// 717310 C++ SDL Framework
-
 // This include:
 #include "entity.h"
 
@@ -42,7 +40,6 @@ Entity::Process(float deltaTime)
 	m_pSprite->SetX(static_cast<int>(m_x));
 	m_pSprite->SetY(static_cast<int>(m_y));
 
-	// Ex006.2: Generic position update, based upon velocity (and time).
 	m_x += deltaTime * m_velocityX;
 	m_y += deltaTime * m_velocityY;
 }
@@ -118,5 +115,5 @@ void Entity::SetPosition(int x, int y)
 bool
 Entity::IsDead()
 {
-	return m_dead;
+	return (m_dead);
 }

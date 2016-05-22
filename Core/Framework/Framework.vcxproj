@@ -53,14 +53,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\;$(SolutionDir)\SDL\SDL2-2.0.4\include;$(SolutionDir)\SDL\SDL2_image-2.0.1\include;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Box2D\include;$(SolutionDir)SDL\SDL2-2.0.4\include;$(SolutionDir)SDL\SDL2_image-2.0.1\include;$(SolutionDir)SDL\SDL2_mixer-2.0.1\include;$(SolutionDir)SDL\SDL2_ttf-2.0.13\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)\SDL\SDL2_image-2.0.1\lib\x86;$(SolutionDir)\SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)\SDL\SDL2_mixer-2.0.1\lib\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL\SDL2-2.0.4\lib\x86;$(SolutionDir)SDL\SDL2_image-2.0.1\lib\x86;$(SolutionDir)SDL\SDL2_ttf-2.0.13\lib\x86;$(SolutionDir)Box2D\lib\x86;$(SolutionDir)SDL\SDL2_mixer-2.0.1\lib\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;Box2D.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,13 +86,17 @@
   <ItemGroup>
     <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="backbuffer.h" />
+    <ClInclude Include="conversion.h" />
     <ClInclude Include="direction.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gamemap.h" />
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="label.h" />
     <ClInclude Include="logmanager.h" />
+    <ClInclude Include="mapobject.h" />
+    <ClInclude Include="maptile.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
@@ -106,10 +110,13 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gamemap.cpp" />
     <ClCompile Include="inputhandler.cpp" />
     <ClCompile Include="label.cpp" />
     <ClCompile Include="logmanager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mapobject.cpp" />
+    <ClCompile Include="maptile.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
