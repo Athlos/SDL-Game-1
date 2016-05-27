@@ -2,6 +2,7 @@
 #include "player.h"
 #include "mapobject.h"
 
+
 void
 CollisionListener::BeginContact(b2Contact* contact)
 {
@@ -20,7 +21,7 @@ CollisionListener::BeginContact(b2Contact* contact)
 		//check if the object is a breakable object
 		if (objType == 'B')
 		{//if these are true set the object's bool to colliding to equal false
-			static_cast<MapObject*>(userData)->SetIfCollidable(true);
+			static_cast<MapObject*>(userData)->StartContact();
 		}
 	}
 }
@@ -39,6 +40,6 @@ CollisionListener::EndContact(b2Contact* contact)
 	//Check if Contact B is an object
 	if (userData)
 	{//set the object's bool to colldiing equal to false
-		//static_cast<MapObject*>(userData)->EndContact();
+		static_cast<MapObject*>(userData)->EndContact();
 	}	
 }

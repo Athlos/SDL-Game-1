@@ -30,8 +30,8 @@ protected:
 private:
 	const char* m_mapFileLocation;
 	const char* m_objectFileLocation;
-	std::vector<std::vector<MapTile>*> m_tileContainer;
-	std::vector<std::vector<MapObject>*> m_objectContainer;
+	std::vector<std::vector<MapTile> > m_tileContainer;
+	std::vector<std::vector<MapObject*> > m_objectContainer;
 	int m_mapHeight;
 	int m_mapWidth;
 };

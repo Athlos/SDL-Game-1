@@ -50,12 +50,12 @@ GameMap::Initialise(const char* mapFileLocation, const char* objectFileLocation)
 		tile = inputFile.get();
 	}
 	inputFile.close();
-
+	m_tileContainer.resize(m_mapHeight);
+	m_objectContainer.resize(m_mapHeight);
 	for (int i = 0; i < m_mapHeight; i++)
 	{
-		m_tileContainer.push_back(new std::vector <MapTile>);
-		m_objectContainer.push_back(new std::vector <MapObject>);
-		//SDL_LogDebug(std::to_string(m_mapHeight));
+		m_tileContainer[i].resize(m_mapWidth);
+		m_objectContainer[i].resize(m_mapWidth);
 	}
 
 }
@@ -69,7 +69,7 @@ GameMap::GenerateMap(BackBuffer& backBuffer, b2World& m_world)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			MapTile *mapTile = new MapTile();
+			MapTile mapTile = MapTile();
 			if (tile == ',' || tile == '\n')
 			{
 				tile = mapFile.get();
@@ -80,15 +80,15 @@ GameMap::GenerateMap(BackBuffer& backBuffer, b2World& m_world)
 			}
 			if (tile == 'F' || tile == 'O' || tile == 'U' || tile == 'C')
 			{
-				if (!mapTile->Initialise(backBuffer, tile))
+				if (!mapTile.Initialise(backBuffer, tile))
 				{
 					break;
 				}
 				else
 				{
-					mapTile->SetPositionX(j * mapTile->GetSprite()->GetWidth());
-					mapTile->SetPositionY(i * mapTile->GetSprite()->GetHeight());
-					m_tileContainer.at(i)->push_back(*mapTile);
+					mapTile.SetPositionX(j * mapTile.GetSprite()->GetWidth());
+					mapTile.SetPositionY(i * mapTile.GetSprite()->GetHeight());
+					m_tileContainer[i][j] = mapTile;
 				}
 			}
 			tile = mapFile.get();
@@ -102,7 +102,7 @@ GameMap::GenerateMap(BackBuffer& backBuffer, b2World& m_world)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			MapObject *mapObject = new MapObject();
+			MapObject* mapObject = new MapObject();
 			if (object == ',' || object == '\n')
 			{
 				object = objectFile.get();
@@ -125,7 +125,7 @@ GameMap::GenerateMap(BackBuffer& backBuffer, b2World& m_world)
 						mapObject->SetPositionY(i * mapObject->GetSprite()->GetHeight());
 						mapObject->SetupCollision(m_world);
 					}
-					m_objectContainer.at(i)->push_back(*mapObject);
+					m_objectContainer[i][j] = mapObject;
 				}
 			}
 			object = objectFile.get();
@@ -141,10 +141,10 @@ GameMap::Draw(BackBuffer &backBuffer)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			m_tileContainer.at(i)->at(j).Draw(backBuffer);
-			if (m_objectContainer.at(i)->at(j).GetTileReprensentation() != 'E')
+			m_tileContainer[i][j].Draw(backBuffer);
+			if (m_objectContainer[i][j]->GetTileReprensentation() != 'E')
 			{
-				m_objectContainer.at(i)->at(j).Draw(backBuffer);
+				m_objectContainer[i][j]->Draw(backBuffer);
 			}
 			/*Debug Code
 			if (m_objectContainer.at(i)->at(j).GetTileReprensentation() == 'B')
@@ -164,7 +164,7 @@ GameMap::Process(float deltaTime)
 	{
 		for (int j = 0; j < m_mapWidth; j++)
 		{
-			m_objectContainer.at(i)->at(j).Process(deltaTime);
+			m_objectContainer[i][j]->Process(deltaTime);
 		}
 	}
 }
@@ -190,9 +190,9 @@ GameMap::GetMapObjectAtPosition(float x, float y)
 	{
 		tileCol = y / 64.0f;
 	}
-	if ((m_objectContainer.at(tileCol)->at(tileRow).GetTileReprensentation() == 'B'))
+	if ((m_objectContainer[tileCol][tileRow]->GetTileReprensentation() == 'B'))
 	{
-		return (m_objectContainer.at(tileCol)->at(tileRow));
+		return *(m_objectContainer[tileCol][tileRow]);
 	}
 	else
 	{
