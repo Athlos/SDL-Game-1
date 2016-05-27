@@ -6,6 +6,7 @@
 
 Player::Player()
 : m_animSprite(0)
+, m_isColliding(false)
 {
 	Entity::Entity();
 	m_x = 400;
@@ -14,7 +15,6 @@ Player::Player()
 	//Pickup range defaults
 	m_pickupRangeX = 50;
 	m_pickupRangeY = 50;
-
 }
 
 Player::~Player()
@@ -22,30 +22,36 @@ Player::~Player()
 }
 
 bool
-Player::Initialise(AnimatedSprite* p_animSprite)
+Player::Initialise(AnimatedSprite* p_animSprite, b2World& m_world)
 {
 	//Set up player sprite
 	assert(p_animSprite);
 	m_animSprite = p_animSprite;
 	m_animSprite->SetY(static_cast<int>(m_y));
 	m_animSprite->SetX(static_cast<int>(m_x));
-
+	//setup for player collision
+	SetupCollision(m_world);
 	return (true);
 }
 
 void Player::Process(float deltaTime)
 {
-	m_animSprite->SetX(static_cast<int>(m_x));
-	m_animSprite->SetY(static_cast<int>(m_y));
-
-	m_x += (static_cast<int>(deltaTime * m_velocityX));
-	m_y += (static_cast<int>(deltaTime * m_velocityY));
-	//m_animSprite->SetFrameSpeed(0.08f);
+	m_animSprite->SetX(static_cast<int>(m_playerBody->GetPosition().x));
+	m_animSprite->SetY(static_cast<int>(m_playerBody->GetPosition().y));
 	m_animSprite->Process(deltaTime);
 }
 
 void Player::Draw(BackBuffer& backBuffer)
 {
+	//TESTING FOR COLLISION
+	if (m_isColliding)
+	{
+		m_animSprite->SetWidth(32.0f);
+	}
+	else
+	{
+		m_animSprite->SetWidth(64.0f);
+	}
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);
 }
@@ -55,7 +61,6 @@ Player::SetPositionX(float x)
 {
 	m_x = (static_cast<int>(x));
 	m_animSprite->SetX(static_cast<int>(m_x));
-
 }
 void
 Player::SetPositionY(float y)
@@ -107,7 +112,6 @@ void Player::UpdatePlayerHealth(int HealthChange)
 	{
 		m_CurrentHealth = 0;
 	}
-
 	if (m_CurrentHealth > m_MaxHealth)
 	{
 		m_CurrentHealth = m_MaxHealth;
@@ -135,4 +139,40 @@ bool Player::CheckPickup(Pickup & pickup)
 		}
 	}
 	return false;
+}
+
+void
+Player::SetupCollision(b2World& m_world)
+{
+	m_playerBodyDef.type = b2_dynamicBody;
+	m_playerBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
+	m_playerBodyDef.angle = 0;
+	m_playerBody = m_world.CreateBody(&m_playerBodyDef);
+	m_playerShape.SetAsBox(1, 1);
+	m_playerFixtureDef.shape = &m_playerShape;
+	m_playerFixtureDef.density = 1;
+	m_playerBody->CreateFixture(&m_playerFixtureDef);
+	m_playerBody->SetUserData(this);
+}
+
+void
+Player::SetPlayerCollisionVelocity(b2Vec2 collisionVelocity)
+{
+	m_playerBody->SetLinearVelocity(collisionVelocity);
+}
+b2Body*
+Player::GetPlayerBody()
+{
+	return m_playerBody;
+}
+
+void
+Player::StartContact()
+{
+	m_isColliding = true;
+}
+void
+Player::EndContact()
+{
+	m_isColliding = false;
 }

@@ -8,13 +8,16 @@
 #include "direction.h"
 #include "pickup.h"
 #include "Box2D.h"
+#include "conversion.h"
+#include "gamemap.h"
+#include "mapobject.h"
 
 class Player : public Entity
 {
 public:
 	Player();
 	~Player();
-	bool Initialise(AnimatedSprite* p_animSprite);
+	bool Initialise(AnimatedSprite* p_animSprite, b2World& m_world);
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backbuffer);
 	void SetPositionX(float x);
@@ -33,6 +36,11 @@ public:
 
 	bool CheckPickup(Pickup& pickup);
 
+	void SetupCollision(b2World& m_world);
+	void SetPlayerCollisionVelocity(b2Vec2 collisionVelocity);
+	b2Body* GetPlayerBody();
+	void StartContact();
+	void EndContact();
 protected:
 private:
 
@@ -52,8 +60,13 @@ private:
 	int m_pickupRangeX;
 	int m_pickupRangeY;
 
-	//Testing the box2d Rectangle body, will be removed later
-	b2BodyDef m_testBodyDef;
+	//Player Box2D Variables
+	b2BodyDef m_playerBodyDef;
+	b2Body* m_playerBody;
+	b2PolygonShape m_playerShape;
+	b2FixtureDef m_playerFixtureDef;
+
+	bool m_isColliding;
 };
 
 #endif //__PLAYER_H__

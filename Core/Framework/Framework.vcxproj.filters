@@ -72,6 +72,9 @@
     <ClInclude Include="conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="collisionlistener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="backbuffer.cpp">
@@ -126,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mapobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="collisionlistener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

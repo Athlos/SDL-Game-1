@@ -26,11 +26,11 @@ Entity::~Entity()
 }
 
 bool
-Entity::Initialise(Sprite* sprite)
+Entity::Initialise(Sprite* sprite, b2World& m_world)
 {
 	assert(sprite);
 	m_pSprite = sprite;
-
+	SetupCollision(m_world);
 	return (true);
 }
 
@@ -39,9 +39,9 @@ Entity::Process(float deltaTime)
 {
 	m_pSprite->SetX(static_cast<int>(m_x));
 	m_pSprite->SetY(static_cast<int>(m_y));
+	m_x += deltaTime * (m_velocityX);
+	m_y += deltaTime * (m_velocityY);
 
-	m_x += deltaTime * m_velocityX;
-	m_y += deltaTime * m_velocityY;
 }
 
 void
@@ -106,14 +106,28 @@ Entity::SetVerticalVelocity(float y)
 	m_velocityY = y;
 }
 
-void Entity::SetPosition(int x, int y)
+void 
+Entity::SetPosition(int x, int y)
 {
-	m_x = x;
-	m_y = y;
+	m_x = x * METRESTOPIXELS;
+	m_y = y * METRESTOPIXELS;
 }
 
 bool
 Entity::IsDead()
 {
 	return (m_dead);
+}
+
+void
+Entity::SetupCollision(b2World& m_world)
+{
+	m_entityBodyDef.type = b2_staticBody;
+	m_entityBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
+	m_entityBodyDef.angle = 0;
+	m_entityBody = m_world.CreateBody(&m_entityBodyDef);
+	m_entityShape.SetAsBox(1 * PIXELSTOMETRES, 1 * PIXELSTOMETRES);
+	m_entityFixtureDef.shape = &m_entityShape;
+	m_entityFixtureDef.density = 1;
+	m_entityBody->CreateFixture(&m_entityFixtureDef);
 }

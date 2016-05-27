@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="backbuffer.h" />
+    <ClInclude Include="collisionlistener.h" />
     <ClInclude Include="conversion.h" />
     <ClInclude Include="direction.h" />
     <ClInclude Include="enemy.h" />
@@ -107,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="animatedsprite.cpp" />
     <ClCompile Include="backbuffer.cpp" />
+    <ClCompile Include="collisionlistener.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />

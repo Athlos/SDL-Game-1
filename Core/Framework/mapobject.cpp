@@ -9,6 +9,7 @@ MapObject::MapObject()
 , m_tileRepresentation('E')
 , m_x(0)
 , m_y(0)
+, m_isColliding(false)
 {
 }
 
@@ -25,6 +26,7 @@ MapObject::Initialise(BackBuffer & backBuffer, char TileRepresentation)
 		m_objectSprite = backBuffer.CreateSprite("Assets\\rock.png");
 		m_isCollidable = true;
 		m_isBreakable = false;
+		m_isColliding = false;
 		m_tileRepresentation = TileRepresentation;
 		m_objectSprite->SetHeight(64.0f);
 		m_objectSprite->SetWidth(64.0f);
@@ -33,6 +35,7 @@ MapObject::Initialise(BackBuffer & backBuffer, char TileRepresentation)
 		m_objectSprite = backBuffer.CreateSprite("Assets\\pot.png");
 		m_isCollidable = false;
 		m_isBreakable = true;
+		m_isColliding = false;
 		m_tileRepresentation = TileRepresentation;
 		m_objectSprite->SetHeight(64.0f);
 		m_objectSprite->SetWidth(64.0f);
@@ -63,16 +66,26 @@ MapObject::SetupCollision(b2World& m_world)
 	{
 		m_objectShape.SetAsBox(m_objectSprite->GetWidth(), m_objectSprite->GetHeight());
 	}
-	
 	m_objectFixtureDef.shape = &m_objectShape;
 	m_objectFixtureDef.density = 1;
 	m_objectBody->CreateFixture(&m_objectFixtureDef);
+	m_objectBody->SetUserData(this);
 }
 void
 MapObject::Draw(BackBuffer &backBuffer)
-{//if the tile is not equal to an empty tile
+{
+		
 	if (m_tileRepresentation != 'E')
 	{//draw
+		if (m_isColliding)
+		{
+			m_objectSprite->SetWidth(32.0f);
+			SDL_Log("COLLISION CONFIRMED");
+		}
+		else
+		{
+			m_objectSprite->SetWidth(64.0f);
+		}
 		assert(m_objectSprite);
 		m_objectSprite->Draw(backBuffer);
 	}//otherwise don't
@@ -157,4 +170,15 @@ b2BodyDef
 MapObject::GetObjectBodyDef()
 {
 	return m_objectBodyDef;
+}
+
+void
+MapObject::StartContact()
+{
+	m_isColliding = true;
+}
+void
+MapObject::EndContact()
+{
+	m_isColliding = false;
 }

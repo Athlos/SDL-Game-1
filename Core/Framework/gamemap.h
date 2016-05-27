@@ -21,6 +21,7 @@ public:
 	void GenerateMap(BackBuffer& backBuffer, b2World& m_world);
 	void Draw(BackBuffer &backBuffer);
 	void Process(float deltaTime);
+	MapObject& GetMapObjectAtPosition(float x, float y);
 protected:
 private:
 	//Member Data

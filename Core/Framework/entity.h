@@ -2,10 +2,12 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-// Forward Declarations:
-class BackBuffer;
-class Sprite;
 
+// Forward Declarations:
+#include "backbuffer.h"
+#include "sprite.h"
+#include "conversion.h"
+#include "Box2D.h"
 
 class Entity
 {
@@ -14,7 +16,7 @@ public:
 	Entity();
 	~Entity();
 
-	bool Initialise(Sprite* sprite);
+	bool Initialise(Sprite* sprite, b2World& m_world);
 
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backBuffer);
@@ -34,7 +36,7 @@ public:
 	void SetVerticalVelocity(float y);
 
 	void SetPosition(int x, int y);
-
+	void SetupCollision(b2World& m_world);
 protected:
 
 private:
@@ -55,6 +57,11 @@ protected:
 
 	bool m_dead;
 
+	//Entity Box2D Variables
+	b2BodyDef m_entityBodyDef;
+	b2Body* m_entityBody;
+	b2PolygonShape m_entityShape;
+	b2FixtureDef m_entityFixtureDef;
 private:
 
 };

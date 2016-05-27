@@ -1,7 +1,8 @@
-#pragma once
+#ifndef __CONVERSION_H__
+#define __CONVERSION_H__ 1
 
-struct Conversion
-{
-	float toPixel = 0.15625f;
-	float toMeters = 64.0f;
-};
+//1 BOX2D METRE EQUATES TO 64 PIXELS
+const float METRESTOPIXELS = 0.15625f;
+const float PIXELSTOMETRES = 64.0f;
+
+#endif // !__CONVERSION_H__

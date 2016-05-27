@@ -110,10 +110,10 @@ Game::Initialise()
 
 	//Set up player
 	PlayerSpriteInit();
-	m_Player = new Player();
-	m_Player->Initialise(m_playerAnim);
-	m_Player->SetCurrentHealth(5);
-	m_Player->SetMaxHealth(5);
+	m_player = new Player();
+	m_player->Initialise(m_playerAnim, m_world);
+	m_player->SetCurrentHealth(5);
+	m_player->SetMaxHealth(5);
 
 	//Game map setup
 	m_gameMap = new GameMap();
@@ -123,18 +123,10 @@ Game::Initialise()
 	//velocityIterations 
 	m_velocityIterations = 10;
 	m_positionIterations = 10;
-	m_timeStep = 1.0f / 60.0f;
+	m_timeStep = 1.0f / 20.0f;
 	b2Vec2 gravity(0.0f, 0.0f);
 	m_world.SetGravity(gravity);
-	//Box2D TESTING PURPOSES ONLY
-	m_testBodyDef.type = b2_dynamicBody;
-	m_testBodyDef.position.Set(m_Player->GetPositionX(), m_Player->GetPositionY());
-	m_testBodyDef.angle = 0;
-	m_testBody = m_world.CreateBody(&m_testBodyDef);
-	m_testShape.SetAsBox(1, 1);
-	m_testFixtureDef.shape = &m_testShape;
-	m_testFixtureDef.density = 1;
-	m_testBody->CreateFixture(&m_testFixtureDef);
+	m_world.SetContactListener(&m_collisionListener);
 
 	//Gold label - using a stringstream to concat strings
 	std::ostringstream goldStream;
@@ -195,15 +187,10 @@ Game::Process(float deltaTime)
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
-		//Box2D simulation loop
 	}
 	//Box2D simulation loop
 	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
-	b2Vec2 testObjPosition = m_testBody->GetPosition();
-	//Player process
-	m_Player->SetPositionX(testObjPosition.x);
-	m_Player->SetPositionY(testObjPosition.y);
-	m_Player->Process(deltaTime);
+	m_player->Process(deltaTime);
 
 	//Process Pickups
 	//Create iterator to loop through and delete pickups that have been picked up
@@ -222,7 +209,7 @@ Game::Process(float deltaTime)
 		else 
 		{
 			//Check if player can pickup, and apply rewards if they do
-			if (m_Player->CheckPickup(*current))
+			if (m_player->CheckPickup(*current))
 			{
 				//Sort out reward
 				if (current->GetPickupType() == HEALTH)
@@ -251,10 +238,10 @@ Game::Draw(BackBuffer& backBuffer)
 
 	int x = m_width - 130;
 	m_gameMap->Draw(backBuffer);
-	for (int i = 0; i < m_Player->GetMaxHealth(); i++)
+	for (int i = 0; i < m_player->GetMaxHealth(); i++)
 	{
 		
-		if (i < m_Player->GetCurrentHealth()) 
+		if (i < m_player->GetCurrentHealth()) 
 		{
 			m_HealthSprite->SetX(x);
 			m_HealthSprite->SetY(0);
@@ -269,7 +256,7 @@ Game::Draw(BackBuffer& backBuffer)
 		
 		x -= 70;
 	}
-	m_Player->Draw(backBuffer);
+	m_player->Draw(backBuffer);
 
 	//Draw test label
 	m_goldLabel->Draw(backBuffer);
@@ -291,7 +278,7 @@ Game::Quit()
 
 void Game::UpdatePlayerHealth(int amount)
 {
-	m_Player->UpdatePlayerHealth(amount);
+	m_player->UpdatePlayerHealth(amount);
 
 }
 
@@ -308,54 +295,54 @@ Game::PlayerSpriteInit()
 
 void
 Game::UpdatePlayer(Direction direction)
-{
-
-	
+{	
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
 	b2Vec2 velocity;
 	switch (direction)
 	{
 	case Direction::UP:
-		m_Player->SetVerticalVelocity(-200.0f);
+		//m_player->SetVerticalVelocity(-200.0f);
 		velocity.x = 0.0f;
 		velocity.y = -200.0f;
-		m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(velocity);
+		//m_testBody->SetLinearVelocity(velocity);
 		break;
 	case Direction::DOWN:
-		m_Player->SetVerticalVelocity(200.0f);
+		//m_player->SetVerticalVelocity(200.0f);
 		velocity.x = 0.0f;
 		velocity.y = 200.0f;
-		m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(velocity);
 		break;
 	case Direction::LEFT:
-		m_Player->SetHorizontalVelocity(-200.0f);
+		//m_player->SetHorizontalVelocity(-200.0f);
 		velocity.x = -200.0f;
 		velocity.y = 0.0f;
-		m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(velocity);
 		break;
 	case Direction::RIGHT:
-		m_Player->SetHorizontalVelocity(200.0f);
+		//m_player->SetHorizontalVelocity(200.0f);
 		velocity.x = 200.0f;
 		velocity.y = 0.0f;
-		m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(velocity);
 		break;
 	case Direction::STOP:
-		m_Player->SetVerticalVelocity(0.0f);
-		m_Player->SetHorizontalVelocity(0.0f);
+		//m_player->SetVerticalVelocity(0.0f);
+		//m_player->SetHorizontalVelocity(0.0f);
 		velocity.x = 0.0f;
 		velocity.y = 0.0f;
-		m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(velocity);
 		break;
 	case Direction::RESET://Debug, reset position to middle of screen
-		m_Player->SetVerticalVelocity(0.0f);
-		m_Player->SetHorizontalVelocity(0.0f);
-		m_Player->SetPositionX(m_width/2);
-		m_Player->SetPositionY(m_height /2);
+		//m_player->SetVerticalVelocity(0.0f);
+		//m_player->SetHorizontalVelocity(0.0f);
+		//m_player->SetPositionX(m_width/2);
+		//m_player->SetPositionY(m_height /2);
+		m_gameMap->GetMapObjectAtPosition(0, 0).StartContact();
 		break;
 	}
 
-	m_Player->UpdatePlayerDirection(direction);
+	m_player->UpdatePlayerDirection(direction);
 }
 
 void
@@ -415,4 +402,10 @@ void Game::SpawnPickup(int x, int y, PickupType type)
 		heartPickup->SetPosition(x, y);
 		m_pickups.push_back(heartPickup);
 	}
+}
+
+void
+Game::CheckForCollision()
+{
+
 }

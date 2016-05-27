@@ -8,8 +8,8 @@
 #include "conversion.h"
 #include <vector>
 #include <box2d.h>
-#define M_PIXELTOMETERS = 0.156f;
-#define M_METERSTOPIXELS = 64.0f;
+#include "conversion.h"
+#include "collisionlistener.h"
 
 // Forward Declarations
 class BackBuffer;
@@ -36,10 +36,9 @@ public:
 	void UpdatePlayerHealth(int amount);
 	void UpdatePlayer(Direction direction);
 	void UpdateGold(int amount);
-
 	void SpawnPickup(int x, int y, PickupType type);
-
 	void ToggleDebug();
+	void CheckForCollision();
 protected:
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backBuffer);
@@ -81,7 +80,7 @@ protected:
 	AnimatedSprite* m_playerAnim;
 
 	//Player
-	Player* m_Player;
+	Player* m_player;
 
 	//Box2D Data world setup
 	b2Vec2 m_gravity;
@@ -89,17 +88,6 @@ protected:
 	int32 m_velocityIterations;
 	int32 m_positionIterations;
 	float32 m_timeStep;
-	//box2d test code
-	b2BodyDef m_testBodyDef;
-	b2Body* m_testBody;
-	b2PolygonShape m_testShape;
-	b2FixtureDef m_testFixtureDef;
-	Sprite* m_testSprite;
-	//testing bottom screen collider
-	b2BodyDef m_bottomWorldDef;
-	b2Body* m_bottomWorldColliderBody;
-	b2PolygonShape m_bottomWorldShape;
-	b2FixtureDef m_bottomWorldFixtureDef;
 
 	//Player Gold
 	Label* m_goldLabel;
@@ -110,6 +98,8 @@ protected:
 	//Game Map
 	GameMap* m_gameMap;
 
+	//Collision Listener
+	CollisionListener m_collisionListener;
 private:
 
 };

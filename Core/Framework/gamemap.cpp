@@ -146,12 +146,13 @@ GameMap::Draw(BackBuffer &backBuffer)
 			{
 				m_objectContainer.at(i)->at(j).Draw(backBuffer);
 			}
+			/*Debug Code
 			if (m_objectContainer.at(i)->at(j).GetTileReprensentation() == 'B')
 			{
 				std::string objectPosition = "Pos X: " + std::to_string(m_objectContainer.at(i)->at(j).GetObjectBodyDef().position.x) +
 					"Pos Y: " + std::to_string(m_objectContainer.at(i)->at(j).GetObjectBodyDef().position.y);
 				SDL_Log(objectPosition.c_str());
-			}
+			}*/
 		}
 	}
 }
@@ -165,5 +166,37 @@ GameMap::Process(float deltaTime)
 		{
 			m_objectContainer.at(i)->at(j).Process(deltaTime);
 		}
+	}
+}
+MapObject&
+GameMap::GetMapObjectAtPosition(float x, float y)
+{
+	int tileRow = 0;
+	int tileCol = 0;
+	if (x == 0)
+	{
+		tileRow = 0;
+	}
+	else
+	{
+		tileRow = x / 64.0f;
+		tileRow = x / 64.0f;
+	}
+	if (y == 0)
+	{
+		tileCol = 0;
+	}
+	else
+	{
+		tileCol = y / 64.0f;
+	}
+	if ((m_objectContainer.at(tileCol)->at(tileRow).GetTileReprensentation() == 'B'))
+	{
+		return (m_objectContainer.at(tileCol)->at(tileRow));
+	}
+	else
+	{
+		MapObject* m = new MapObject();
+		return (*m);
 	}
 }

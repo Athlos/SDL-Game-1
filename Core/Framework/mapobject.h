@@ -35,6 +35,8 @@ public:
 	void SetIfBreakable(bool isBreakable);
 	void SetPositionX(int x);
 	void SetPositionY(int y);
+	void StartContact();
+	void EndContact();
 protected:
 private:
 	//Member Data
@@ -52,5 +54,7 @@ private:
 	b2Body* m_objectBody;
 	b2PolygonShape m_objectShape;
 	b2FixtureDef m_objectFixtureDef;
+
+	bool m_isColliding;
 };
 #endif // !__MAPOBJECT_H__
