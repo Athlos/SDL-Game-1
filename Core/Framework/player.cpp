@@ -153,6 +153,7 @@ Player::SetupCollision(b2World& m_world)
 	m_playerFixtureDef.density = 1;
 	m_playerBody->CreateFixture(&m_playerFixtureDef);
 	m_playerBody->SetUserData(this);
+	m_playerBody->SetBullet(true);
 }
 
 void

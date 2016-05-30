@@ -48,7 +48,6 @@ MapObject::Initialise(BackBuffer & backBuffer, char TileRepresentation)
 	default:
 		return false;
 	}
-	
 }
 
 void
@@ -74,7 +73,6 @@ MapObject::SetupCollision(b2World& m_world)
 void
 MapObject::Draw(BackBuffer &backBuffer)
 {
-		
 	if (m_tileRepresentation != 'E')
 	{//draw
 		if (m_isColliding)
