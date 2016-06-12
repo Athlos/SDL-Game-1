@@ -109,8 +109,10 @@ Entity::SetVerticalVelocity(float y)
 void 
 Entity::SetPosition(int x, int y)
 {
-	m_x = x * METRESTOPIXELS;
-	m_y = y * METRESTOPIXELS;
+	m_x = x;
+	m_y = y;
+	m_pSprite->SetX(static_cast<int>(m_x));
+	m_pSprite->SetY(static_cast<int>(m_y));
 }
 
 bool

@@ -46,11 +46,11 @@ void Player::Draw(BackBuffer& backBuffer)
 	//TESTING FOR COLLISION
 	if (m_isColliding)
 	{
-		m_animSprite->SetWidth(32.0f);
+		m_animSprite->SetWidth(32);
 	}
 	else
 	{
-		m_animSprite->SetWidth(64.0f);
+		m_animSprite->SetWidth(64);
 	}
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);

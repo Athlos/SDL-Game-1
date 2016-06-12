@@ -237,11 +237,26 @@ Game::Draw(BackBuffer& backBuffer)
 	backBuffer.Clear();
 
 	int x = m_width - 130;
+	//Draw Map
 	m_gameMap->Draw(backBuffer);
+
+	//Draw Pickups
+	for each (Pickup* p in m_pickups) 
+	{
+		p->Draw(backBuffer);
+	}
+
+	//Draw player
+	m_player->Draw(backBuffer);
+
+	//Draw gold
+	m_goldLabel->Draw(backBuffer);
+
+	//Draw health
 	for (int i = 0; i < m_player->GetMaxHealth(); i++)
 	{
-		
-		if (i < m_player->GetCurrentHealth()) 
+
+		if (i < m_player->GetCurrentHealth())
 		{
 			m_HealthSprite->SetX(x);
 			m_HealthSprite->SetY(0);
@@ -253,18 +268,8 @@ Game::Draw(BackBuffer& backBuffer)
 			m_HealthLostSprite->SetY(0);
 			m_HealthLostSprite->Draw(backBuffer);
 		}
-		
+
 		x -= 70;
-	}
-	m_player->Draw(backBuffer);
-
-	//Draw test label
-	m_goldLabel->Draw(backBuffer);
-
-	//Draw Pickups
-	for each (Pickup* p in m_pickups) 
-	{
-		p->Draw(backBuffer);
 	}
 
 	backBuffer.Present();
@@ -384,7 +389,7 @@ void Game::SpawnPickup(int x, int y, PickupType type)
 	if (type == GOLD)
 	{
 		AnimatedSprite* goldAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Gold_Spin.png");
-		Pickup* goldPickup = new Pickup();
+		Pickup* goldPickup = new Pickup(m_world);
 		goldAnim->LoadFrames(64, 64);
 		goldAnim->SetFrameSpeed(0.12f);
 		goldPickup->Initialise(goldAnim);
@@ -395,7 +400,7 @@ void Game::SpawnPickup(int x, int y, PickupType type)
 	else if (type == HEALTH)
 	{
 		AnimatedSprite* heartAnim = m_pBackBuffer->CreateAnimatedSprite("Assets//Health_Heart_Pickup.png");
-		Pickup* heartPickup = new Pickup();
+		Pickup* heartPickup = new Pickup(m_world);
 		heartAnim->LoadFrames(64, 64);
 		heartAnim->SetFrameSpeed(0.12f);
 		heartPickup->Initialise(heartAnim);

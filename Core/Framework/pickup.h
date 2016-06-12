@@ -12,12 +12,14 @@ enum PickupType
 class Pickup : public Entity
 {
 public:
-	Pickup();
+	Pickup(b2World& world);
 	~Pickup();
 
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backbuffer);
 	bool Initialise(AnimatedSprite* p_animSprite);
+	void SetPosition(int x, int y);
+
 
 	void SetPickedUp(bool isPickedUp);
 	bool IsPickedUp();

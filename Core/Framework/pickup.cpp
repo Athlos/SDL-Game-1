@@ -2,7 +2,7 @@
 #include <cassert>
 
 
-Pickup::Pickup()
+Pickup::Pickup(b2World& world)
 {
 	m_x = 500;
 	m_y = 500;
@@ -20,6 +20,8 @@ Pickup::Pickup()
 
 	//default type is heart
 	m_type = HEALTH;
+
+	Entity::SetupCollision(world);
 }
 
 
@@ -85,4 +87,12 @@ void Pickup::Draw(BackBuffer& backBuffer)
 		return;
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);
+}
+
+void Pickup::SetPosition(int x, int y)
+{
+	m_x = x;
+	m_y = y;
+	m_animSprite->SetX(static_cast<int>(m_x));
+	m_animSprite->SetY(static_cast<int>(m_y));
 }
