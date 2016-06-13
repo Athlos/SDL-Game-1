@@ -9,7 +9,6 @@
 #include "texture.h"
 #include "animatedsprite.h"
 #include "player.h"
-#include "physics.h"
 #include "entity.h"
 #include "label.h"
 #include "pickup.h"

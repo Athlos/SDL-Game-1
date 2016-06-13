@@ -159,7 +159,7 @@ Player::SetupCollision(b2World& m_world)
 	m_playerBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
 	m_playerBodyDef.angle = 0;
 	m_playerBody = m_world.CreateBody(&m_playerBodyDef);
-	m_playerShape.SetAsBox(1, 1);
+	m_playerShape.SetAsBox(28, 28);
 	m_playerFixtureDef.shape = &m_playerShape;
 	m_playerFixtureDef.density = 1;
 	m_playerBody->CreateFixture(&m_playerFixtureDef);

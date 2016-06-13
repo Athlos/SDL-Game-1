@@ -57,14 +57,7 @@ MapObject::SetupCollision(b2World& m_world)
 	m_objectBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
 	m_objectBodyDef.angle = 0;
 	m_objectBody = m_world.CreateBody(&m_objectBodyDef);
-	if (m_tileRepresentation == 'B')
-	{
-		m_objectShape.SetAsBox(m_objectSprite->GetWidth() / 3 * 2, m_objectSprite->GetHeight() / 3 * 2);
-	}
-	else
-	{
-		m_objectShape.SetAsBox(1, 1);
-	}
+	m_objectShape.SetAsBox(32, 32);
 	m_objectFixtureDef.shape = &m_objectShape;
 	m_objectFixtureDef.density = 1;
 	m_objectBody->CreateFixture(&m_objectFixtureDef);
@@ -87,18 +80,8 @@ MapObject::Draw(BackBuffer &backBuffer)
 		assert(m_objectSprite);
 		m_objectSprite->Draw(backBuffer);
 	}//otherwise don't
-
-	if (m_tileRepresentation == 'B')
-	{
-		backBuffer.DrawRectangleUnfilled(m_objectBody->GetPosition().x, m_objectBody->GetPosition().y, 
-			m_objectBody->GetPosition().x + ((2.0f / 3.0f)*64), m_objectBody->GetPosition().y + ((2.0f / 3.0f)*64));
-	}
-	else
-	{
-		backBuffer.DrawRectangleUnfilled(m_objectBody->GetPosition().x, m_objectBody->GetPosition().y, 
-			m_objectBody->GetPosition().x + 64, m_objectBody->GetPosition().y + 64);
-	}
-	
+	backBuffer.DrawRectangleUnfilled(m_objectBody->GetPosition().x, m_objectBody->GetPosition().y, 
+		m_objectBody->GetPosition().x + 64, m_objectBody->GetPosition().y + 64);
 }
 
 void

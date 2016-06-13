@@ -98,7 +98,6 @@
     <ClInclude Include="logmanager.h" />
     <ClInclude Include="mapobject.h" />
     <ClInclude Include="maptile.h" />
-    <ClInclude Include="physics.h" />
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sprite.h" />
@@ -119,7 +118,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapobject.cpp" />
     <ClCompile Include="maptile.cpp" />
-    <ClCompile Include="physics.cpp" />
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
