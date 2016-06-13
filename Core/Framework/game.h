@@ -30,6 +30,7 @@ public:
 	static void DestroyInstance();
 	~Game();
 	bool Initialise();
+	void InitialiseData();
 	bool DoGameLoop();
 	void Quit();
 
@@ -46,6 +47,11 @@ public:
 
 	//Combat, mainly debugging atm
 	void PlayerAttack();
+
+	bool GameOver();
+	void RestartGame();
+	void SaveGame();
+	void LoadGame();
 
 protected:
 	void Process(float deltaTime);
@@ -79,6 +85,10 @@ protected:
 	bool m_toggleDebug;
 	int m_width;
 	int m_height;
+
+	//Game over
+	Label* m_gameOver;
+	Label* m_restartGame;
 
 	//Sprites
 	Sprite* m_HealthSprite;

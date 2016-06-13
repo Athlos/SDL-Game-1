@@ -101,6 +101,14 @@ Game::Initialise()
 		return (false);
 	}
 
+	InitialiseData();
+
+	return (true);
+}
+
+void
+Game::InitialiseData()
+{
 	//Health Sprites
 	m_HealthSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart.png");
 	m_HealthLostSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart_Depleted.png");
@@ -135,10 +143,18 @@ Game::Initialise()
 	m_goldLabel = new Label(goldStream.str());
 	m_goldLabel->SetColour(218, 165, 32, 0);
 
+	//Game over labels
+	m_gameOver = new Label("GAME OVER!");
+	m_gameOver->SetBounds(440, 290, 400, 100);
+	m_gameOver->SetColour(255, 0, 0, 0);
+
+	
+	m_restartGame = new Label("press f5 to restart");
+	m_restartGame->SetBounds(440, 390, 400, 30);
+	m_restartGame->SetColour(0, 0, 0, 0);
+
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
-
-	return (true);
 }
 
 bool 
@@ -188,6 +204,12 @@ Game::Process(float deltaTime)
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
+	}
+
+	//Check if the player is alive and game is running
+	if (GameOver())
+	{
+		return;
 	}
 	//Box2D simulation loop
 	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
@@ -257,7 +279,7 @@ Game::Process(float deltaTime)
 		else
 		{
 			//Process enemy
-			current->Process(deltaTime);
+			current->Process(deltaTime, m_player);
 			enemyI++;
 		}
 	}
@@ -313,6 +335,13 @@ Game::Draw(BackBuffer& backBuffer)
 		}
 
 		x -= 70;
+	}
+
+	//If game is over
+	if (GameOver())
+	{
+		m_gameOver->Draw(backBuffer);
+		m_restartGame->Draw(backBuffer);
 	}
 
 	backBuffer.Present();
@@ -469,8 +498,8 @@ Game::SpawnEnemy(int x, int y)
 	enemySprite->StartAnimating();
 	newEnemy->Initialise(enemySprite, m_world);
 	newEnemy->SetPosition(x, y);
-	newEnemy->SetCurrentHealth(1);
-	newEnemy->SetMaxHealth(1);
+	newEnemy->SetCurrentHealth(3);
+	newEnemy->SetMaxHealth(3);
 	m_enemies.push_back(newEnemy);
 }
 
@@ -493,7 +522,61 @@ Game::PlayerAttack()
 
 		if (xDifference < 128 && yDifference < 128)
 		{
-			e->SetCurrentHealth(0);
+			e->UpdateEnemyHealth(-1);
 		}
 	}
+}
+
+bool
+Game::GameOver()
+{
+	if (m_player->GetCurrentHealth() <= 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+void
+Game::RestartGame()
+{
+	//SO MANY LEAKS
+	//Clean up data
+	m_enemies.clear();
+	m_pickups.clear();
+	m_gold = 0;
+
+	//clear out pointers
+	
+	delete(m_HealthSprite);
+	m_HealthSprite = 0;
+
+	delete(m_player);
+	m_player = 0;
+
+	delete(m_gameMap);
+	m_gameMap = 0;
+
+	delete(m_goldLabel);
+	m_goldLabel = 0;
+
+	delete(m_gameOver);
+	m_gameOver = 0;
+
+	delete(m_restartGame);
+	m_restartGame = 0;
+
+	InitialiseData();
+}
+
+void
+Game::SaveGame()
+{
+	//TODO
+}
+
+void
+Game::LoadGame()
+{
+	//TODO
 }

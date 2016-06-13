@@ -91,8 +91,8 @@ InputHandler::ProcessInput(Game& game)
 			case SDLK_6:
 				{
 					//Spawn an enemy
-					int enemyX = rand() % 1800;
-					int enemyY = rand() % 1000;
+					int enemyX = rand() % 1280;
+					int enemyY = rand() % 720;
 					game.SpawnEnemy(enemyX, enemyY);
 					debugString = "Enemy spawned at: " + std::to_string(enemyX) + ", " + std::to_string(enemyY);
 					SDL_Log(debugString.c_str());
@@ -104,6 +104,10 @@ InputHandler::ProcessInput(Game& game)
 				game.PlayerAttack();
 			}
 			break;
+			case SDLK_F5:
+				//Restart Game
+				game.RestartGame();
+				break;
 			case SDLK_w:
 				SDL_Log("up");
 				game.UpdatePlayer(Direction::UP);
