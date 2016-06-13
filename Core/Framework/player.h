@@ -49,8 +49,6 @@ public:
 protected:
 private:
 	AnimatedSprite* m_animSprite;
-	int m_x;
-	int m_y;
 
 	//Health 
 	int m_MaxHealth;

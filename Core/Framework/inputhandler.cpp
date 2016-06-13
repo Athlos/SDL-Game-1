@@ -45,7 +45,7 @@ InputHandler::ProcessInput(Game& game)
 	SDL_Event e;
 	SDL_PumpEvents();
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
-	std::string mousePosition = "";
+	std::string debugString = "";
 	while (SDL_PollEvent(&e) != 0)
 	{
 		switch (e.type)
@@ -54,8 +54,8 @@ InputHandler::ProcessInput(Game& game)
 			//print the position to command line
 			int x, y;
 			SDL_GetMouseState(&x, &y);
-			mousePosition = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
-			SDL_Log(mousePosition.c_str());
+			debugString = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
+			SDL_Log(debugString.c_str());
 			break;
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
@@ -78,15 +78,32 @@ InputHandler::ProcessInput(Game& game)
 				break;
 			case SDLK_5:
 				//Spawn random pickups
-				for (int i = 0; i < rand() % 30; i++)
+				for (int i = 0; i < 1; i++)
 				{
 					game.SpawnPickup(rand() % 1800, rand() % 1000, GOLD);
 				}
+				/*
 				for (int i = 0; i < rand() % 10; i++)
 				{
 					game.SpawnPickup(rand() % 1800, rand() % 1000, HEALTH);
+				}*/
+				break;
+			case SDLK_6:
+				{
+					//Spawn an enemy
+					int enemyX = rand() % 1800;
+					int enemyY = rand() % 1000;
+					game.SpawnEnemy(enemyX, enemyY);
+					debugString = "Enemy spawned at: " + std::to_string(enemyX) + ", " + std::to_string(enemyY);
+					SDL_Log(debugString.c_str());
 				}
 				break;
+			case SDLK_SPACE:
+			{
+				//Kill an enemy
+				game.PlayerAttack();
+			}
+			break;
 			case SDLK_w:
 				SDL_Log("up");
 				game.UpdatePlayer(Direction::UP);

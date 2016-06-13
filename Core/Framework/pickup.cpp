@@ -87,6 +87,7 @@ void Pickup::Draw(BackBuffer& backBuffer)
 		return;
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);
+	backBuffer.DrawRectangleUnfilled(m_x, m_y, m_x + 64, m_y + 64);
 }
 
 void Pickup::SetPosition(int x, int y)

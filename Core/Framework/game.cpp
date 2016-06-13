@@ -14,6 +14,7 @@
 #include "label.h"
 #include "pickup.h"
 #include "gamemap.h"
+#include "enemy.h"
 
 // Library includes:
 #include <cassert>
@@ -205,6 +206,7 @@ Game::Process(float deltaTime)
 		{
 			pickupI = m_pickups.erase(pickupI);
 			delete current;
+			current = 0;
 		}
 		else 
 		{
@@ -223,6 +225,40 @@ Game::Process(float deltaTime)
 			}
 			current->Process(deltaTime);
 			pickupI++;
+		}
+	}
+
+	//Process enemies
+	//Create iterator to loop through and delete enemies that have died
+	std::vector<Enemy*>::iterator enemyI = m_enemies.begin();
+
+	//Loop through all enemies
+	while (enemyI != m_enemies.end()) {
+		Enemy* current = *enemyI;
+
+		//If enemy is dead
+		if (current->IsDead())
+		{
+			//Drop Pickups 
+			for (int i = 0; i < rand() % 5; i++)
+			{
+				SpawnPickup(current->GetPositionX() + (rand() % 64) - 32, current->GetPositionY() + (rand() % 64) - 32, GOLD);
+			}
+			for (int i = 0; i < rand() % 2; i++)
+			{
+				SpawnPickup(current->GetPositionX() + (rand() % 64) - 32, current->GetPositionY() + (rand() % 64) - 32, HEALTH);
+			}
+
+			//Remove from game
+			enemyI = m_enemies.erase(enemyI);
+			delete current;
+			current = 0;
+		}
+		else
+		{
+			//Process enemy
+			current->Process(deltaTime);
+			enemyI++;
 		}
 	}
 
@@ -246,8 +282,15 @@ Game::Draw(BackBuffer& backBuffer)
 		p->Draw(backBuffer);
 	}
 
+	//Draw Enemies
+	for each (Enemy* e in m_enemies)
+	{
+		e->Draw(backBuffer);
+	}
+
 	//Draw player
 	m_player->Draw(backBuffer);
+
 
 	//Draw gold
 	m_goldLabel->Draw(backBuffer);
@@ -413,4 +456,44 @@ void
 Game::CheckForCollision()
 {
 
+}
+
+void
+Game::SpawnEnemy(int x, int y)
+{
+	Enemy* newEnemy = new Enemy();
+	AnimatedSprite* enemySprite = m_pBackBuffer->CreateAnimatedSprite("Assets//enemyPlaceholder.png");
+
+	//Default load of sprite sheet
+	enemySprite->LoadFrames(64, 64);
+	enemySprite->StartAnimating();
+	newEnemy->Initialise(enemySprite, m_world);
+	newEnemy->SetPosition(x, y);
+	newEnemy->SetCurrentHealth(1);
+	newEnemy->SetMaxHealth(1);
+	m_enemies.push_back(newEnemy);
+}
+
+void
+Game::PlayerAttack()
+{
+	//kill any enemies within 128 pixels of player
+	for each (Enemy* e in m_enemies)
+	{
+		int xDifference = e->GetPositionX() - m_player->GetPositionX();
+		int yDifference = e->GetPositionY() - m_player->GetPositionY();
+
+		if (xDifference < 0) {
+			xDifference *= -1;
+		}
+
+		if (yDifference < 0) {
+			yDifference *= -1;
+		}
+
+		if (xDifference < 128 && yDifference < 128)
+		{
+			e->SetCurrentHealth(0);
+		}
+	}
 }

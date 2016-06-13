@@ -20,6 +20,7 @@ class Player;
 class Entity;
 class Label;
 class GameMap;
+class Enemy;
 
 class Game
 {
@@ -36,9 +37,16 @@ public:
 	void UpdatePlayerHealth(int amount);
 	void UpdatePlayer(Direction direction);
 	void UpdateGold(int amount);
+
+	//Spawn & Debug functions
+	void SpawnEnemy(int x, int y);
 	void SpawnPickup(int x, int y, PickupType type);
 	void ToggleDebug();
 	void CheckForCollision();
+
+	//Combat, mainly debugging atm
+	void PlayerAttack();
+
 protected:
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backBuffer);
@@ -82,6 +90,9 @@ protected:
 	//Player
 	Player* m_player;
 
+	//Enemy
+	std::vector<Enemy*> m_enemies;
+
 	//Box2D Data world setup
 	b2Vec2 m_gravity;
 	b2World m_world;
@@ -93,6 +104,7 @@ protected:
 	Label* m_goldLabel;
 	int m_gold;
 
+	//Pickups
 	std::vector<Pickup*> m_pickups;
 
 	//Game Map

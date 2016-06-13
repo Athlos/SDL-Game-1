@@ -36,6 +36,8 @@ Player::Initialise(AnimatedSprite* p_animSprite, b2World& m_world)
 
 void Player::Process(float deltaTime)
 {
+	m_x = m_playerBody->GetPosition().x;
+	m_y = m_playerBody->GetPosition().y;
 	m_animSprite->SetX(static_cast<int>(m_playerBody->GetPosition().x));
 	m_animSprite->SetY(static_cast<int>(m_playerBody->GetPosition().y));
 	m_animSprite->Process(deltaTime);
@@ -54,6 +56,7 @@ void Player::Draw(BackBuffer& backBuffer)
 	}
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);
+	backBuffer.DrawRectangleUnfilled(m_x, m_y, m_x + 64, m_y + 64);
 }
 
 void
@@ -134,8 +137,16 @@ bool Player::CheckPickup(Pickup & pickup)
 			if (pickup.IsPickedUp())
 				return false;
 			//Pickup is now in range
-			pickup.SetPickedUp(true);
-			return true;
+			//If pickup is health, check if player needs health
+			if (pickup.GetPickupType() == HEALTH && m_CurrentHealth == m_MaxHealth)
+			{
+				return false;
+			}
+			else 
+			{
+				pickup.SetPickedUp(true);
+				return true;
+			}
 		}
 	}
 	return false;

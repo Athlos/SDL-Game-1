@@ -265,3 +265,15 @@ SDL_Texture* BackBuffer::CreateText(std::string text, SDL_Color colour)
 	return tTexture;
 
 }
+
+void
+BackBuffer::DrawRectangleUnfilled(int x1, int y1, int x2, int y2)
+{
+	SDL_Rect unfillRect;
+
+	unfillRect.x = x1;
+	unfillRect.y = y1;
+	unfillRect.w = x2 - x1;
+	unfillRect.h = y2 - y1;
+	SDL_RenderDrawRect(m_pRenderer, &unfillRect);
+}

@@ -63,7 +63,7 @@ MapObject::SetupCollision(b2World& m_world)
 	}
 	else
 	{
-		m_objectShape.SetAsBox(m_objectSprite->GetWidth(), m_objectSprite->GetHeight());
+		m_objectShape.SetAsBox(1, 1);
 	}
 	m_objectFixtureDef.shape = &m_objectShape;
 	m_objectFixtureDef.density = 1;
@@ -87,6 +87,18 @@ MapObject::Draw(BackBuffer &backBuffer)
 		assert(m_objectSprite);
 		m_objectSprite->Draw(backBuffer);
 	}//otherwise don't
+
+	if (m_tileRepresentation == 'B')
+	{
+		backBuffer.DrawRectangleUnfilled(m_objectBody->GetPosition().x, m_objectBody->GetPosition().y, 
+			m_objectBody->GetPosition().x + ((2.0f / 3.0f)*64), m_objectBody->GetPosition().y + ((2.0f / 3.0f)*64));
+	}
+	else
+	{
+		backBuffer.DrawRectangleUnfilled(m_objectBody->GetPosition().x, m_objectBody->GetPosition().y, 
+			m_objectBody->GetPosition().x + 64, m_objectBody->GetPosition().y + 64);
+	}
+	
 }
 
 void
