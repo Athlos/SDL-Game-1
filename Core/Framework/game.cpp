@@ -70,6 +70,7 @@ Game::Game()
 , m_toggleDebug(false)
 , m_gold(0)
 , m_world(m_gravity)
+, m_waypointMode(false)
 {
 	srand(time(0));
 }
@@ -147,10 +148,15 @@ Game::InitialiseData()
 	m_gameOver->SetBounds(440, 290, 400, 100);
 	m_gameOver->SetColour(255, 0, 0, 0);
 
-	
+	//Restart game label
 	m_restartGame = new Label("press f5 to restart");
 	m_restartGame->SetBounds(440, 390, 400, 30);
 	m_restartGame->SetColour(0, 0, 0, 0);
+
+	//Debug - Waypoint mode label
+	m_waypointModeLabel = new Label("Waypoint Mode");
+	m_waypointModeLabel->SetBounds(440, 100, 400, 30);
+	m_waypointModeLabel->SetColour(0, 0, 255, 0);
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
@@ -342,6 +348,22 @@ Game::Draw(BackBuffer& backBuffer)
 		m_gameOver->Draw(backBuffer);
 		m_restartGame->Draw(backBuffer);
 	}
+	
+	//Debug labels
+
+	//Waypoint mode
+	if (m_waypointMode)
+	{
+		//Draw label
+		m_waypointModeLabel->Draw(backBuffer);
+
+		//Draw waypoints of enemies
+		for each (Enemy* e in m_enemies)
+		{
+			e->DrawWaypoints(backBuffer);
+		}
+	}
+	
 
 	backBuffer.Present();
 }
@@ -578,4 +600,21 @@ void
 Game::LoadGame()
 {
 	//TODO
+}
+
+void
+Game::WaypointMode()
+{
+	m_waypointMode = !m_waypointMode;
+}
+
+void
+Game::PlaceWaypoint(int x, int y)
+{
+	//Only place in waypoint mode, and if 1 enemy at least is on the map
+	if (!m_waypointMode || m_enemies.size() == 0)
+	{
+		return;
+	}
+	m_enemies.at(0)->AddWaypoint(x, y);
 }

@@ -2,8 +2,17 @@
 
 #include "entity.h"
 
+#include <vector>
+
 class Player;
 
+enum EnemyState
+{
+	ATTACKING,
+	CHARGING,
+	PATROLLING,
+	IDLING
+};
 
 class Enemy : public Entity
 {
@@ -16,6 +25,7 @@ public:
 	void Process(float deltaTime, Player* player);
 	void Draw(BackBuffer& backbuffer);
 	void SetPosition(float x, float y);
+	void SetEnemyState(EnemyState state);
 
 	//Health functions
 	int GetCurrentHealth();
@@ -30,9 +40,18 @@ public:
 	//Combat
 	void ApproachPlayer();
 	void AttackPlayer(Player* player);
+	bool IsInRange(int x, int y, int range);
 	
 	//Drop loot
 	void GetReward();
+
+	//Movement and waypoints
+	void AddWaypoint(int x, int y);
+	void MoveTo(int x, int y, float deltaTime);
+	void UpdateWaypoints();
+
+	//Debug 
+	void DrawWaypoints(BackBuffer& backbuffer);
 
 	//Member Data:
 public:
@@ -42,14 +61,25 @@ protected:
 private:
 	AnimatedSprite* m_pSprite;
 
+	EnemyState m_enemyState;
+
 	//Health 
-	int m_MaxHealth;
-	int m_CurrentHealth;
+	int m_maxHealth;
+	int m_currentHealth;
 
-	//Enemy movement speed
+	//Detection and attack
+	int m_attackRange;
+	int m_detectRange;
+
+	//Enemy movement
 	float m_speed;
+	std::vector<SDL_Point*> m_waypoints;
+	SDL_Point* m_currentWaypoint;
+	int m_currentWaypointIndex;
+	bool m_loopPatrol;
 
-	//Enemy attack cooldown
+	//Enemy attack
+	int m_attackDamage;
 	float m_attackSpeed;
 	float m_attackSpeedTimer;
 };

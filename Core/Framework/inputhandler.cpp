@@ -56,6 +56,7 @@ InputHandler::ProcessInput(Game& game)
 			SDL_GetMouseState(&x, &y);
 			debugString = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
 			SDL_Log(debugString.c_str());
+			game.PlaceWaypoint(x, y);
 			break;
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
@@ -107,6 +108,10 @@ InputHandler::ProcessInput(Game& game)
 			case SDLK_F5:
 				//Restart Game
 				game.RestartGame();
+				break;
+			case SDLK_F1:
+				//Waypoint mode
+				game.WaypointMode();
 				break;
 			case SDLK_w:
 				SDL_Log("up");

@@ -53,6 +53,10 @@ public:
 	void SaveGame();
 	void LoadGame();
 
+	//Debug
+	void WaypointMode();
+	void PlaceWaypoint(int x, int y);
+
 protected:
 	void Process(float deltaTime);
 	void Draw(BackBuffer& backBuffer);
@@ -122,6 +126,11 @@ protected:
 
 	//Collision Listener
 	CollisionListener m_collisionListener;
+
+	//Debug
+	bool m_waypointMode;
+	Label* m_waypointModeLabel;
+
 private:
 
 };
