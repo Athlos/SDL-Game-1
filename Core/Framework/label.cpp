@@ -63,3 +63,9 @@ void Label::SetBounds(int x, int y, int w, int h) {
 SDL_Rect Label::GetBounds() {
 	return m_bounds;
 }
+
+bool
+Label::WasClickedOn(int x, int y)
+{
+	return ((x > m_bounds.x) && (x < m_bounds.x + m_bounds.w) && (y > m_bounds.y) && (y < m_bounds.y + m_bounds.h));
+}

@@ -14,6 +14,7 @@
 #include "pickup.h"
 #include "gamemap.h"
 #include "enemy.h"
+#include "mainmenu.h"
 
 // Library includes:
 #include <cassert>
@@ -24,6 +25,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <string>
 //Box2D includes:
 #include <box2d.h>
 
@@ -74,6 +76,10 @@ Game::Game()
 , m_enemySelectedIndex(0)
 , m_pathToLoadCounter(0)
 , m_pathToSaveCounter(0)
+, m_inMainMenu(true)
+, m_isGameRunning(false)
+, m_debugConsoleOpen(false)
+, m_debugString("")
 {
 	srand(time(0));
 }
@@ -104,6 +110,10 @@ Game::Initialise()
 		return (false);
 	}
 
+	//Run main menu
+	m_mainMenu = new MainMenu();
+
+	
 	InitialiseData();
 
 	return (true);
@@ -167,6 +177,11 @@ Game::InitialiseData()
 	m_enemySelectedLabel = new Label(labelStream.str());
 	m_enemySelectedLabel->SetBounds(440, 150, 400, 30);
 	m_enemySelectedLabel->SetColour(0, 0, 230, 0);
+
+	//Debug - console
+	m_debugText = new Label("");
+	m_debugText->SetBounds(0, 600, 0, 100);
+	m_debugText->SetColour(255, 255, 255, 0);
 
 	//Loading waypoints, check current counter
 	std::string line;
@@ -237,6 +252,34 @@ Game::Process(float deltaTime)
 		m_elapsedSeconds -= 1;
 		m_FPS = m_frameCount;
 		m_frameCount = 0;
+	}
+
+	//Check if in main menu
+	if (m_inMainMenu)
+	{
+		m_mainMenu->Process(deltaTime);
+		if (m_mainMenu->GetMenuState() == NEWGAME)
+		{
+			m_inMainMenu = false;
+			if (m_isGameRunning)
+			{
+				RestartGame();
+			}
+			m_isGameRunning = true;
+		}
+		else if (m_mainMenu->GetMenuState() == QUITGAME)
+		{
+			Quit();
+		}
+		else if (m_mainMenu->GetMenuState() == LOADGAME)
+		{
+			LoadGame();
+		}
+		else if (m_mainMenu->GetMenuState() == SAVEGAME)
+		{
+			SaveGame();
+		}
+		return;
 	}
 
 	//Check if the player is alive and game is running
@@ -325,74 +368,91 @@ Game::Draw(BackBuffer& backBuffer)
 {
 	++m_frameCount;
 
+
+
 	backBuffer.Clear();
 
-	int x = m_width - 130;
-	//Draw Map
-	m_gameMap->Draw(backBuffer);
-
-	//Draw Pickups
-	for each (Pickup* p in m_pickups) 
+	//Check if in main menu
+	if (m_inMainMenu)
 	{
-		p->Draw(backBuffer);
+		m_mainMenu->Draw(backBuffer);
 	}
-
-	//Draw Enemies
-	for each (Enemy* e in m_enemies)
-	{
-		e->Draw(backBuffer);
-	}
-
-	//Draw player
-	m_player->Draw(backBuffer);
-
-
-	//Draw gold
-	m_goldLabel->Draw(backBuffer);
-
-	//Draw health
-	for (int i = 0; i < m_player->GetMaxHealth(); i++)
+	else   //Draw normal game
 	{
 
-		if (i < m_player->GetCurrentHealth())
+		int x = m_width - 130;
+		//Draw Map
+		m_gameMap->Draw(backBuffer);
+
+		//Draw Pickups
+		for each (Pickup* p in m_pickups)
 		{
-			m_HealthSprite->SetX(x);
-			m_HealthSprite->SetY(0);
-			m_HealthSprite->Draw(backBuffer);
-		}
-		else
-		{
-			m_HealthLostSprite->SetX(x);
-			m_HealthLostSprite->SetY(0);
-			m_HealthLostSprite->Draw(backBuffer);
+			p->Draw(backBuffer);
 		}
 
-		x -= 70;
-	}
-
-	//If game is over
-	if (GameOver())
-	{
-		m_gameOver->Draw(backBuffer);
-		m_restartGame->Draw(backBuffer);
-	}
-	
-	//Debug labels
-
-	//Waypoint mode
-	if (m_waypointMode)
-	{
-		//Draw label
-		m_waypointModeLabel->Draw(backBuffer);
-		m_enemySelectedLabel->Draw(backBuffer);
-
-		//Draw waypoints of selected enemy
-		if (!m_enemies.empty()) 
+		//Draw Enemies
+		for each (Enemy* e in m_enemies)
 		{
-			m_enemies.at(m_enemySelectedIndex)->DrawWaypoints(backBuffer);
+			e->Draw(backBuffer);
+		}
+
+		//Draw player
+		m_player->Draw(backBuffer);
+
+
+		//Draw gold
+		m_goldLabel->Draw(backBuffer);
+
+		//Draw health
+		for (int i = 0; i < m_player->GetMaxHealth(); i++)
+		{
+
+			if (i < m_player->GetCurrentHealth())
+			{
+				m_HealthSprite->SetX(x);
+				m_HealthSprite->SetY(0);
+				m_HealthSprite->Draw(backBuffer);
+			}
+			else
+			{
+				m_HealthLostSprite->SetX(x);
+				m_HealthLostSprite->SetY(0);
+				m_HealthLostSprite->Draw(backBuffer);
+			}
+
+			x -= 70;
+		}
+
+		//If game is over
+		if (GameOver())
+		{
+			m_gameOver->Draw(backBuffer);
+			m_restartGame->Draw(backBuffer);
+		}
+
+		//Debug labels
+
+		//Waypoint mode
+		if (m_waypointMode)
+		{
+			//Draw label
+			m_waypointModeLabel->Draw(backBuffer);
+			m_enemySelectedLabel->Draw(backBuffer);
+
+			//Draw waypoints of selected enemy
+			if (!m_enemies.empty())
+			{
+				m_enemies.at(m_enemySelectedIndex)->DrawWaypoints(backBuffer);
+			}
+		}
+
+		if (m_debugConsoleOpen)
+		{
+			backBuffer.SetDrawColour(0,0,0,0);
+			backBuffer.DrawRectangle(0, 600, 1366, 700);
+			m_debugText->Draw(backBuffer);
 		}
 	}
-	
 
 	backBuffer.Present();
 }
@@ -631,6 +691,36 @@ Game::LoadGame()
 	//TODO
 }
 
+void Game::OpenMainMenu()
+{
+	if (!m_isGameRunning)
+	{
+		return;
+	}
+
+	m_inMainMenu = !m_inMainMenu;
+	if (m_inMainMenu)
+	{
+		m_mainMenu->SetMenuState(ACTIVE);
+	}
+}
+
+void
+Game::MouseClicked(int x, int y)
+{
+	//Mouse behaviour for main menu
+	if (m_inMainMenu)
+	{
+		m_mainMenu->MouseClicked(x, y);
+	}
+
+	//Mouse behaviour for waypoint mode
+	if (m_waypointMode)
+	{
+		PlaceWaypoint(x, y);
+	}
+}
+
 void
 Game::WaypointMode()
 {
@@ -705,4 +795,41 @@ void
 Game::ClearPatrol()
 {
 	m_enemies.at(m_enemySelectedIndex)->ClearWaypoints();
+}
+
+void Game::DebugCommand(std::string consoleCommand)
+{
+	SDL_Log(consoleCommand.c_str());
+	//Debug Console commands, enter them here for debugging - not complete
+	if (consoleCommand == "waypointMode")
+	{
+		SDL_Log("Switching waypoint mode");
+		WaypointMode();
+	}
+	if (consoleCommand == "spawnEnemy")
+	{
+		SDL_Log("Spawning enemy");
+		SpawnEnemy(rand() % 1366, rand() % 768);
+	}
+
+}
+
+void 
+Game::DrawDebugConsole(std::string text)
+{
+	m_debugString = text;
+	m_debugText->SetText(text);
+	int length = text.size() * 15;
+	if (length > 1366)
+	{
+		length = 1366;
+	}
+	m_debugText->SetBounds(0, 600, length, 100);
+	Draw(*m_pBackBuffer);
+}
+
+void 
+Game::ShowDebugConsole(bool open)
+{
+	m_debugConsoleOpen = open;
 }

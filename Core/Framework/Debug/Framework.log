@@ -1,10 +1,3 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  game.cpp
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(78): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(300): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(304): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(550): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(562): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(563): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(664): warning C4018: '<': signed/unsigned mismatch
+  inputhandler.cpp
   Framework.vcxproj -> C:\Users\Pascal\Desktop\SDL Game One\SDL-Game-1\Core\Debug\Core.exe

@@ -35,6 +35,9 @@ public:
 	//get the collision bounds
 	SDL_Rect GetBounds();
 
+	//Check if label was clicked on, basic button functionality
+	bool WasClickedOn(int x, int y);
+
 	//Member data
 protected:
 	string m_text;

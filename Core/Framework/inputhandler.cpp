@@ -6,6 +6,7 @@
 // Local includes:
 #include "game.h"
 #include "direction.h"
+#include "SDL.h"
 
 // Library includes:
 #include <cassert>
@@ -56,11 +57,69 @@ InputHandler::ProcessInput(Game& game)
 			SDL_GetMouseState(&x, &y);
 			debugString = "X: " + std::to_string(x) + ", Y: " + std::to_string(y);
 			SDL_Log(debugString.c_str());
-			game.PlaceWaypoint(x, y);
+			game.MouseClicked(x, y);
 			break;
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym)
 			{
+			case SDLK_RETURN:
+				{
+					SDL_Log("Text input started");
+					game.ShowDebugConsole(true);
+					game.DrawDebugConsole("");
+					//Open console
+					SDL_StartTextInput();
+					SDL_bool done = SDL_FALSE;
+					std::string text = "";
+
+					while (!done) 
+					{
+						SDL_Event event;
+						if (SDL_PollEvent(&event)) {
+							switch (event.type) {
+							case SDL_KEYDOWN:
+								/* Quit */
+								if (event.key.keysym.sym == SDLK_RETURN)
+								{
+									done = SDL_TRUE;
+									break;
+								}
+								//Backspace
+								if (event.key.keysym.sym == SDLK_BACKSPACE && text.length() > 0)
+								{
+									text.pop_back();
+									game.DrawDebugConsole(text);
+									break;
+								}
+								else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+								{
+									SDL_SetClipboardText(text.c_str());
+									game.DrawDebugConsole(text);
+								}
+								else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+								{
+									text = SDL_GetClipboardText();
+									game.DrawDebugConsole(text);
+								}
+							case SDL_TEXTINPUT:
+								/* Add new text onto the end of our text */
+								SDL_Log(text.c_str());
+								if (*(event.text.text) >= 32)
+								{
+									text += event.text.text;
+									game.DrawDebugConsole(text);
+								}
+								break;
+							}
+						}
+						//SDL_StopTextInput();
+					}
+					SDL_Log(text.c_str());
+					game.DebugCommand(text);
+					game.ShowDebugConsole(false);
+				}	
+				SDL_Log("Text input over");
+				break;
 			case SDLK_1:
 				//Damage Player by 1 point
 				game.UpdatePlayerHealth(-1);
@@ -146,14 +205,14 @@ InputHandler::ProcessInput(Game& game)
 				game.UpdatePlayer(Direction::RIGHT);
 				break;
 			case SDLK_ESCAPE:
-				game.Quit();
+				game.OpenMainMenu();
 				break;
 			case SDLK_HOME:
 				game.UpdatePlayer(Direction::RESET);
 				break;
-			case SDLK_INSERT:
-				game.ToggleDebug();
-				break;
+			//case SDLK_INSERT:
+			//	game.ToggleDebug();
+			//	break;
 			}
 			break;
 		case SDL_KEYUP:

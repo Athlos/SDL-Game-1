@@ -21,6 +21,7 @@ class Entity;
 class Label;
 class GameMap;
 class Enemy;
+class MainMenu;
 
 class Game
 {
@@ -33,6 +34,10 @@ public:
 	void InitialiseData();
 	bool DoGameLoop();
 	void Quit();
+
+	//Menus
+	void OpenMainMenu();
+	void MouseClicked(int x, int y);
 
 	//Player update methods, for input mainly
 	void UpdatePlayerHealth(int amount);
@@ -60,6 +65,9 @@ public:
 	void SaveCurrentPatrol();
 	void LoadPatrol();
 	void ClearPatrol();
+	void DebugCommand(std::string consoleCommand);
+	void DrawDebugConsole(std::string text);
+	void ShowDebugConsole(bool open);
 
 protected:
 	void Process(float deltaTime);
@@ -131,6 +139,10 @@ protected:
 	//Collision Listener
 	CollisionListener m_collisionListener;
 
+	//Menu
+	bool m_inMainMenu;
+	MainMenu* m_mainMenu;
+
 	//Debug
 	bool m_waypointMode;
 	Label* m_waypointModeLabel;
@@ -138,6 +150,11 @@ protected:
 	Label* m_enemySelectedLabel;
 	int m_pathToLoadCounter;
 	int m_pathToSaveCounter;
+	bool m_debugConsoleOpen;
+	std::string m_debugString;
+	Label* m_debugText;
+
+	bool m_isGameRunning;
 
 private:
 

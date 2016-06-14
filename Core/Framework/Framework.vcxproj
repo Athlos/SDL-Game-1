@@ -96,6 +96,7 @@
     <ClInclude Include="inputhandler.h" />
     <ClInclude Include="label.h" />
     <ClInclude Include="logmanager.h" />
+    <ClInclude Include="mainmenu.h" />
     <ClInclude Include="mapobject.h" />
     <ClInclude Include="maptile.h" />
     <ClInclude Include="pickup.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="label.cpp" />
     <ClCompile Include="logmanager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainmenu.cpp" />
     <ClCompile Include="mapobject.cpp" />
     <ClCompile Include="maptile.cpp" />
     <ClCompile Include="pickup.cpp" />
