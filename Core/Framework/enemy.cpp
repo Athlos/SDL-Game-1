@@ -2,19 +2,38 @@
 #include "animatedsprite.h"
 #include "player.h"
 
+#include <iostream>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 
 Enemy::Enemy()
 {
 	//Loading base stats of enemies
-	m_speed = 20;
+
+	//movement, pixels per second
+	m_speed = 40;
+
+	//Attack, damage per hit, cooldown between attacks
 	m_attackDamage = 1;
 	m_attackSpeed = 1.5;
 	m_attackSpeedTimer = 0;
+
+	//Attack, distance enemy can hurt player from
 	m_attackRange = 50;
-	m_detectRange = 300;
+
+	//Attack, distance enemies can see player
+	m_detectRange = 0;
+
+	//State, Enemy state
 	m_enemyState = IDLING;
+
+	//Waypoints, current index in waypoint array, current waypoint
 	m_currentWaypointIndex = 0;
 	m_currentWaypoint = 0;
+
+	//Waypoints, loop waypoints in array
 	m_loopPatrol = true;
 }
 
@@ -96,15 +115,15 @@ Enemy::Process(float deltaTime, Player* player)
 }
 
 void 
-Enemy::DrawWaypoints(BackBuffer& backbuffer)
+Enemy::DrawWaypoints(BackBuffer& backBuffer)
 {
 	if (m_currentWaypoint != 0)
 	{
-		backbuffer.SetDrawColour(255, 255, 255, 0);
-		backbuffer.DrawLine(m_x, m_y, m_currentWaypoint->x, m_currentWaypoint->y);
+		backBuffer.SetDrawColour(255, 255, 255, 0);
+		backBuffer.DrawLine(m_x, m_y, m_currentWaypoint->x, m_currentWaypoint->y);
 	}
 
-	backbuffer.SetDrawColour(255, 0, 0, 0);
+	backBuffer.SetDrawColour(255, 0, 0, 0);
 
 	for (int i = 0; i < m_waypoints.size(); i++)
 	{
@@ -112,20 +131,24 @@ Enemy::DrawWaypoints(BackBuffer& backbuffer)
 		//draw line from enemy
 		if (i == 0) 
 		{
-			//backbuffer.DrawLine(m_x, m_y, m_curr->x, sp->y);
+			//backBuffer.DrawLine(m_x, m_y, m_curr->x, sp->y);
 		}
 		else
 		{
 			SDL_Point* previous = m_waypoints.at(i-1);
-			backbuffer.DrawLine(sp->x, sp->y, previous->x, previous->y);
+			backBuffer.DrawLine(sp->x, sp->y, previous->x, previous->y);
 		}
 	}
 	//draw loop
 	if (m_loopPatrol && !m_waypoints.empty())
 	{
-		backbuffer.SetDrawColour(0, 255, 0, 0);
-		backbuffer.DrawLine(m_waypoints.at(0)->x, m_waypoints.at(0)->y, m_waypoints.at(m_waypoints.size()-1)->x, m_waypoints.at(m_waypoints.size()-1)->y);
+		backBuffer.SetDrawColour(0, 255, 0, 0);
+		backBuffer.DrawLine(m_waypoints.at(0)->x, m_waypoints.at(0)->y, m_waypoints.at(m_waypoints.size()-1)->x, m_waypoints.at(m_waypoints.size()-1)->y);
 	}
+
+	//Draw selection box around enemy
+	backBuffer.SetDrawColour(0, 0, 255);
+	backBuffer.DrawRectangleUnfilled(m_x-1, m_y-6, m_x + 65, m_y + 65);
 
 }
 
@@ -302,4 +325,79 @@ Enemy::UpdateWaypoints()
 	}
 
 
+}
+
+void 
+Enemy::SavePatrolToDisk(const char* pcFilename)
+{
+	//Save the current waypoint vector to disk
+	std::ofstream myfile;
+	myfile.open(pcFilename);
+
+	std::ostringstream saveStream;
+	for each (SDL_Point* sp in m_waypoints)
+	{
+		//saveStream << sp->x << "|" << sp->y << "\n";
+		myfile << sp->x << "|" << sp->y << "\n";
+	}
+	
+	myfile.close();
+}
+
+bool 
+Enemy::LoadPatrolFromDisk(const char * pcFilename)
+{
+	//This is very very rough, needs optimisations
+	std::string line;
+	std::ifstream myfile(pcFilename);
+	if (myfile.is_open())
+	{
+		//Clear current waypoints
+		ClearWaypoints();
+
+		//Read current line
+		while (getline(myfile, line))
+		{
+			//Use a basic tokeniser to seperate coordinates
+			std::string numString;
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < line.size(); i++)
+			{
+				//Check token
+				if (line.at(i) != '|') {
+					//Add to string
+					numString += line.at(i);
+				}
+				else
+				{
+					//Token reached, push into sdl point x
+					x = atoi(numString.c_str());
+					numString.clear();
+				}
+			}
+			//End of line, push into sdl point y
+			y = atoi(numString.c_str());
+			numString.clear();
+
+			AddWaypoint(x, y);
+		}
+		myfile.close();
+		return true;
+	}
+	return false;
+	//else cout << "Unable to open file";
+}
+
+void
+Enemy::ClearWaypoints()
+{
+	for each (SDL_Point* sp in m_waypoints)
+	{
+		delete(sp);
+		sp = 0;
+	}
+	m_waypoints.clear();
+	m_currentWaypoint = 0;
+	m_currentWaypointIndex = 0;
 }

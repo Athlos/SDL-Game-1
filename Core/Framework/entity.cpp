@@ -128,7 +128,7 @@ Entity::SetupCollision(b2World& m_world)
 	m_entityBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
 	m_entityBodyDef.angle = 0;
 	m_entityBody = m_world.CreateBody(&m_entityBodyDef);
-	m_entityShape.SetAsBox(1 * PIXELSTOMETRES, 1 * PIXELSTOMETRES);
+	m_entityShape.SetAsBox(32, 32);
 	m_entityFixtureDef.shape = &m_entityShape;
 	m_entityFixtureDef.density = 1;
 	m_entityBody->CreateFixture(&m_entityFixtureDef);

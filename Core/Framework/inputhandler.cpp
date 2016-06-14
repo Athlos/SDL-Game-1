@@ -113,6 +113,22 @@ InputHandler::ProcessInput(Game& game)
 				//Waypoint mode
 				game.WaypointMode();
 				break;
+			case SDLK_RIGHT:
+				//Waypoint mode
+				game.ChangeSelectedEnemy();
+				break;
+			case SDLK_LEFT:
+				//Save patrol
+				game.SaveCurrentPatrol();
+				break;
+			case SDLK_UP:
+				//Load patrol
+				game.LoadPatrol();
+				break;
+			case SDLK_DOWN:
+				//clear patrol
+				game.ClearPatrol();
+				break;
 			case SDLK_w:
 				SDL_Log("up");
 				game.UpdatePlayer(Direction::UP);

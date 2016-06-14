@@ -71,6 +71,9 @@ Game::Game()
 , m_gold(0)
 , m_world(m_gravity)
 , m_waypointMode(false)
+, m_enemySelectedIndex(0)
+, m_pathToLoadCounter(0)
+, m_pathToSaveCounter(0)
 {
 	srand(time(0));
 }
@@ -138,9 +141,9 @@ Game::InitialiseData()
 	m_world.SetContactListener(&m_collisionListener);
 
 	//Gold label - using a stringstream to concat strings
-	std::ostringstream goldStream;
-	goldStream << "Gold: " << m_gold;
-	m_goldLabel = new Label(goldStream.str());
+	std::ostringstream labelStream;
+	labelStream << "Gold: " << m_gold;
+	m_goldLabel = new Label(labelStream.str());
 	m_goldLabel->SetColour(218, 165, 32, 0);
 
 	//Game over labels
@@ -157,6 +160,31 @@ Game::InitialiseData()
 	m_waypointModeLabel = new Label("Waypoint Mode");
 	m_waypointModeLabel->SetBounds(440, 100, 400, 30);
 	m_waypointModeLabel->SetColour(0, 0, 255, 0);
+
+	//Debug - enemy selected for waypoints
+	labelStream.str("");
+	labelStream << "Enemy " << m_enemySelectedIndex << " Selected";
+	m_enemySelectedLabel = new Label(labelStream.str());
+	m_enemySelectedLabel->SetBounds(440, 150, 400, 30);
+	m_enemySelectedLabel->SetColour(0, 0, 230, 0);
+
+	//Loading waypoints, check current counter
+	std::string line;
+	
+	bool run = true;
+	while(run)
+	{
+		line = "patrol" + std::to_string(m_pathToSaveCounter) + ".txt";
+		std::ifstream myfile(line);
+		if (myfile.is_open())
+		{
+			m_pathToSaveCounter++;
+		}
+		else
+		{
+			run = false;
+		}
+	}
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
@@ -356,11 +384,12 @@ Game::Draw(BackBuffer& backBuffer)
 	{
 		//Draw label
 		m_waypointModeLabel->Draw(backBuffer);
+		m_enemySelectedLabel->Draw(backBuffer);
 
-		//Draw waypoints of enemies
-		for each (Enemy* e in m_enemies)
+		//Draw waypoints of selected enemy
+		if (!m_enemies.empty()) 
 		{
-			e->DrawWaypoints(backBuffer);
+			m_enemies.at(m_enemySelectedIndex)->DrawWaypoints(backBuffer);
 		}
 	}
 	
@@ -464,9 +493,9 @@ void Game::UpdateGold(int amount)
 	{
 		m_gold = 0;
 	}
-	std::ostringstream goldStream;
-	goldStream << "Gold: " << m_gold;
-	m_goldLabel->SetText(goldStream.str());
+	std::ostringstream labelStream;
+	labelStream << "Gold: " << m_gold;
+	m_goldLabel->SetText(labelStream.str());
 
 	//Adjust label size with gold counter
 	int lengthen = 10;
@@ -606,6 +635,10 @@ void
 Game::WaypointMode()
 {
 	m_waypointMode = !m_waypointMode;
+	if (m_waypointMode)
+	{
+		m_enemySelectedIndex = 0;
+	}
 }
 
 void
@@ -616,5 +649,60 @@ Game::PlaceWaypoint(int x, int y)
 	{
 		return;
 	}
-	m_enemies.at(0)->AddWaypoint(x, y);
+	m_enemies.at(m_enemySelectedIndex)->AddWaypoint(x, y);
+}
+
+void
+Game::ChangeSelectedEnemy()
+{
+	if (!m_waypointMode)
+	{
+		return;
+	}
+
+	//change which enemy is selected in waypoint mode
+	if (m_enemySelectedIndex < m_enemies.size() - 1)
+	{
+		m_enemySelectedIndex++;
+	}
+	else
+	{
+		m_enemySelectedIndex = 0;
+	}
+
+	//Update label
+	std::ostringstream labelStream;
+	labelStream.str("");
+	labelStream << "Enemy " << m_enemySelectedIndex << " Selected";
+	m_enemySelectedLabel->SetText(labelStream.str());
+}
+
+void
+Game::SaveCurrentPatrol()
+{
+	std::string saveString = "patrol" + std::to_string(m_pathToSaveCounter) + ".txt";
+	m_enemies.at(m_enemySelectedIndex)->SavePatrolToDisk(saveString.c_str());
+	m_pathToSaveCounter++;
+}
+
+void
+Game::LoadPatrol()
+{
+	std::string saveString = "patrol" + std::to_string(m_pathToLoadCounter) + ".txt";
+	if (m_enemies.at(m_enemySelectedIndex)->LoadPatrolFromDisk(saveString.c_str()))
+	{
+		m_pathToLoadCounter++;
+	}
+	else
+	{
+		m_pathToLoadCounter = 0;
+		std::string saveString = "patrol" + std::to_string(m_pathToLoadCounter) + ".txt";
+		m_enemies.at(m_enemySelectedIndex)->LoadPatrolFromDisk(saveString.c_str());
+	}
+}
+
+void
+Game::ClearPatrol()
+{
+	m_enemies.at(m_enemySelectedIndex)->ClearWaypoints();
 }

@@ -50,6 +50,10 @@ public:
 	void MoveTo(int x, int y, float deltaTime);
 	void UpdateWaypoints();
 
+	void SavePatrolToDisk(const char* pcFilename);
+	bool LoadPatrolFromDisk(const char* pcFilename);
+	void ClearWaypoints();
+
 	//Debug 
 	void DrawWaypoints(BackBuffer& backbuffer);
 

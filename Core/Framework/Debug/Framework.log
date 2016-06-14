@@ -1,21 +1,10 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  enemy.cpp
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(83): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(84): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(104): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(109): warning C4018: '<': signed/unsigned mismatch
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(137): warning C4305: '*=': truncation from 'double' to 'float'
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(147): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(148): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(166): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(168): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(179): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(181): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(183): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(242): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(243): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\enemy.cpp(284): warning C4018: '<': signed/unsigned mismatch
+  game.cpp
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(78): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(300): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(304): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(550): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(562): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(563): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(664): warning C4018: '<': signed/unsigned mismatch
   Framework.vcxproj -> C:\Users\Pascal\Desktop\SDL Game One\SDL-Game-1\Core\Debug\Core.exe

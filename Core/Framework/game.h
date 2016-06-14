@@ -56,6 +56,10 @@ public:
 	//Debug
 	void WaypointMode();
 	void PlaceWaypoint(int x, int y);
+	void ChangeSelectedEnemy();
+	void SaveCurrentPatrol();
+	void LoadPatrol();
+	void ClearPatrol();
 
 protected:
 	void Process(float deltaTime);
@@ -130,6 +134,10 @@ protected:
 	//Debug
 	bool m_waypointMode;
 	Label* m_waypointModeLabel;
+	int m_enemySelectedIndex;
+	Label* m_enemySelectedLabel;
+	int m_pathToLoadCounter;
+	int m_pathToSaveCounter;
 
 private:
 
