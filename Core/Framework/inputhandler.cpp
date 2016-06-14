@@ -212,7 +212,7 @@ InputHandler::ProcessInput(Game& game)
 				game.OpenMainMenu();
 				break;
 			case SDLK_HOME:
-				game.UpdatePlayer(Direction::RESET);
+				game.SwordAttack(true);
 				break;
 			//case SDLK_INSERT:
 			//	game.ToggleDebug();
@@ -227,6 +227,9 @@ InputHandler::ProcessInput(Game& game)
 			case SDLK_d:
 			case SDLK_s:
 				game.UpdatePlayer(Direction::STOP);
+				break;
+			case SDLK_HOME:
+				game.SwordAttack(false);
 				break;
 			default:
 				break;

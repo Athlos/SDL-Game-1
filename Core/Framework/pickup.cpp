@@ -21,7 +21,7 @@ Pickup::Pickup(b2World& world)
 	//default type is heart
 	m_type = HEALTH;
 
-	Entity::SetupCollision(world);
+	Entity::SetupCollision(world, 8.0f);
 }
 
 

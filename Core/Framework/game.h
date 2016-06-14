@@ -10,6 +10,7 @@
 #include <box2d.h>
 #include "conversion.h"
 #include "collisionlistener.h"
+#include "sword.h"
 
 // Forward Declarations
 class BackBuffer;
@@ -77,6 +78,9 @@ public:
 	void ShowDebugConsole(bool open);
 
 	GameState GetGameState();
+
+	//Sword stuff
+	void SwordAttack(bool isAttacking);
 
 protected:
 	void Process(float deltaTime);
@@ -164,6 +168,10 @@ protected:
 	Label* m_debugText;
 
 	bool m_isGameRunning;
+
+	//Sword Variables
+	AnimatedSprite* m_swordSprite;
+	Sword* m_sword;
 
 private:
 

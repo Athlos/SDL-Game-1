@@ -277,3 +277,20 @@ BackBuffer::DrawRectangleUnfilled(int x1, int y1, int x2, int y2)
 	unfillRect.h = y2 - y1;
 	SDL_RenderDrawRect(m_pRenderer, &unfillRect);
 }
+
+void 
+BackBuffer::DebugDrawCollision(b2Body& collisionBody, b2PolygonShape& collisonShape)
+{
+	SetDrawColour(255, 0, 0);
+	for (int i = 0; i < collisonShape.GetVertexCount(); i++)
+	{
+		if (i + 1 == collisonShape.GetVertexCount())
+		{
+			DrawLine(collisionBody.GetPosition().x + collisonShape.GetVertex(i).x, collisionBody.GetPosition().y + collisonShape.GetVertex(i).y, collisionBody.GetPosition().x + collisonShape.GetVertex(0).x, collisionBody.GetPosition().y + collisonShape.GetVertex(0).y);
+		}
+		else
+		{
+			DrawLine(collisionBody.GetPosition().x + collisonShape.GetVertex(i).x, collisionBody.GetPosition().y + collisonShape.GetVertex(i).y, collisionBody.GetPosition().x + collisonShape.GetVertex(i + 1).x, collisionBody.GetPosition().y + collisonShape.GetVertex(i + 1).y);
+		}
+	}
+}

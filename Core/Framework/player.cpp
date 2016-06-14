@@ -15,6 +15,7 @@ Player::Player()
 	//Pickup range defaults
 	m_pickupRangeX = 50;
 	m_pickupRangeY = 50;
+	type = ClassType::BLANK;
 }
 
 Player::~Player()
@@ -24,6 +25,8 @@ Player::~Player()
 bool
 Player::Initialise(AnimatedSprite* p_animSprite, b2World& m_world)
 {
+	//setting class type, for collision detection
+	type = ClassType::PLAYER;
 	//Set up player sprite
 	assert(p_animSprite);
 	m_animSprite = p_animSprite;
@@ -38,8 +41,8 @@ void Player::Process(float deltaTime)
 {
 	m_x = m_playerBody->GetPosition().x;
 	m_y = m_playerBody->GetPosition().y;
-	m_animSprite->SetX(static_cast<int>(m_playerBody->GetPosition().x));
-	m_animSprite->SetY(static_cast<int>(m_playerBody->GetPosition().y));
+	m_animSprite->SetX(static_cast<int>(m_playerBody->GetPosition().x) - 32.0f);
+	m_animSprite->SetY(static_cast<int>(m_playerBody->GetPosition().y) - 32.0f);
 	m_animSprite->Process(deltaTime);
 }
 
@@ -56,7 +59,8 @@ void Player::Draw(BackBuffer& backBuffer)
 	}
 	assert(m_animSprite);
 	m_animSprite->Draw(backBuffer);
-	backBuffer.DrawRectangleUnfilled(m_x, m_y, m_x + 64, m_y + 64);
+	//backBuffer.DrawRectangleUnfilled(m_x, m_y, m_x + 64, m_y + 64);
+	backBuffer.DebugDrawCollision(*m_playerBody, m_playerShape);
 }
 
 void
@@ -156,12 +160,12 @@ void
 Player::SetupCollision(b2World& m_world)
 {
 	m_playerBodyDef.type = b2_dynamicBody;
-	m_playerBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
+	m_playerBodyDef.position.Set(static_cast<float>(m_x) + 32.0f, static_cast<float>(m_y) + 32.0f);
 	m_playerBodyDef.angle = 0;
 	m_playerBody = m_world.CreateBody(&m_playerBodyDef);
 	m_playerShape.SetAsBox(28, 28);
 	m_playerFixtureDef.shape = &m_playerShape;
-	m_playerFixtureDef.density = 1;
+	m_playerFixtureDef.density = 30;
 	m_playerBody->CreateFixture(&m_playerFixtureDef);
 	m_playerBody->SetUserData(this);
 	m_playerBody->SetBullet(true);

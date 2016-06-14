@@ -30,7 +30,7 @@ Entity::Initialise(Sprite* sprite, b2World& m_world)
 {
 	assert(sprite);
 	m_pSprite = sprite;
-	SetupCollision(m_world);
+	SetupCollision(m_world, 32.0f);
 	return (true);
 }
 
@@ -122,13 +122,13 @@ Entity::IsDead()
 }
 
 void
-Entity::SetupCollision(b2World& m_world)
+Entity::SetupCollision(b2World& m_world, float boxSize)
 {
 	m_entityBodyDef.type = b2_staticBody;
 	m_entityBodyDef.position.Set(static_cast<float>(m_x), static_cast<float>(m_y));
 	m_entityBodyDef.angle = 0;
 	m_entityBody = m_world.CreateBody(&m_entityBodyDef);
-	m_entityShape.SetAsBox(32, 32);
+	m_entityShape.SetAsBox(boxSize, boxSize);
 	m_entityFixtureDef.shape = &m_entityShape;
 	m_entityFixtureDef.density = 1;
 	m_entityBody->CreateFixture(&m_entityFixtureDef);

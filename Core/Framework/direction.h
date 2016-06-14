@@ -9,3 +9,11 @@ enum class Direction
 	STOP,
 	RESET
 };
+
+enum class ClassType
+{
+	BLANK,
+	SWORD,
+	PLAYER,
+	MAPOBJECT
+};

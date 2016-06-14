@@ -1,15 +1,59 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  inputhandler.cpp
   game.cpp
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(84): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(343): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(347): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(610): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(622): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(623): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\pascal\desktop\sdl game one\sdl-game-1\core\framework\game.cpp(754): warning C4018: '<': signed/unsigned mismatch
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(84): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(349): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(353): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(605): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(617): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(618): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\game.cpp(749): warning C4018: '<': signed/unsigned mismatch
+  entity.cpp
+d:\users\f03n1x\documents\sdl-game-1\core\framework\entity.cpp(112): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+d:\users\f03n1x\documents\sdl-game-1\core\framework\entity.cpp(113): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating Code...
-  Compiling...
-  main.cpp
-  Generating Code...
-  Framework.vcxproj -> C:\Users\Pascal\Desktop\SDL Game One\SDL-Game-1\Core\Debug\Core.exe
+  LINK : D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Core.exe not found or not built by the last incremental link; performing full link
+Box2D.lib(b2BroadPhase.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2BroadPhase.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollideCircle.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollideCircle.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollideEdge.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollideEdge.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollidePolygon.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollidePolygon.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Collision.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Collision.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Distance.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Distance.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2DynamicTree.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2DynamicTree.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2TimeOfImpact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2TimeOfImpact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainShape.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainShape.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeShape.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeShape.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PolygonShape.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PolygonShape.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2BlockAllocator.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2BlockAllocator.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Draw.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Draw.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Math.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Math.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Settings.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Settings.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2StackAllocator.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2StackAllocator.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Timer.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Timer.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Body.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Body.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ContactManager.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ContactManager.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Fixture.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Fixture.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Island.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Island.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2World.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2World.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WorldCallbacks.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WorldCallbacks.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainAndCircleContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainAndPolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainAndPolygonContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CircleContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Contact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Contact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ContactSolver.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ContactSolver.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeAndCircleContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeAndPolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeAndPolygonContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PolygonAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PolygonAndCircleContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PolygonContact.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2DistanceJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2DistanceJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2FrictionJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2FrictionJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2GearJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2GearJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Joint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Joint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2MotorJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2MotorJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2MouseJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2MouseJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PrismaticJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PrismaticJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PulleyJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PulleyJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2RevoluteJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2RevoluteJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2RopeJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2RopeJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WeldJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WeldJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WheelJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WheelJoint.obj)' or at 'D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Box2D.pdb'; linking object as if no debug info
+  Framework.vcxproj -> D:\Users\f03n1x\Documents\SDL-Game-1\Core\Debug\Core.exe

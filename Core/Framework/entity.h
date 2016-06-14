@@ -36,7 +36,8 @@ public:
 	void SetVerticalVelocity(float y);
 
 	void SetPosition(int x, int y);
-	void SetupCollision(b2World& m_world);
+	void SetupCollision(b2World& m_world, float boxSize);
+	
 protected:
 
 private:
@@ -62,6 +63,9 @@ protected:
 	b2Body* m_entityBody;
 	b2PolygonShape m_entityShape;
 	b2FixtureDef m_entityFixtureDef;
+
+
+	
 private:
 
 };

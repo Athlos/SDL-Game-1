@@ -52,7 +52,7 @@ Enemy::Initialise(AnimatedSprite* p_animSprite, b2World& m_world)
 	m_pSprite->SetY(static_cast<int>(m_y));
 	m_pSprite->SetX(static_cast<int>(m_x));
 	//setup for player collision
-	SetupCollision(m_world);
+	SetupCollision(m_world, 32.0f);
 	return (true);
 }
 

@@ -3,6 +3,7 @@
 
 #include "sprite.h"
 #include "Box2D.h"
+#include "direction.h"
 
 enum ObjectType
 {
@@ -37,10 +38,13 @@ public:
 	void SetPositionY(int y);
 	void StartContact();
 	void EndContact();
+	bool GetIfDestroyed();
+	b2Body* GetObjectBody();
 protected:
 private:
 	//Member Data
 public:
+	ClassType type;
 protected:
 private:
 	int m_x;
@@ -56,5 +60,8 @@ private:
 	b2FixtureDef m_objectFixtureDef;
 
 	bool m_isColliding;
+	bool m_isDestroyed;
+
+	
 };
 #endif // !__MAPOBJECT_H__

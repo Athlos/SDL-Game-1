@@ -41,11 +41,14 @@ public:
 	b2Body* GetPlayerBody();
 	void StartContact();
 	void EndContact();
+	Direction GetDirection();
+
 protected:
 private:
 
 	//Variables
 public:
+	ClassType type;
 protected:
 private:
 	AnimatedSprite* m_animSprite;
@@ -65,6 +68,7 @@ private:
 	b2FixtureDef m_playerFixtureDef;
 
 	bool m_isColliding;
+	
 };
 
 #endif //__PLAYER_H__

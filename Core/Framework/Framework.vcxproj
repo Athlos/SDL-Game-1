@@ -102,7 +102,9 @@
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="shop.h" />
+    <ClInclude Include="projectile.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="sword.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="texturemanager.h" />
   </ItemGroup>
@@ -124,7 +126,9 @@
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="shop.cpp" />
+    <ClCompile Include="projectile.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="sword.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="texturemanager.cpp" />
   </ItemGroup>

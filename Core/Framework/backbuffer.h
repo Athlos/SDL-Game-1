@@ -4,6 +4,7 @@
 
 #include <SDL_ttf.h>
 #include <string>
+#include "Box2D.h"
 
 // Forward Declarations:
 class TextureManager;
@@ -14,6 +15,7 @@ class AnimatedSprite;
 class SDL_Image;
 class SDL;
 class AnimatedSprite;
+
 
 class BackBuffer
 {
@@ -37,6 +39,8 @@ public:
 	void DrawSprite(Sprite& sprite);
 	void DrawRectangle(int x1, int y1, int x2, int y2);
 	void DrawLine(int x1, int y1, int x2, int y2);
+
+	void DebugDrawCollision(b2Body& collisionBody, b2PolygonShape& collisonShape);
 
 	AnimatedSprite* CreateAnimatedSprite(const char* pcFilename);
 

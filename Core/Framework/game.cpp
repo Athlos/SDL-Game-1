@@ -141,8 +141,8 @@ Game::InitialiseData()
 	m_gameMap = new GameMap();
 	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
 	m_gameMap->GenerateMap(*m_pBackBuffer, m_world);
+
 	//Box2D world setup
-	//velocityIterations 
 	m_velocityIterations = 10;
 	m_positionIterations = 10;
 	m_timeStep = 1.0f / 20.0f;
@@ -200,6 +200,12 @@ Game::InitialiseData()
 			run = false;
 		}
 	}
+	//Sword Setup
+	m_swordSprite = m_pBackBuffer->CreateAnimatedSprite("Assets\\weaponanim.png");
+	m_swordSprite->LoadFrames(64, 64);
+	m_swordSprite->StartAnimating();
+	m_sword = new Sword(*m_player);
+	m_sword->Initialise(m_swordSprite, m_world);
 
 	m_lastTime = SDL_GetTicks();
 	m_lag = 0.0f;
@@ -290,7 +296,7 @@ Game::Process(float deltaTime)
 	//Box2D simulation loop
 	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
 	m_player->Process(deltaTime);
-
+	m_sword->Process(deltaTime);
 	//Process Pickups
 	//Create iterator to loop through and delete pickups that have been picked up
 	std::vector<Pickup*>::iterator pickupI = m_pickups.begin();
@@ -306,7 +312,7 @@ Game::Process(float deltaTime)
 			delete current;
 			current = 0;
 		}
-		else 
+		else
 		{
 			//Check if player can pickup, and apply rewards if they do
 			if (m_player->CheckPickup(*current))
@@ -398,6 +404,8 @@ Game::Draw(BackBuffer& backBuffer)
 
 		//Draw player
 		m_player->Draw(backBuffer);
+		//Draw Sword
+		m_sword->Draw(backBuffer);
 
 
 		//Draw gold
@@ -453,7 +461,6 @@ Game::Draw(BackBuffer& backBuffer)
 			m_debugText->Draw(backBuffer);
 		}
 	}
-
 	backBuffer.Present();
 }
 
@@ -485,51 +492,39 @@ Game::UpdatePlayer(Direction direction)
 {	
 	//for multiple sprites, sprites will change
 	//move the player sprite on screen
-	b2Vec2 velocity;
 	switch (direction)
 	{
 	case Direction::UP:
-		//m_player->SetVerticalVelocity(-200.0f);
-		velocity.x = 0.0f;
-		velocity.y = -200.0f;
-		m_player->SetPlayerCollisionVelocity(velocity);
-		//m_testBody->SetLinearVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(b2Vec2(0.0f,-200.0f));
 		break;
 	case Direction::DOWN:
-		//m_player->SetVerticalVelocity(200.0f);
-		velocity.x = 0.0f;
-		velocity.y = 200.0f;
-		m_player->SetPlayerCollisionVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(b2Vec2(0.0f, 200.0f));
 		break;
 	case Direction::LEFT:
-		//m_player->SetHorizontalVelocity(-200.0f);
-		velocity.x = -200.0f;
-		velocity.y = 0.0f;
-		m_player->SetPlayerCollisionVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(b2Vec2(-200.0f, 0.0f));
 		break;
 	case Direction::RIGHT:
-		//m_player->SetHorizontalVelocity(200.0f);
-		velocity.x = 200.0f;
-		velocity.y = 0.0f;
-		m_player->SetPlayerCollisionVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(b2Vec2(200.0f, 0.0f));
 		break;
 	case Direction::STOP:
-		//m_player->SetVerticalVelocity(0.0f);
-		//m_player->SetHorizontalVelocity(0.0f);
-		velocity.x = 0.0f;
-		velocity.y = 0.0f;
-		m_player->SetPlayerCollisionVelocity(velocity);
+		m_player->SetPlayerCollisionVelocity(b2Vec2_zero);
 		break;
 	case Direction::RESET://Debug, reset position to middle of screen
-		//m_player->SetVerticalVelocity(0.0f);
-		//m_player->SetHorizontalVelocity(0.0f);
-		//m_player->SetPositionX(m_width/2);
-		//m_player->SetPositionY(m_height /2);
-		m_gameMap->GetMapObjectAtPosition(0, 0).StartContact();
 		break;
 	}
 
+	
 	m_player->UpdatePlayerDirection(direction);
+	/*
+	switch (direction)
+	{
+	case Direction::UP:
+	case Direction::DOWN:
+	case Direction::LEFT:
+	case Direction::RIGHT:
+		m_sword->ChangeSwordDirection(direction, m_world);
+		break;
+	}*/
 }
 
 void
@@ -853,4 +848,10 @@ GameState Game::GetGameState()
 		return MAINMENU;
 	}
 	return INGAME;
+}
+
+void
+Game::SwordAttack(bool isAttacking)
+{
+	m_sword->SetAttacking(isAttacking);
 }

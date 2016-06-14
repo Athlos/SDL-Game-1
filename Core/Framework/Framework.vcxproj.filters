@@ -72,10 +72,17 @@
     <ClInclude Include="collisionlistener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="mainmenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shop.h">
+=======
+    <ClInclude Include="sword.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="projectile.h">
+>>>>>>> Stashed changes
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -134,10 +141,17 @@
     <ClCompile Include="collisionlistener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="mainmenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shop.cpp">
+=======
+    <ClCompile Include="sword.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="projectile.cpp">
+>>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

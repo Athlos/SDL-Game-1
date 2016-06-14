@@ -1,9 +1,9 @@
 C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C,C
 C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
-C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
-C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
-C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
-C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
+C,E,E,E,E,E,B,B,E,E,E,E,E,B,B,E,E,E,E,E,C
+C,E,E,E,E,E,B,B,E,E,E,E,E,B,B,E,E,E,E,E,C
+C,E,E,E,E,E,B,B,E,E,E,E,E,B,B,E,E,E,E,E,C
+C,E,E,B,B,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
 C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
 C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
 C,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,E,C
