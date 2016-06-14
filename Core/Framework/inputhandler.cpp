@@ -64,6 +64,10 @@ InputHandler::ProcessInput(Game& game)
 			{
 			case SDLK_RETURN:
 				{
+					if (game.GetGameState() != INGAME)
+					{
+						return;
+					}
 					SDL_Log("Text input started");
 					game.ShowDebugConsole(true);
 					game.DrawDebugConsole("");

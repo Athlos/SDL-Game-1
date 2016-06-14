@@ -23,6 +23,13 @@ class GameMap;
 class Enemy;
 class MainMenu;
 
+enum GameState
+{
+	MAINMENU,
+	INGAME,
+	SHOP
+};
+
 class Game
 {
 	//Member Methods:
@@ -68,6 +75,8 @@ public:
 	void DebugCommand(std::string consoleCommand);
 	void DrawDebugConsole(std::string text);
 	void ShowDebugConsole(bool open);
+
+	GameState GetGameState();
 
 protected:
 	void Process(float deltaTime);

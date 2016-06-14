@@ -448,7 +448,7 @@ Game::Draw(BackBuffer& backBuffer)
 
 		if (m_debugConsoleOpen)
 		{
-			backBuffer.SetDrawColour(0,0,0,0);
+			backBuffer.SetDrawColour(0,0,0,100);
 			backBuffer.DrawRectangle(0, 600, 1366, 700);
 			m_debugText->Draw(backBuffer);
 		}
@@ -770,6 +770,10 @@ Game::ChangeSelectedEnemy()
 void
 Game::SaveCurrentPatrol()
 {
+	if (!m_waypointMode)
+	{
+		return;
+	}
 	std::string saveString = "patrol" + std::to_string(m_pathToSaveCounter) + ".txt";
 	m_enemies.at(m_enemySelectedIndex)->SavePatrolToDisk(saveString.c_str());
 	m_pathToSaveCounter++;
@@ -778,6 +782,10 @@ Game::SaveCurrentPatrol()
 void
 Game::LoadPatrol()
 {
+	if (!m_waypointMode) 
+	{
+		return;
+	}
 	std::string saveString = "patrol" + std::to_string(m_pathToLoadCounter) + ".txt";
 	if (m_enemies.at(m_enemySelectedIndex)->LoadPatrolFromDisk(saveString.c_str()))
 	{
@@ -794,13 +802,17 @@ Game::LoadPatrol()
 void
 Game::ClearPatrol()
 {
+	if (!m_waypointMode)
+	{
+		return;
+	}
 	m_enemies.at(m_enemySelectedIndex)->ClearWaypoints();
 }
 
 void Game::DebugCommand(std::string consoleCommand)
 {
-	SDL_Log(consoleCommand.c_str());
-	//Debug Console commands, enter them here for debugging - not complete
+	//SDL_Log(consoleCommand.c_str());
+	//Debug Console commands, enter them here for debugging
 	if (consoleCommand == "waypointMode")
 	{
 		SDL_Log("Switching waypoint mode");
@@ -832,4 +844,13 @@ void
 Game::ShowDebugConsole(bool open)
 {
 	m_debugConsoleOpen = open;
+}
+
+GameState Game::GetGameState()
+{
+	if (m_inMainMenu)
+	{
+		return MAINMENU;
+	}
+	return INGAME;
 }

@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include "animatedsprite.h"
 #include "player.h"
+#include "direction.h"
 
 #include <iostream>
 #include <fstream>
@@ -13,7 +14,7 @@ Enemy::Enemy()
 	//Loading base stats of enemies
 
 	//movement, pixels per second
-	m_speed = 40;
+	m_speed = 70;
 
 	//Attack, damage per hit, cooldown between attacks
 	m_attackDamage = 1;
@@ -120,7 +121,7 @@ Enemy::DrawWaypoints(BackBuffer& backBuffer)
 	if (m_currentWaypoint != 0)
 	{
 		backBuffer.SetDrawColour(255, 255, 255, 0);
-		backBuffer.DrawLine(m_x, m_y, m_currentWaypoint->x, m_currentWaypoint->y);
+		backBuffer.DrawLine(m_x+32, m_y+32, m_currentWaypoint->x, m_currentWaypoint->y);
 	}
 
 	backBuffer.SetDrawColour(255, 0, 0, 0);
@@ -156,7 +157,7 @@ void
 Enemy::MoveTo(int x, int y, float deltaTime)
 {
 	//Move to coordinates
-	float angle = atan2((m_x + 64) - x, (m_y + 64) - y);
+	float angle = atan2((m_x + 32) - x, (m_y + 32) - y);
 	angle *= 180 / M_PI;
 	angle *= -1;
 	m_pSprite->SetAngle(angle);
@@ -165,7 +166,54 @@ Enemy::MoveTo(int x, int y, float deltaTime)
 	float hyp = sqrt(dirX*dirX + dirY*dirY);
 	dirX /= hyp;
 	dirY /= hyp;
-	
+
+	if (dirX > 0 && dirY > 0) // this is for bottom right
+	{
+		if (dirX > dirY)
+		{
+			m_pSprite->UpdateDirection(Direction::RIGHT);
+		}
+		else
+		{
+			m_pSprite->UpdateDirection(Direction::DOWN);
+		}
+	}
+	else if (dirX < 0 && dirY < 0) // this is for top left
+	{
+		if (dirX > dirY)
+		{
+			m_pSprite->UpdateDirection(Direction::UP);
+		}
+		else
+		{
+			m_pSprite->UpdateDirection(Direction::LEFT);
+		}
+	}
+	else if (dirX > 0 && dirY < 0) // this is for top right
+	{
+		if ((dirX + dirY) > 0.5)
+		{
+			m_pSprite->UpdateDirection(Direction::RIGHT);
+		}
+		else
+		{
+			m_pSprite->UpdateDirection(Direction::UP);
+		}
+	}
+	else if (dirX < 0 && dirY > 0) // this is for bottom left
+	{
+		if ((dirX + dirY) > 0.5)
+		{
+			m_pSprite->UpdateDirection(Direction::DOWN);
+		}
+		else
+		{
+			m_pSprite->UpdateDirection(Direction::LEFT);
+		}
+	}
+
+
+
 	if (m_enemyState == CHARGING) {
 		m_x += deltaTime * dirX * (m_speed*1.5);
 		m_y += deltaTime * dirY * (m_speed*1.5);
