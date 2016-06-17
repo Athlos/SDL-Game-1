@@ -70,6 +70,7 @@ CollisionListener::BeginContact(b2Contact* contact)
 void
 CollisionListener::EndContact(b2Contact* contact)
 {
+	/*
 	void* userData = contact->GetFixtureA()->GetBody()->GetUserData();
 	//Check if Contact A is the player
 	if (userData)
@@ -83,4 +84,5 @@ CollisionListener::EndContact(b2Contact* contact)
 	{//set the object's bool to colldiing equal to false
 		static_cast<MapObject*>(userData)->EndContact();
 	}	
+	*/
 }

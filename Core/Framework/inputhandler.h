@@ -4,6 +4,7 @@
 
 // Library includes:
 #include <SDL.h>
+#include <string>
 
 // Forward Declarations:
 class Game;
@@ -17,6 +18,7 @@ public:
 
 	bool Initialise();
 	void ProcessInput(Game& game);
+	void ProcessMovement(Game& game);
 
 protected:
 
@@ -31,6 +33,8 @@ protected:
 	SDL_Joystick* m_pGameController;
 
 private:
+	bool m_consoleOpen;
+	std::string m_consoleText;
 
 };
 

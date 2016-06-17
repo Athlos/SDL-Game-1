@@ -5,13 +5,17 @@
 #include "texture.h"
 #include <cassert>
 
-Label::Label(string text)
+Label::Label(std::string text)
 {
 	m_colour = { 0, 0, 0, 0 };
 	m_textTexture = NULL;
 	m_requiredUpdate = false;
 	SetText(text);
 	SetBounds(0, 0, 100, 30);
+
+	TTF_Init();
+	m_font = TTF_OpenFont("assets/currentfont.TTF", 48);
+
 }
 
 
@@ -19,11 +23,11 @@ Label::~Label()
 {
 }
 
-string Label::GetText() {
+std::string Label::GetText() {
 	return m_text;
 }
 
-void Label::SetText(string textOnScreen, BackBuffer& backbuffer) {
+void Label::SetText(std::string textOnScreen, BackBuffer& backbuffer) {
 	if (m_text == textOnScreen) {
 		return;
 	}
@@ -32,12 +36,26 @@ void Label::SetText(string textOnScreen, BackBuffer& backbuffer) {
 
 }
 
-void Label::SetText(string textOnScreen) {
+void Label::SetText(std::string textOnScreen) {
 	if (m_text == textOnScreen) {
 		return;
 	}
 	m_text = textOnScreen;
 	m_requiredUpdate = true;
+
+	//Debug
+	std::string message;
+	for each (char c in textOnScreen)
+	{
+		message += c;
+		if (c == '\n')
+		{
+			m_textArray.push_back(message);
+			message = "";
+			SDL_Log("NEWLINE");
+		}
+	}
+	m_textArray.push_back(message);
 }
 
 void Label::SetColour(int r, int g, int b, int a) {
@@ -46,11 +64,13 @@ void Label::SetColour(int r, int g, int b, int a) {
 
 void Label::Draw(BackBuffer& backBuffer)
 {
+	//Make sure message is synced to the texture
 	if (m_requiredUpdate) {
 		m_requiredUpdate = false;
 		m_textTexture = backBuffer.CreateText(m_text, m_colour);
 	}
 	backBuffer.DrawText(m_textTexture, m_bounds);
+	//m_textTexture = TTF_RenderText_Blended_Wrapped(m_font, "this is \n 2 lines", m_colour, 50);
 }
 
 void Label::SetBounds(int x, int y, int w, int h) {

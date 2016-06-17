@@ -248,7 +248,6 @@ void BackBuffer::DrawText(SDL_Texture* textOnScreen, SDL_Rect bounds)
 {
 	//Basic render of the texture of the label
 	SDL_RenderCopy(m_pRenderer, textOnScreen, 0, &bounds);
-
 }
 
 SDL_Texture* BackBuffer::CreateText(std::string text, SDL_Color colour) 
@@ -257,7 +256,7 @@ SDL_Texture* BackBuffer::CreateText(std::string text, SDL_Color colour)
 	m_surface = SDL_GetWindowSurface(m_pWindow);
 
 	//create text and save into surface, then use surface to create a texture we can render
-	m_surface = TTF_RenderText_Solid(m_font, text.c_str(), colour);
+	m_surface = TTF_RenderText_Blended(m_font, text.c_str(), colour);
 	SDL_Texture* tTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_surface);
 	//Clean up surface, we grab a new one each time - need to look into why I do that
 	SDL_FreeSurface(m_surface);

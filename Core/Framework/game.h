@@ -23,6 +23,7 @@ class Label;
 class GameMap;
 class Enemy;
 class MainMenu;
+class Shop;
 
 enum GameState
 {
@@ -63,8 +64,9 @@ public:
 
 	bool GameOver();
 	void RestartGame();
-	void SaveGame();
-	void LoadGame();
+	void SaveGame(std::string fileName);
+	void LoadGame(std::string fileName);
+	void DynamicLoad(std::string fileName);
 
 	//Debug
 	void WaypointMode();
@@ -76,6 +78,7 @@ public:
 	void DebugCommand(std::string consoleCommand);
 	void DrawDebugConsole(std::string text);
 	void ShowDebugConsole(bool open);
+	void SetConsoleText(std::string text);
 
 	GameState GetGameState();
 
@@ -142,6 +145,7 @@ protected:
 	//Player Gold
 	Label* m_goldLabel;
 	int m_gold;
+	Label* m_shopLabel;
 
 	//Pickups
 	std::vector<Pickup*> m_pickups;
@@ -155,6 +159,11 @@ protected:
 	//Menu
 	bool m_inMainMenu;
 	MainMenu* m_mainMenu;
+
+	Shop* m_shop;
+
+	//Game state
+	GameState m_gameState;
 
 	//Debug
 	bool m_waypointMode;

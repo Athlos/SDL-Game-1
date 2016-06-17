@@ -69,6 +69,7 @@ Player::SetPositionX(float x)
 	m_x = (static_cast<int>(x));
 	m_animSprite->SetX(static_cast<int>(m_x));
 }
+
 void
 Player::SetPositionY(float y)
 {

@@ -15,6 +15,7 @@
 #include "gamemap.h"
 #include "enemy.h"
 #include "mainmenu.h"
+#include "shop.h"
 
 // Library includes:
 #include <cassert>
@@ -112,7 +113,9 @@ Game::Initialise()
 
 	//Run main menu
 	m_mainMenu = new MainMenu();
+	m_gameState = MAINMENU;
 
+	m_shop = new Shop();
 	
 	InitialiseData();
 
@@ -155,6 +158,10 @@ Game::InitialiseData()
 	labelStream << "Gold: " << m_gold;
 	m_goldLabel = new Label(labelStream.str());
 	m_goldLabel->SetColour(218, 165, 32, 0);
+
+	m_shopLabel = new Label("Shop");
+	m_shopLabel->SetBounds(0, 30, 100, 30);
+	m_shopLabel->SetColour(0, 0, 0, 0);
 
 	//Game over labels
 	m_gameOver = new Label("GAME OVER!");
@@ -260,8 +267,10 @@ Game::Process(float deltaTime)
 		m_frameCount = 0;
 	}
 
-	//Check if in main menu
-	if (m_inMainMenu)
+	//Check game states
+
+	//Process main menu
+	if (m_gameState == MAINMENU)
 	{
 		m_mainMenu->Process(deltaTime);
 		if (m_mainMenu->GetMenuState() == NEWGAME)
@@ -269,6 +278,7 @@ Game::Process(float deltaTime)
 			m_inMainMenu = false;
 			if (m_isGameRunning)
 			{
+				m_gameState = INGAME;
 				RestartGame();
 			}
 			m_isGameRunning = true;
@@ -279,20 +289,35 @@ Game::Process(float deltaTime)
 		}
 		else if (m_mainMenu->GetMenuState() == LOADGAME)
 		{
-			LoadGame();
+			LoadGame("save.txt");
+			m_mainMenu->SetMenuState(ACTIVE);
 		}
 		else if (m_mainMenu->GetMenuState() == SAVEGAME)
 		{
-			SaveGame();
+			SaveGame("save.txt");
+			m_mainMenu->SetMenuState(ACTIVE);
 		}
 		return;
 	}
+
+
+	//Process shop screen
+	if (m_gameState == SHOP)
+	{
+		return;
+	}
+
 
 	//Check if the player is alive and game is running
 	if (GameOver())
 	{
 		return;
 	}
+
+	//Process keyboard movement input
+	//Processing keyboard input
+	m_pInputHandler->ProcessMovement(*this);
+
 	//Box2D simulation loop
 	m_world.Step(m_timeStep, m_velocityIterations, m_positionIterations);
 	m_player->Process(deltaTime);
@@ -374,16 +399,14 @@ Game::Draw(BackBuffer& backBuffer)
 {
 	++m_frameCount;
 
-
-
 	backBuffer.Clear();
 
 	//Check if in main menu
-	if (m_inMainMenu)
+	if (m_gameState == MAINMENU)
 	{
 		m_mainMenu->Draw(backBuffer);
 	}
-	else   //Draw normal game
+	else  //Draw normal game
 	{
 
 		int x = m_width - 130;
@@ -410,6 +433,7 @@ Game::Draw(BackBuffer& backBuffer)
 
 		//Draw gold
 		m_goldLabel->Draw(backBuffer);
+		m_shopLabel->Draw(backBuffer);
 
 		//Draw health
 		for (int i = 0; i < m_player->GetMaxHealth(); i++)
@@ -460,6 +484,13 @@ Game::Draw(BackBuffer& backBuffer)
 			backBuffer.DrawRectangle(0, 600, 1366, 700);
 			m_debugText->Draw(backBuffer);
 		}
+
+		//If shop is open, draw shop over game
+		if (m_gameState == SHOP)
+		{
+			m_shop->Draw(backBuffer);
+		}
+
 	}
 	backBuffer.Present();
 }
@@ -584,6 +615,7 @@ void Game::SpawnPickup(int x, int y, PickupType type)
 		heartPickup->SetPosition(x, y);
 		m_pickups.push_back(heartPickup);
 	}
+
 }
 
 void
@@ -675,15 +707,331 @@ Game::RestartGame()
 }
 
 void
-Game::SaveGame()
+Game::SaveGame(std::string fileName)
 {
-	//TODO
+	SDL_Log("Saving Game");
+	std::ofstream myfile;
+	myfile.open(fileName);
+
+	std::ostringstream saveStream;
+	//Save Player data
+	myfile << "==========Player==========\n";
+	//Save position
+	myfile << m_player->GetPositionX() << "," << m_player->GetPositionY() << "\n";
+	//Save health
+	myfile << m_player->GetCurrentHealth() << "," << m_player->GetMaxHealth() << "\n";
+
+	//Saving game data
+	myfile << "==========Game==========\n";
+	//Save gold
+	myfile << "Gold=" << m_gold << "\n";
+
+	//Saving pickup data
+	myfile << "==========Pickups==========\n";
+	for each (Pickup* p in m_pickups)
+	{
+		myfile << "Position=" << p->GetPositionX() << "," << p->GetPositionY() << "\n";
+		myfile << "Type=" << p->GetPickupType() << "\n";
+	}
+
+	//Saving enemy data
+	myfile << "==========Enemies==========\n";
+	for each (Enemy* e in m_enemies)
+	{
+		myfile << "Position=" << e->GetPositionX() << "," << e->GetPositionY() << "\n";
+		myfile << "Health=" << e->GetCurrentHealth() << "," << e->GetMaxHealth() << "\n";
+	}
+
+	myfile.close();
+	SDL_Log("Game Saved");
 }
 
 void
-Game::LoadGame()
+Game::LoadGame(std::string fileName)
 {
-	//TODO
+	std::string line;
+	std::ifstream myfile(fileName);
+	bool readPlayer = false;
+
+	delete(m_player);
+	m_player = 0;
+
+	PlayerSpriteInit();
+	m_player = new Player();
+
+	if (myfile.is_open())
+	{
+		//skip line 
+		getline(myfile, line);
+		getline(myfile, line);
+
+		//Load position
+		std::string posString = "";
+		int x = 0;
+		int y = 0;
+		for (int i = 0; i < line.size(); i++)
+		{
+			//Check token
+			if (line.at(i) != ',') {
+				//Add to string
+				posString += line.at(i);
+			}
+			else
+			{
+				//Token reached, push into point x
+				x = atoi(posString.c_str());
+				posString.clear();
+			}
+		}
+		//End of line, push into point y
+		y = atoi(posString.c_str());
+		posString.clear();
+
+		//Load data into player
+		m_player->SetPositionX(x);
+		m_player->SetPositionY(y);
+		m_player->Initialise(m_playerAnim, m_world);
+
+		myfile.close();
+	}
+}
+
+void Game::DynamicLoad(std::string fileName)
+{
+	//Dynaimc load system, currently a pain in the ass
+	//Open file
+	std::string line;
+	std::ifstream myfile(fileName);
+	if (myfile.is_open())
+	{
+		SDL_Log("Loading");
+		//clear all current data
+		//Clean up data
+		/*
+		delete(m_HealthSprite);
+		m_HealthSprite = 0;
+
+		delete(m_gameMap);
+		m_gameMap = 0;
+
+		delete(m_goldLabel);
+		m_goldLabel = 0;
+
+		delete(m_gameOver);
+		m_gameOver = 0;
+
+		delete(m_restartGame);
+		m_restartGame = 0;*/
+		//m_enemies.clear();
+		//m_pickups.clear();
+		//m_gold = 0;
+
+		//clear out pointers
+
+		delete(m_player);
+		m_player = 0;
+
+
+
+		//seperate words using : and , delimiters
+		std::string classType;
+		bool classEntered;
+
+
+		//Read current line
+		getline(myfile, line);
+
+		//Read in the class type
+		for (int i = 0; i < line.size(); i++)
+		{
+			//Read keyword for class type
+			if (line.at(i) != '=')
+			{
+				//Add to string
+				classType += line.at(i);
+			}
+		}
+		SDL_Log(classType.c_str());
+
+		std::string dataType;
+		bool dataTypeRead = false;
+		std::string data;
+
+		//Check the type of data we are reading
+
+		//Load player info
+		if (classType == "Player")
+		{
+			//Loading player info - read next line
+			PlayerSpriteInit();
+			m_player = new Player();
+			m_player->Initialise(m_playerAnim, m_world);
+
+			getline(myfile, line);
+			//Read in the data type
+			for (int i = 0; i < line.size(); i++)
+			{
+				//Read keyword for class type
+				if (line.at(i) != '=' && !dataTypeRead)
+				{
+					//Add to string
+					dataType += line.at(i);
+				}
+				else
+				{
+					dataTypeRead = true;
+				}
+
+				//Once the type of data is registered, load up appropriate info
+				if (dataTypeRead)
+				{
+					//Data type all read in, check what it is
+					if (dataType == "Position")
+					{
+						if (line.at(i) == ',')
+						{
+
+							//save x position
+							m_player->SetPositionX(atoi(data.c_str()));
+
+							//switch to y position
+							data = "";
+						}
+						else
+						{
+							//load up the position
+							data += line.at(i);
+
+							//if this is the last item read in the line, save it into the second data slot
+							if (i = line.size() - 1)
+							{
+								m_player->SetPositionY(atoi(data.c_str()));
+							}
+						}
+					}
+					else if (dataType == "Health")
+					{
+						//load up the health
+
+						if (line.at(i) == ',')
+						{
+
+							//save x position
+							m_player->SetCurrentHealth(atoi(data.c_str()));
+
+							//switch to y position
+							data = "";
+						}
+						else
+						{
+							//load up the position
+							data += line.at(i);
+
+							//if this is the last item read in the line, save it into the second data slot
+							if (i = line.size() - 1)
+							{
+								m_player->SetMaxHealth(atoi(data.c_str()));
+							}
+						}
+					}
+				}
+			}
+
+
+		}
+
+		//while (getline(myfile, line))
+		//{
+
+
+		//}
+		myfile.close();
+	}
+
+	/*//Health Sprites
+	m_HealthSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart.png");
+	m_HealthLostSprite = m_pBackBuffer->CreateSprite("Assets\\Health_Heart_Depleted.png");
+	m_HealthSprite->SetWidth(64);
+	m_HealthSprite->SetHeight(64);
+	m_HealthLostSprite->SetWidth(64);
+	m_HealthLostSprite->SetHeight(64);
+
+	//Set up player
+	PlayerSpriteInit();
+	m_player = new Player();
+	m_player->Initialise(m_playerAnim, m_world);
+	m_player->SetCurrentHealth(5);
+	m_player->SetMaxHealth(5);
+
+	//Game map setup
+	m_gameMap = new GameMap();
+	m_gameMap->Initialise("Assets\\map.txt", "Assets\\object.txt");
+	m_gameMap->GenerateMap(*m_pBackBuffer, m_world);
+
+	//Box2D world setup
+	m_velocityIterations = 10;
+	m_positionIterations = 10;
+	m_timeStep = 1.0f / 20.0f;
+	b2Vec2 gravity(0.0f, 0.0f);
+	m_world.SetGravity(gravity);
+	m_world.SetContactListener(&m_collisionListener);
+
+	//Gold label - using a stringstream to concat strings
+	std::ostringstream labelStream;
+	labelStream << "Gold: " << m_gold;
+	m_goldLabel = new Label(labelStream.str());
+	m_goldLabel->SetColour(218, 165, 32, 0);
+
+	//Game over labels
+	m_gameOver = new Label("GAME OVER!");
+	m_gameOver->SetBounds(440, 290, 400, 100);
+	m_gameOver->SetColour(255, 0, 0, 0);
+
+	//Restart game label
+	m_restartGame = new Label("press f5 to restart");
+	m_restartGame->SetBounds(440, 390, 400, 30);
+	m_restartGame->SetColour(0, 0, 0, 0);
+
+	//Debug - Waypoint mode label
+	m_waypointModeLabel = new Label("Waypoint Mode");
+	m_waypointModeLabel->SetBounds(440, 100, 400, 30);
+	m_waypointModeLabel->SetColour(0, 0, 255, 0);
+
+	//Debug - enemy selected for waypoints
+	labelStream.str("");
+	labelStream << "Enemy " << m_enemySelectedIndex << " Selected";
+	m_enemySelectedLabel = new Label(labelStream.str());
+	m_enemySelectedLabel->SetBounds(440, 150, 400, 30);
+	m_enemySelectedLabel->SetColour(0, 0, 230, 0);
+
+	//Debug - console
+	m_debugText = new Label("");
+	m_debugText->SetBounds(0, 600, 0, 100);
+	m_debugText->SetColour(255, 255, 255, 0);
+
+	//Loading waypoints, check current counter
+	std::string line;
+
+	bool run = true;
+	while(run)
+	{
+	line = "patrol" + std::to_string(m_pathToSaveCounter) + ".txt";
+	std::ifstream myfile(line);
+	if (myfile.is_open())
+	{
+	m_pathToSaveCounter++;
+	}
+	else
+	{
+	run = false;
+	}
+	}
+	//Sword Setup
+	m_swordSprite = m_pBackBuffer->CreateAnimatedSprite("Assets\\weaponanim.png");
+	m_swordSprite->LoadFrames(64, 64);
+	m_swordSprite->StartAnimating();
+	m_sword = new Sword(*m_player);
+	m_sword->Initialise(m_swordSprite, m_world);*/
 }
 
 void Game::OpenMainMenu()
@@ -697,6 +1045,11 @@ void Game::OpenMainMenu()
 	if (m_inMainMenu)
 	{
 		m_mainMenu->SetMenuState(ACTIVE);
+		m_gameState = MAINMENU;
+	}
+	else
+	{
+		m_gameState = INGAME;
 	}
 }
 
@@ -707,6 +1060,25 @@ Game::MouseClicked(int x, int y)
 	if (m_inMainMenu)
 	{
 		m_mainMenu->MouseClicked(x, y);
+	}
+	
+	//Mouse behaviour ingame
+	if (m_shopLabel->WasClickedOn(x, y))
+	{
+		if (m_gameState == SHOP)
+		{
+			m_gameState = INGAME;
+		}
+		else
+		{
+			m_gameState = SHOP;
+		}
+	}
+
+	//Mouse behaviour with shop open
+	if (m_gameState == SHOP)
+	{
+		UpdateGold(-(m_shop->MouseClicked(x, y, m_gold, m_player)));
 	}
 
 	//Mouse behaviour for waypoint mode
@@ -808,16 +1180,21 @@ void Game::DebugCommand(std::string consoleCommand)
 {
 	//SDL_Log(consoleCommand.c_str());
 	//Debug Console commands, enter them here for debugging
-	if (consoleCommand == "waypointMode")
+	if (consoleCommand == "waypointmode")
 	{
 		SDL_Log("Switching waypoint mode");
 		WaypointMode();
 	}
-	if (consoleCommand == "spawnEnemy")
+	if (consoleCommand == "spawnenemy")
 	{
 		SDL_Log("Spawning enemy");
 		SpawnEnemy(rand() % 1366, rand() % 768);
 	}
+	//if (consoleCommand.find("giveplayergold", 0))
+	//{
+	//	std::string st = consoleCommand.substr(14, consoleCommand.size());
+	//	SDL_Log(st.c_str());
+	//}
 
 }
 
@@ -832,7 +1209,7 @@ Game::DrawDebugConsole(std::string text)
 		length = 1366;
 	}
 	m_debugText->SetBounds(0, 600, length, 100);
-	Draw(*m_pBackBuffer);
+	//Draw(*m_pBackBuffer);
 }
 
 void 
@@ -841,13 +1218,22 @@ Game::ShowDebugConsole(bool open)
 	m_debugConsoleOpen = open;
 }
 
+void 
+Game::SetConsoleText(std::string text)
+{
+	m_debugString = text;
+	m_debugText->SetText(text);
+	int length = text.size() * 15;
+	if (length > 1366)
+	{
+		length = 1366;
+	}
+	m_debugText->SetBounds(0, 600, length, 100);
+}
+
 GameState Game::GetGameState()
 {
-	if (m_inMainMenu)
-	{
-		return MAINMENU;
-	}
-	return INGAME;
+	return m_gameState;
 }
 
 void
