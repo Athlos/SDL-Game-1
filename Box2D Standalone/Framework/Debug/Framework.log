@@ -1,0 +1,7 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Core.vcxproj, Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  entity.cpp
+c:\users\mark\desktop\zelda clone game\box2d standalone\framework\entity.cpp(44): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\mark\desktop\zelda clone game\box2d standalone\framework\entity.cpp(45): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\mark\desktop\zelda clone game\box2d standalone\framework\entity.cpp(115): warning C4244: 'argument': conversion from 'int' to 'float32', possible loss of data
+c:\users\mark\desktop\zelda clone game\box2d standalone\framework\entity.cpp(175): warning C4244: 'argument': conversion from 'double' to 'float32', possible loss of data
+  Framework.vcxproj -> C:\Users\mark\Desktop\Zelda Clone game\Box2D Standalone\Debug\Box2D Standalone with SDL.exe
